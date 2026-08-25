@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltside — Victorian energy rebates, calculated properly</title>
+<meta name="description" content="Find out which Victorian and federal energy rebates you qualify for, what a solar, battery or heat pump upgrade would actually cost you after rebates, and how much you'd save each year.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   VOLTSIDE — design tokens
+   Direction: "the bill, rebuilt". Visual language borrowed from
+   an Australian quarterly electricity statement and the
+   switchboard behind it. Deep slate + switchboard yellow.
+   ============================================================ */
+:root{
+  --ink:#16202B;          /* switchboard slate, blue-black */
+  --ink-2:#33434F;        /* secondary text */
+  --ink-3:#6A7B86;        /* captions, axis labels */
+  --paper:#F2F5F4;        /* cool paper (not cream) */
+  --panel:#FFFFFF;
+  --rule:#D3DBD9;         /* hairline */
+  --rule-2:#E6EBEA;
+  --volt:#FFCE1F;         /* switchboard yellow — the live wire */
+  --volt-deep:#E0AC00;
+  --grid:#12615E;         /* deep teal — the grid, used for data */
+  --grid-soft:#DCEAE8;
+  --peak:#D6452E;         /* peak tariff / cost only. never brand. */
+  --peak-soft:#FBE4E0;
+
+  --sp:clamp(1rem,2.5vw,1.6rem);
+  --maxw:1180px;
+  --r:3px;                /* near-square: meter panel, not app card */
+
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:16.5px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:800;line-height:1.03;letter-spacing:-.022em;margin:0}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--grid);outline-offset:2px;border-radius:2px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-family:var(--f-mono);font-size:.685rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);
+}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:60;background:rgba(242,245,244,.93);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);
+}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:.7rem var(--sp);
+  display:flex;align-items:center;gap:1.5rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;font-family:var(--f-display);
+  font-weight:800;font-size:1.16rem;letter-spacing:-.03em}
+.brand-mark{width:26px;height:26px;flex:none}
+.nav-links{display:flex;gap:1.35rem;margin-left:auto;font-size:.875rem}
+.nav-links a{text-decoration:none;color:var(--ink-2);padding:.2rem 0;border-bottom:1.5px solid transparent}
+.nav-links a:hover{color:var(--ink);border-bottom-color:var(--volt)}
+@media(max-width:820px){.nav-links{display:none}}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  padding:.72rem 1.15rem;border:1.5px solid var(--ink);background:var(--ink);color:#fff;
+  border-radius:var(--r);font-weight:600;font-size:.9rem;cursor:pointer;text-decoration:none;
+  transition:transform .12s ease, background .15s ease, color .15s ease;
+}
+.btn:hover{background:#0C1922;transform:translateY(-1px)}
+.btn-volt{background:var(--volt);border-color:var(--volt);color:var(--ink)}
+.btn-volt:hover{background:var(--volt-deep);border-color:var(--volt-deep);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink)}
+.btn-ghost:hover{background:var(--ink);color:#fff}
+.btn-sm{padding:.5rem .85rem;font-size:.82rem}
+.btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(2.4rem,6vw,4.6rem) 0 clamp(2rem,4vw,3.2rem);border-bottom:1px solid var(--rule)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.6rem,4vw,3.4rem);align-items:center}
+@media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:2rem}}
+.hero h1{font-size:clamp(2.35rem,6.1vw,4.05rem)}
+.hero h1 em{font-style:normal;position:relative;white-space:nowrap}
+.hero h1 em::after{
+  content:"";position:absolute;left:-.04em;right:-.04em;bottom:.07em;height:.28em;
+  background:var(--volt);z-index:-1;
+}
+.hero h1 span{position:relative;z-index:1}
+.hero-sub{font-size:clamp(1.02rem,1.8vw,1.16rem);color:var(--ink-2);max-width:33rem;margin-top:1.15rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.7rem}
+.hero-note{margin-top:1.05rem;font-size:.82rem;color:var(--ink-3);display:flex;flex-wrap:wrap;gap:.35rem .95rem}
+.hero-note span{display:inline-flex;align-items:center;gap:.35rem}
+.tick{width:13px;height:13px;flex:none}
+
+/* ---------- SIGNATURE: the bill strip ---------- */
+.billcard{
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);
+  box-shadow:0 1px 0 var(--rule-2), 0 18px 40px -32px rgba(22,32,43,.5);
+  overflow:hidden;
+}
+.billcard-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+  padding:.85rem 1.1rem;border-bottom:1px solid var(--rule);background:var(--ink);color:#fff;
+}
+.billcard-head .eyebrow{color:rgba(255,255,255,.62)}
+.billcard-head strong{font-family:var(--f-mono);font-size:.8rem;font-weight:500;color:var(--volt)}
+.billcard-body{padding:1.15rem 1.1rem 1rem}
+.strip{display:flex;align-items:flex-end;gap:clamp(5px,1.4vw,11px);height:186px;
+  padding-bottom:.5rem;border-bottom:1.5px solid var(--ink)}
+.bar{flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;height:100%}
+.bar-fill{
+  background:var(--grid);width:100%;
+  height:var(--h,40%);
+  transition:height 1.05s cubic-bezier(.3,.8,.3,1);
+}
+.bar-save{
+  background:var(--volt);width:100%;height:var(--s,0%);
+  transition:height 1.05s cubic-bezier(.3,.8,.3,1);
+  background-image:repeating-linear-gradient(135deg,transparent 0 5px,rgba(22,32,43,.14) 5px 6px);
+}
+.bar-lab{position:absolute;bottom:-1.45rem;left:0;right:0;text-align:center;
+  font-family:var(--f-mono);font-size:.62rem;color:var(--ink-3);letter-spacing:.02em}
+.strip-axis{display:flex;justify-content:space-between;margin-top:1.75rem;
+  font-family:var(--f-mono);font-size:.68rem;color:var(--ink-3)}
+.legend{display:flex;gap:1.1rem;flex-wrap:wrap;margin-top:.9rem;padding-top:.85rem;
+  border-top:1px dashed var(--rule);font-size:.76rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:.42rem}
+.swatch{width:11px;height:11px;flex:none;border-radius:1px}
+
+/* ---------- stats band ---------- */
+.band{background:var(--ink);color:#fff;padding:clamp(1.8rem,4vw,2.6rem) 0}
+.band-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,3vw,2.4rem)}
+@media(max-width:760px){.band-grid{grid-template-columns:1fr;gap:1.5rem}}
+.stat-n{font-family:var(--f-display);font-size:clamp(2.2rem,5vw,3.1rem);font-weight:800;
+  letter-spacing:-.035em;line-height:1;color:var(--volt)}
+.stat-l{font-size:.9rem;color:rgba(255,255,255,.74);margin-top:.5rem;max-width:19rem}
+.stat-sup{font-family:var(--f-mono);font-size:.6em;vertical-align:super;color:rgba(255,255,255,.55)}
+
+/* ---------- sections ---------- */
+.sec{padding:clamp(2.8rem,6vw,4.6rem) 0;border-bottom:1px solid var(--rule)}
+.sec-head{max-width:44rem;margin-bottom:clamp(1.6rem,3vw,2.4rem)}
+.sec-head h2{font-size:clamp(1.75rem,3.9vw,2.6rem);margin-top:.55rem}
+.sec-head p{color:var(--ink-2);margin-top:.9rem;font-size:1.02rem}
+
+/* ---------- upgrade cards ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+.card{background:var(--panel);padding:1.35rem 1.25rem 1.4rem;display:flex;flex-direction:column;gap:.5rem}
+.card-ic{width:30px;height:30px;margin-bottom:.35rem}
+.card h3{font-size:1.06rem;letter-spacing:-.015em}
+.card p{font-size:.875rem;color:var(--ink-2)}
+.card-val{margin-top:auto;padding-top:.85rem;border-top:1px dashed var(--rule);
+  font-family:var(--f-mono);font-size:.78rem;color:var(--grid);font-weight:600}
+.card-val em{font-style:normal;color:var(--ink-3);font-weight:400}
+
+/* ---------- programs table ---------- */
+.prog{border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;background:var(--panel)}
+.prog-row{display:grid;grid-template-columns:12.5rem 1fr 11rem;gap:1.4rem;
+  padding:1.15rem 1.25rem;border-bottom:1px solid var(--rule-2);align-items:start}
+.prog-row:last-child{border-bottom:0}
+@media(max-width:820px){.prog-row{grid-template-columns:1fr;gap:.6rem}}
+.prog-name{font-family:var(--f-display);font-weight:700;font-size:1rem;letter-spacing:-.015em}
+.prog-src{font-family:var(--f-mono);font-size:.66rem;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+.prog-desc{font-size:.9rem;color:var(--ink-2)}
+.prog-amt{font-family:var(--f-mono);font-size:.95rem;font-weight:600;color:var(--grid);text-align:right}
+@media(max-width:820px){.prog-amt{text-align:left}}
+.prog-amt small{display:block;font-weight:400;font-size:.72rem;color:var(--ink-3);margin-top:.2rem}
+
+/* ============================================================
+   CALCULATOR
+   ============================================================ */
+.calc-sec{background:var(--ink);color:#fff;padding:clamp(2.8rem,6vw,4.4rem) 0}
+.calc-sec .sec-head h2{color:#fff}
+.calc-sec .sec-head p{color:rgba(255,255,255,.72)}
+.calc-sec .eyebrow{color:var(--volt)}
+.calc{
+  background:var(--panel);color:var(--ink);border-radius:var(--r);
+  border:1px solid #0B141C;overflow:hidden;
+  box-shadow:0 30px 60px -40px rgba(0,0,0,.7);
+}
+/* progress rail */
+.rail{display:flex;border-bottom:1px solid var(--rule);background:#FAFCFB;overflow-x:auto;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail-item{
+  flex:1;min-width:8.5rem;padding:.85rem .9rem;border-right:1px solid var(--rule-2);
+  display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--ink-3);
+  position:relative;background:transparent;border-top:0;border-bottom:0;border-left:0;
+  text-align:left;cursor:default;
+}
+.rail-item:last-child{border-right:0}
+.rail-num{
+  width:22px;height:22px;flex:none;border-radius:50%;border:1.5px solid var(--rule);
+  display:grid;place-items:center;font-family:var(--f-mono);font-size:.7rem;font-weight:600;
+}
+.rail-item[data-state="active"]{color:var(--ink);font-weight:600}
+.rail-item[data-state="active"] .rail-num{background:var(--volt);border-color:var(--volt);color:var(--ink)}
+.rail-item[data-state="active"]::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--volt)}
+.rail-item[data-state="done"]{color:var(--ink-2)}
+.rail-item[data-state="done"] .rail-num{background:var(--grid);border-color:var(--grid);color:#fff}
+
+.step{display:none;padding:clamp(1.5rem,3.5vw,2.4rem)}
+.step[data-active="true"]{display:block;animation:fade .32s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.step-h{font-size:clamp(1.35rem,2.6vw,1.75rem);margin-bottom:.4rem}
+.step-p{color:var(--ink-2);font-size:.93rem;margin-bottom:1.6rem;max-width:38rem}
+
+.field{margin-bottom:1.5rem}
+.field > label,.field-label{display:block;font-weight:600;font-size:.94rem;margin-bottom:.15rem}
+.hint{font-size:.8rem;color:var(--ink-3);margin-bottom:.6rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;gap:0}}
+
+.input{
+  width:100%;padding:.72rem .85rem;border:1.5px solid var(--rule);border-radius:var(--r);
+  background:#fff;font-family:var(--f-mono);font-size:1rem;color:var(--ink);
+}
+.input:focus{border-color:var(--grid);outline:none;box-shadow:0 0 0 3px var(--grid-soft)}
+.input.err{border-color:var(--peak);background:var(--peak-soft)}
+.input-money{position:relative}
+.input-money span{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);
+  font-family:var(--f-mono);color:var(--ink-3);pointer-events:none}
+.input-money .input{padding-left:1.85rem}
+.errmsg{color:var(--peak);font-size:.8rem;margin-top:.4rem;display:none;font-weight:500}
+.errmsg[data-show="true"]{display:block}
+
+/* option chips (radios / checkboxes) */
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.chip span{
+  display:block;padding:.6rem .9rem;border:1.5px solid var(--rule);border-radius:var(--r);
+  background:#fff;font-size:.88rem;transition:.13s ease;cursor:pointer;
+}
+.chip input:checked + span{border-color:var(--ink);background:var(--ink);color:#fff;font-weight:600}
+.chip input:focus-visible + span{outline:3px solid var(--grid);outline-offset:2px}
+.chip span:hover{border-color:var(--ink-3)}
+.chip input:checked + span:hover{border-color:var(--ink)}
+.chip-multi input:checked + span{background:var(--volt);border-color:var(--volt);color:var(--ink)}
+
+.conditional{display:none;padding-left:1rem;border-left:2px solid var(--volt);margin-top:1.5rem}
+.conditional[data-show="true"]{display:block;animation:fade .28s ease both}
+
+.step-nav{display:flex;gap:.7rem;align-items:center;margin-top:2rem;
+  padding-top:1.4rem;border-top:1px solid var(--rule)}
+.step-nav .spacer{margin-left:auto}
+.privacy-inline{font-size:.78rem;color:var(--ink-3);max-width:24rem}
+
+/* ---------- results ---------- */
+.res-hero{
+  background:var(--grid);color:#fff;margin:calc(-1*clamp(1.5rem,3.5vw,2.4rem));
+  margin-bottom:1.9rem;padding:clamp(1.6rem,3.5vw,2.3rem) clamp(1.5rem,3.5vw,2.4rem);
+}
+.res-hero .eyebrow{color:rgba(255,255,255,.7)}
+.res-figs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1rem}
+@media(max-width:720px){.res-figs{grid-template-columns:1fr;gap:1.1rem}}
+.res-fig .n{font-family:var(--f-display);font-weight:800;font-size:clamp(1.9rem,4.4vw,2.7rem);
+  letter-spacing:-.035em;line-height:1;color:var(--volt)}
+.res-fig .l{font-size:.83rem;color:rgba(255,255,255,.8);margin-top:.4rem}
+
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th{
+  text-align:left;font-family:var(--f-mono);font-size:.66rem;font-weight:600;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);padding:.55rem .7rem;border-bottom:1.5px solid var(--ink);
+}
+.tbl td{padding:.75rem .7rem;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.tbl td.num,.tbl th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl .item strong{display:block;font-weight:600}
+.tbl .item small{color:var(--ink-3);font-size:.79rem}
+.tbl tr.total td{border-bottom:0;border-top:1.5px solid var(--ink);font-weight:700;padding-top:.9rem}
+.tbl .save{color:var(--grid);font-weight:600}
+.tbl .cost{color:var(--ink)}
+.tbl .reb{color:var(--grid)}
+.tblwrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);padding:.3rem .5rem;background:#fff}
+
+.note{
+  border-left:3px solid var(--volt);background:#FFFBEB;padding:.9rem 1.05rem;
+  font-size:.87rem;color:var(--ink-2);border-radius:0 var(--r) var(--r) 0;margin:1.3rem 0;
+}
+.note strong{color:var(--ink)}
+.note-grid{border-left-color:var(--grid);background:var(--grid-soft)}
+.note-peak{border-left-color:var(--peak);background:var(--peak-soft)}
+
+details.acc{border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin-top:1.3rem}
+details.acc summary{
+  padding:.85rem 1.05rem;cursor:pointer;font-weight:600;font-size:.9rem;
+  display:flex;justify-content:space-between;align-items:center;list-style:none;
+}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"+";font-family:var(--f-mono);color:var(--ink-3);font-size:1.1rem}
+details.acc[open] summary::after{content:"–"}
+details.acc .acc-body{padding:0 1.05rem 1.05rem;font-size:.85rem;color:var(--ink-2)}
+details.acc .acc-body ul{margin:.4rem 0 0;padding-left:1.1rem}
+details.acc .acc-body li{margin-bottom:.35rem}
+
+/* ---------- booking ---------- */
+.consent{display:flex;gap:.7rem;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--rule-2)}
+.consent:last-of-type{border-bottom:0}
+.consent input{width:19px;height:19px;flex:none;margin-top:.15rem;accent-color:var(--grid);cursor:pointer}
+.consent label{font-size:.855rem;color:var(--ink-2);cursor:pointer}
+.consent label b{color:var(--ink);font-weight:600}
+.req{color:var(--peak);font-weight:600}
+
+.done{text-align:center;padding:clamp(2rem,5vw,3.4rem) 1rem}
+.done-mark{width:64px;height:64px;margin:0 auto 1.3rem}
+.done h3{font-size:clamp(1.6rem,3.6vw,2.2rem);margin-bottom:.7rem}
+.done p{color:var(--ink-2);max-width:33rem;margin:0 auto .6rem}
+.ref{display:inline-block;margin-top:1.3rem;padding:.6rem 1rem;background:var(--paper);
+  border:1px dashed var(--rule);border-radius:var(--r);font-family:var(--f-mono);font-size:.85rem}
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.2rem;text-align:left}
+@media(max-width:720px){.next{grid-template-columns:1fr}}
+.next div{padding:1rem;border:1px solid var(--rule);border-radius:var(--r);background:#fff}
+.next h4{font-size:.95rem;margin-bottom:.35rem}
+.next p{font-size:.83rem;color:var(--ink-2);margin:0}
+
+/* ---------- process ---------- */
+.proc{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+@media(max-width:800px){.proc{grid-template-columns:1fr}}
+.proc-step{background:var(--panel);padding:1.5rem 1.35rem}
+.proc-n{font-family:var(--f-mono);font-size:.7rem;font-weight:600;letter-spacing:.14em;
+  color:var(--ink-3);margin-bottom:.75rem}
+.proc-step h3{font-size:1.1rem;margin-bottom:.5rem}
+.proc-step p{font-size:.88rem;color:var(--ink-2)}
+
+/* ---------- promise ---------- */
+.promise{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem 2.4rem}
+@media(max-width:760px){.promise{grid-template-columns:1fr}}
+.promise div{display:flex;gap:.8rem;align-items:flex-start}
+.promise h4{font-size:.98rem;margin-bottom:.25rem}
+.promise p{font-size:.87rem;color:var(--ink-2)}
+
+/* ---------- faq ---------- */
+.faq{max-width:52rem}
+.faq details{border-bottom:1px solid var(--rule)}
+.faq summary{padding:1.05rem 2rem 1.05rem 0;cursor:pointer;font-weight:600;
+  font-size:1rem;list-style:none;position:relative;font-family:var(--f-display);letter-spacing:-.012em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:0;top:1rem;
+  font-family:var(--f-mono);color:var(--ink-3);font-size:1.2rem}
+.faq details[open] summary::after{content:"–"}
+.faq .fa{padding:0 2rem 1.15rem 0;font-size:.92rem;color:var(--ink-2)}
+
+/* ---------- footer ---------- */
+.foot{background:var(--ink);color:rgba(255,255,255,.72);padding:clamp(2.4rem,5vw,3.4rem) 0 2rem;font-size:.85rem}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2rem;padding-bottom:2rem;
+  border-bottom:1px solid rgba(255,255,255,.14)}
+@media(max-width:800px){.foot-grid{grid-template-columns:1fr;gap:1.5rem}}
+.foot h4{color:#fff;font-size:.8rem;font-family:var(--f-mono);font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;margin-bottom:.8rem}
+.foot ul{list-style:none;margin:0;padding:0}
+.foot li{margin-bottom:.45rem}
+.foot a{color:rgba(255,255,255,.72);text-decoration:none}
+.foot a:hover{color:var(--volt)}
+.fine{padding-top:1.6rem;font-size:.76rem;color:rgba(255,255,255,.5);line-height:1.65}
+.fine p{margin-bottom:.7rem;max-width:62rem}
+.fine sup{color:var(--volt)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="3" fill="#16202B"/>
+        <path d="M17.6 6 9 17.4h5.4L13.2 26 22 14.4h-5.6L17.6 6Z" fill="#FFCE1F"/>
+      </svg>
+      Voltside
+    </a>
+    <div class="nav-links">
+      <a href="#upgrades">Upgrades</a>
+      <a href="#rebates">Rebates</a>
+      <a href="apply.html">Check eligibility</a>
+      <a href="#process">How it works</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="btn btn-volt btn-sm" href="apply.html">Check my rebates</a>
+  </div>
+</nav>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<header class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Victoria &middot; rebates current to August 2026</p>
+      <h1><span>Your power bill has</span><br><em><span>two numbers</span></em><br><span>you can change.</span></h1>
+      <p class="hero-sub">
+        What you use, and what you pay per unit. Victorian and federal rebates now cover a large
+        share of the equipment that shifts both — solar, batteries, heat pump hot water, reverse-cycle
+        heating. We work out exactly which ones you qualify for and what your bill looks like afterwards.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-volt" href="apply.html">Check my rebates &mdash; 2 minutes</a>
+        <a class="btn btn-ghost" href="#rebates">See the programs</a>
+      </div>
+      <div class="hero-note">
+        <span><svg class="tick" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg> No cold calls, ever</span>
+        <span><svg class="tick" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg> One installer, not five</span>
+        <span><svg class="tick" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg> Every figure shows its working</span>
+      </div>
+    </div>
+
+    <!-- SIGNATURE ELEMENT: the bill strip -->
+    <div class="billcard" id="heroCard">
+      <div class="billcard-head">
+        <div>
+          <p class="eyebrow">Illustrative &middot; 4-person household</p>
+        </div>
+        <strong>NMI 6305••••••</strong>
+      </div>
+      <div class="billcard-body">
+        <div class="strip" id="heroStrip" aria-hidden="true">
+          <!-- bars injected by script -->
+        </div>
+        <div class="strip-axis">
+          <span>Q1 2025</span>
+          <span class="mono" id="heroCap">$0 / quarter</span>
+          <span>Q4 2026</span>
+        </div>
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--grid)"></i> What you still pay</span>
+          <span><i class="swatch" style="background:var(--volt)"></i> Covered by solar &amp; efficiency</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════ STATS ══════════════════ -->
+<section class="band">
+  <div class="wrap band-grid">
+    <div>
+      <div class="stat-n" data-count="1420" data-prefix="$">$0</div>
+      <p class="stat-l">Average first-year bill reduction for a Victorian household that installs solar and replaces gas hot water<span class="stat-sup">†</span></p>
+    </div>
+    <div>
+      <div class="stat-n" data-count="2840" data-suffix="+">0</div>
+      <p class="stat-l">Victorian households and businesses we've taken through a rebate assessment<span class="stat-sup">†</span></p>
+    </div>
+    <div>
+      <div class="stat-n" data-count="6.1" data-prefix="$" data-suffix="M" data-dec="1">$0</div>
+      <p class="stat-l">Combined rebates and certificate discounts secured for our customers<span class="stat-sup">†</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ UPGRADES ══════════════════ -->
+<section class="sec" id="upgrades">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">What we arrange</p>
+      <h2>Six upgrades. One assessment.</h2>
+      <p>
+        Most people come to us for solar and leave having found that hot water was the faster payback.
+        We assess the whole house against every program you qualify for, then hand you to one
+        accredited installer &mdash; not a call centre.
+      </p>
+    </div>
+    <div class="cards" style="margin-bottom:1.6rem">
+      <a class="card" href="apply.html?segment=residential" style="text-decoration:none;color:inherit">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 13 16 4l12 9v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V13Z" stroke="#16202B" stroke-width="2" stroke-linejoin="round"/><rect x="12" y="17" width="8" height="10" fill="#FFCE1F"/></svg>
+        <h3>For my home &rarr;</h3>
+        <p>Owner-occupiers, landlords and renters. Check which of the four Victorian and federal programs apply to your property.</p>
+        <p class="card-val">Solar Homes &middot; STCs &middot; battery &middot; VEU</p>
+      </a>
+      <a class="card" href="apply.html?segment=commercial" style="text-decoration:none;color:inherit">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 27V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v20" stroke="#16202B" stroke-width="2"/><path d="M20 13h5a2 2 0 0 1 2 2v12M3 27h26" stroke="#16202B" stroke-width="2" stroke-linecap="round"/><rect x="9" y="10" width="7" height="5" fill="#FFCE1F"/></svg>
+        <h3>For my business &rarr;</h3>
+        <p>Premises you own or lease. Solar for Business, the VEU commercial stream and equipment bonuses.</p>
+        <p class="card-val">Up to $3,500 + VEU discounts</p>
+      </a>
+      <a class="card" href="apply.html?segment=battery" style="text-decoration:none;color:inherit">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="6" y="7" width="20" height="19" rx="2" stroke="#16202B" stroke-width="2"/><path d="M11 4v3M21 4v3" stroke="#16202B" stroke-width="2" stroke-linecap="round"/><path d="M17.4 11 12 19h4l-1 5 5.6-8.4H16l1.4-4.6Z" fill="#FFCE1F"/></svg>
+        <h3>Adding a battery &rarr;</h3>
+        <p>Already have panels? The federal battery discount tapers each January and July &mdash; see what yours is worth now.</p>
+        <p class="card-val">~$250&ndash;$270 per kWh</p>
+      </a>
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 22h24l-3-13H7L4 22Z" stroke="#16202B" stroke-width="2" stroke-linejoin="round"/><path d="M12 9 10 22M20 9l2 13M5.6 15.5h20.8" stroke="#16202B" stroke-width="1.4"/><path d="M14 26h4v3h-4z" fill="#FFCE1F"/></svg>
+        <h3>Rooftop solar</h3>
+        <p>6.6&ndash;13.2 kW systems sized to what you actually use, not what fits on the roof. Federal certificates plus the Solar Homes rebate.</p>
+        <p class="card-val">Up to $1,400 rebate + ~$1,500&ndash;$3,100 STCs <em>&mdash; before install</em></p>
+      </div>
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="6" y="7" width="20" height="19" rx="2" stroke="#16202B" stroke-width="2"/><path d="M11 4v3M21 4v3" stroke="#16202B" stroke-width="2" stroke-linecap="round"/><path d="M17.4 11 12 19h4l-1 5 5.6-8.4H16l1.4-4.6Z" fill="#FFCE1F"/></svg>
+        <h3>Home battery</h3>
+        <p>Stores your midday surplus for the 4&ndash;9pm peak, when Victorian electricity is dearest. Feed-in tariffs are now so low that self-use is where the value sits.</p>
+        <p class="card-val">~30% off via federal program <em>&mdash; tapers each Jan &amp; Jul</em></p>
+      </div>
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="9" y="5" width="14" height="22" rx="4" stroke="#16202B" stroke-width="2"/><path d="M13 12h6M13 16h6" stroke="#16202B" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="21.5" r="2.2" fill="#FFCE1F"/></svg>
+        <h3>Heat pump hot water</h3>
+        <p>Usually the shortest payback in the house. Runs on roughly a quarter of the energy of an electric tank and cuts gas out of the equation.</p>
+        <p class="card-val">Up to $1,000 rebate + VEU discount <em>&mdash; stacked</em></p>
+      </div>
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="4" y="8" width="24" height="10" rx="2" stroke="#16202B" stroke-width="2"/><path d="M9 22c0 2 2 2 2 4M16 22c0 2 2 2 2 4M23 22c0 2 2 2 2 4" stroke="#FFCE1F" stroke-width="2" stroke-linecap="round"/><path d="M8 13h16" stroke="#16202B" stroke-width="1.5"/></svg>
+        <h3>Reverse-cycle heating</h3>
+        <p>Replacing gas ducted heating is the single biggest Victorian Energy Upgrades discount available to a household right now.</p>
+        <p class="card-val">$1,500&ndash;$5,000 VEU discount <em>&mdash; at point of sale</em></p>
+      </div>
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 26V9a3 3 0 0 1 3-3h9a3 3 0 0 1 3 3v17" stroke="#16202B" stroke-width="2" stroke-linecap="round"/><path d="M3 26h20" stroke="#16202B" stroke-width="2" stroke-linecap="round"/><path d="M20 13h4a2 2 0 0 1 2 2v6a2 2 0 0 0 2 2" stroke="#16202B" stroke-width="1.7"/><path d="M9 11h7v5H9z" fill="#FFCE1F"/></svg>
+        <h3>EV charger</h3>
+        <p>No Victorian rebate exists for chargers today &mdash; we'll tell you that up front. The saving comes from charging off your own roof instead of the grid.</p>
+        <p class="card-val">No current rebate <em>&mdash; ~$1,400/yr vs petrol</em></p>
+      </div>
+
+      <div class="card">
+        <svg class="card-ic" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4 12 16 4l12 8v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V12Z" stroke="#16202B" stroke-width="2" stroke-linejoin="round"/><path d="M9 17h14M9 21h14" stroke="#FFCE1F" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <h3>Ceiling insulation</h3>
+        <p>Unglamorous, cheap, and it makes every other upgrade work harder. Discounted through the Victorian Energy Upgrades program.</p>
+        <p class="card-val">VEU discount <em>&mdash; varies by ceiling area</em></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ REBATES ══════════════════ -->
+<section class="sec" id="rebates">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Where the money comes from</p>
+      <h2>Four separate programs, and they stack.</h2>
+      <p>
+        This is the part most people get wrong. These aren't alternatives — a single Victorian
+        household can draw on all four at once. Here's what each one actually is.
+      </p>
+    </div>
+
+    <div class="prog">
+      <div class="prog-row">
+        <div>
+          <div class="prog-name">Solar Homes</div>
+          <div class="prog-src">Solar Victoria</div>
+        </div>
+        <div class="prog-desc">
+          A state rebate paid to your retailer, so it comes off the invoice rather than arriving later.
+          Owner-occupiers of homes valued under $3&nbsp;million, with a combined household income under
+          <strong>$150,000</strong> — a threshold that tightened from $210,000 on 1 July 2026. One solar
+          PV rebate per property per decade. An <strong>interest-free loan matching the rebate</strong> is
+          available, but you have to elect it when you apply, not afterwards.
+        </div>
+        <div class="prog-amt">up to $1,400<small>+ $1,400 interest-free loan</small></div>
+      </div>
+
+      <div class="prog-row">
+        <div>
+          <div class="prog-name">Small-scale certificates</div>
+          <div class="prog-src">Federal &middot; STCs</div>
+        </div>
+        <div class="prog-desc">
+          Not a rebate you apply for — your installer creates certificates based on system size and
+          location and discounts your quote by their value. Melbourne sits in Zone 4. The catch worth
+          knowing: <strong>the deeming period drops by one year every 1 January</strong> on the way to
+          the scheme's close in 2030, so the same system costs roughly 4&ndash;5% more each year you wait.
+        </div>
+        <div class="prog-amt">~$1,500&ndash;$3,100<small>6.6&ndash;13.2 kW, 2026 rates</small></div>
+      </div>
+
+      <div class="prog-row">
+        <div>
+          <div class="prog-name">Cheaper Home Batteries</div>
+          <div class="prog-src">Federal &middot; since Jul 2025</div>
+        </div>
+        <div class="prog-desc">
+          Roughly a 30% upfront discount on batteries between 5 and 100 kWh, delivered the same way
+          as solar certificates. Since 1 May 2026 the rate is <strong>tiered</strong>: full value on the
+          first 14 kWh, reduced above that. It now steps down twice a year, each January and July.
+          Victoria's own battery loan closed in May 2025 and hasn't been replaced, so this is the battery
+          support available here.
+        </div>
+        <div class="prog-amt">~$250&ndash;$270/kWh<small>first 14 kWh, then tapered</small></div>
+      </div>
+
+      <div class="prog-row">
+        <div>
+          <div class="prog-name">Victorian Energy Upgrades</div>
+          <div class="prog-src">Victoria &middot; VEU / VEECs</div>
+        </div>
+        <div class="prog-desc">
+          A certificate market rather than a rebate. Accredited providers create VEECs for eligible
+          installs — heat pumps, reverse-cycle air conditioning, insulation, induction cooktops — and
+          the value comes off at the point of sale. Note that a hot water system can generate VEECs
+          <em>or</em> federal STCs, never both, so we run both calculations and take the higher one.
+        </div>
+        <div class="prog-amt">$300&ndash;$5,000<small>varies by activity &amp; certificate price</small></div>
+      </div>
+    </div>
+
+    <div class="note note-grid">
+      <strong>And one more thing that isn't a rebate.</strong> The federal Household Energy Upgrades Fund
+      backs discounted green loans through several Australian lenders, with advertised rates well below
+      standard personal-loan pricing. If a rebate closes the gap but not all of it, that's usually the
+      next lever — we'll show you the numbers, though we don't sell finance and aren't licensed to advise on it.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CALCULATOR ══════════════════ -->
+<section class="calc-sec" id="calculator">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Rebate &amp; savings estimate</p>
+      <h2>What would this actually cost you?</h2>
+      <p>
+        Four short steps. We'll estimate your eligibility, your out-of-pocket cost after every rebate
+        you qualify for, and what your bill looks like afterwards — before anyone contacts you.
+      </p>
+    </div>
+
+    <div class="calc">
+      <!-- progress rail -->
+      <div class="rail" role="list" aria-label="Progress">
+        <div class="rail-item" role="listitem" data-rail="1"><span class="rail-num">1</span> Property</div>
+        <div class="rail-item" role="listitem" data-rail="2"><span class="rail-num">2</span> Energy use</div>
+        <div class="rail-item" role="listitem" data-rail="3"><span class="rail-num">3</span> Your roof</div>
+        <div class="rail-item" role="listitem" data-rail="4"><span class="rail-num">4</span> Eligibility</div>
+        <div class="rail-item" role="listitem" data-rail="5"><span class="rail-num">5</span> Estimate</div>
+      </div>
+
+      <!-- ── STEP 1 ── -->
+      <div class="step" data-step="1" data-active="true">
+        <h3 class="step-h">First, where are we working?</h3>
+        <p class="step-p">Rebate eligibility in Victoria depends on the property, not just the person — so we start here.</p>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="postcode">Postcode</label>
+            <p class="hint">Victorian postcodes begin with 3.</p>
+            <input class="input" id="postcode" type="text" inputmode="numeric" maxlength="4" placeholder="3121" autocomplete="postal-code">
+            <p class="errmsg" data-err="postcode">Enter a Victorian postcode between 3000 and 3999.</p>
+          </div>
+          <div class="field">
+            <label for="street">Street address <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>
+            <p class="hint">Helps us check roof orientation before we speak. Skip it if you'd rather.</p>
+            <input class="input" id="street" type="text" placeholder="12 Bridge Rd" autocomplete="street-address" style="font-family:var(--f-body)">
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Property type</span>
+          <p class="hint">Apartments and units follow a different program stream.</p>
+          <div class="chips" role="radiogroup" aria-label="Property type">
+            <label class="chip"><input type="radio" name="ptype" value="house" checked><span>Freestanding house</span></label>
+            <label class="chip"><input type="radio" name="ptype" value="town"><span>Townhouse / semi</span></label>
+            <label class="chip"><input type="radio" name="ptype" value="apt"><span>Apartment / unit</span></label>
+            <label class="chip"><input type="radio" name="ptype" value="biz"><span>Business premises</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Your relationship to it</span>
+          <div class="chips" role="radiogroup" aria-label="Ownership">
+            <label class="chip"><input type="radio" name="own" value="owner" checked><span>I own and live here</span></label>
+            <label class="chip"><input type="radio" name="own" value="landlord"><span>I own and rent it out</span></label>
+            <label class="chip"><input type="radio" name="own" value="renter"><span>I rent here</span></label>
+            <label class="chip"><input type="radio" name="own" value="bizowner"><span>I run a business here</span></label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <p class="privacy-inline">We don't contact you at any point in this calculator. Nothing is shared until you ask us to.</p>
+          <button class="btn btn-volt spacer" data-next="2">Next &mdash; energy use</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 2 ── -->
+      <div class="step" data-step="2">
+        <h3 class="step-h">How much energy are you buying?</h3>
+        <p class="step-p">Your bill is the most reliable input we have. We work backwards from it to estimate your consumption.</p>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="bill">Typical quarterly electricity bill</label>
+            <p class="hint">Use an average across the year if it swings a lot.</p>
+            <div class="input-money"><span>$</span><input class="input" id="bill" type="number" inputmode="decimal" min="50" max="20000" placeholder="450"></div>
+            <p class="errmsg" data-err="bill">Enter your typical quarterly bill — somewhere between $50 and $20,000.</p>
+          </div>
+          <div class="field">
+            <span class="field-label">People in the household</span>
+            <p class="hint">Used to sense-check the figure above.</p>
+            <div class="chips" role="radiogroup" aria-label="Household size">
+              <label class="chip"><input type="radio" name="hh" value="1"><span>1</span></label>
+              <label class="chip"><input type="radio" name="hh" value="2"><span>2</span></label>
+              <label class="chip"><input type="radio" name="hh" value="3"><span>3</span></label>
+              <label class="chip"><input type="radio" name="hh" value="4" checked><span>4</span></label>
+              <label class="chip"><input type="radio" name="hh" value="5"><span>5+</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Is the property connected to mains gas?</span>
+          <p class="hint">From 1 January 2027 new Victorian homes can't connect to gas at all — so this shapes what we recommend.</p>
+          <div class="chips" role="radiogroup" aria-label="Gas connection">
+            <label class="chip"><input type="radio" name="gas" value="yes" checked><span>Yes, we use gas</span></label>
+            <label class="chip"><input type="radio" name="gas" value="no"><span>No, all-electric</span></label>
+          </div>
+        </div>
+
+        <div class="conditional" id="gasBlock" data-show="true">
+          <div class="field">
+            <label for="gasbill">Typical quarterly gas bill <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>
+            <p class="hint">Heat pumps and reverse-cycle heating cut gas, not electricity — so we need this to show the saving honestly. Leave it blank and we'll assume $280.</p>
+            <div class="input-money"><span>$</span><input class="input" id="gasbill" type="number" inputmode="decimal" min="0" max="10000" placeholder="280"></div>
+          </div>
+          <div class="field">
+            <span class="field-label">How is your water heated?</span>
+            <div class="chips" role="radiogroup" aria-label="Hot water">
+              <label class="chip"><input type="radio" name="hw" value="gas" checked><span>Gas</span></label>
+              <label class="chip"><input type="radio" name="hw" value="electric"><span>Electric tank</span></label>
+              <label class="chip"><input type="radio" name="hw" value="heatpump"><span>Heat pump already</span></label>
+              <label class="chip"><input type="radio" name="hw" value="solarhw"><span>Solar hot water</span></label>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <span class="field-label">Main heating</span>
+            <div class="chips" role="radiogroup" aria-label="Heating">
+              <label class="chip"><input type="radio" name="heat" value="ducted" checked><span>Gas ducted</span></label>
+              <label class="chip"><input type="radio" name="heat" value="wall"><span>Gas wall / space heater</span></label>
+              <label class="chip"><input type="radio" name="heat" value="rc"><span>Reverse-cycle already</span></label>
+              <label class="chip"><input type="radio" name="heat" value="other"><span>Something else</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" style="margin-top:1.5rem">
+          <span class="field-label">Do you already have solar panels?</span>
+          <div class="chips" role="radiogroup" aria-label="Existing solar">
+            <label class="chip"><input type="radio" name="solar" value="no" checked><span>No panels</span></label>
+            <label class="chip"><input type="radio" name="solar" value="small"><span>Yes, under 5 kW</span></label>
+            <label class="chip"><input type="radio" name="solar" value="big"><span>Yes, 5 kW or more</span></label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost" data-prev="1">Back</button>
+          <button class="btn btn-volt spacer" data-next="3">Next &mdash; your roof</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3 ── -->
+      <div class="step" data-step="3">
+        <h3 class="step-h">What's the roof like?</h3>
+        <p class="step-p">Orientation and shade change solar output more than almost anything else. A rough answer is fine — we verify it properly before any quote.</p>
+
+        <div class="field">
+          <span class="field-label">Which way does the largest unshaded roof face?</span>
+          <p class="hint">In Victoria, north is the best case. If you're not sure, pick "not sure" and we'll check the satellite imagery.</p>
+          <div class="chips" role="radiogroup" aria-label="Roof orientation">
+            <label class="chip"><input type="radio" name="orient" value="n" checked><span>North</span></label>
+            <label class="chip"><input type="radio" name="orient" value="ne"><span>North-east</span></label>
+            <label class="chip"><input type="radio" name="orient" value="nw"><span>North-west</span></label>
+            <label class="chip"><input type="radio" name="orient" value="e"><span>East</span></label>
+            <label class="chip"><input type="radio" name="orient" value="w"><span>West</span></label>
+            <label class="chip"><input type="radio" name="orient" value="s"><span>South</span></label>
+            <label class="chip"><input type="radio" name="orient" value="flat"><span>Flat roof</span></label>
+            <label class="chip"><input type="radio" name="orient" value="unsure"><span>Not sure</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Shading across the day</span>
+          <p class="hint">Trees, neighbouring buildings, a tall chimney — anything that crosses the roof between 9am and 4pm.</p>
+          <div class="chips" role="radiogroup" aria-label="Shading">
+            <label class="chip"><input type="radio" name="shade" value="none" checked><span>Clear all day</span></label>
+            <label class="chip"><input type="radio" name="shade" value="light"><span>A little, early or late</span></label>
+            <label class="chip"><input type="radio" name="shade" value="mod"><span>Some through midday</span></label>
+            <label class="chip"><input type="radio" name="shade" value="heavy"><span>Heavily shaded</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">When is the house busiest?</span>
+          <p class="hint">This is what decides whether a battery is worth it for you. Victorian peak rates run 4&ndash;9pm.</p>
+          <div class="chips" role="radiogroup" aria-label="Usage pattern">
+            <label class="chip"><input type="radio" name="pattern" value="day"><span>Someone's home during the day</span></label>
+            <label class="chip"><input type="radio" name="pattern" value="evening" checked><span>Mostly evenings &amp; weekends</span></label>
+            <label class="chip"><input type="radio" name="pattern" value="mixed"><span>A bit of both</span></label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost" data-prev="2">Back</button>
+          <button class="btn btn-volt spacer" data-next="4">Next &mdash; eligibility</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4 ── -->
+      <div class="step" data-step="4">
+        <h3 class="step-h">Last bit — the eligibility tests.</h3>
+        <p class="step-p">
+          Solar Victoria applies an income test and a property value cap. We ask for a band, never a
+          figure, and it stays in your browser unless you book a consultation.
+        </p>
+
+        <div class="field">
+          <span class="field-label">Combined household income, before tax</span>
+          <p class="hint">The Solar Homes threshold dropped to $150,000 for applications submitted after 30 June 2026.</p>
+          <div class="chips" role="radiogroup" aria-label="Income band">
+            <label class="chip"><input type="radio" name="income" value="u100" checked><span>Under $100,000</span></label>
+            <label class="chip"><input type="radio" name="income" value="100to150"><span>$100,000 &ndash; $150,000</span></label>
+            <label class="chip"><input type="radio" name="income" value="o150"><span>Over $150,000</span></label>
+            <label class="chip"><input type="radio" name="income" value="skip"><span>Rather not say</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Is the property valued under $3 million?</span>
+          <div class="chips" role="radiogroup" aria-label="Property value">
+            <label class="chip"><input type="radio" name="pval" value="under" checked><span>Yes, under $3m</span></label>
+            <label class="chip"><input type="radio" name="pval" value="over"><span>No, $3m or more</span></label>
+            <label class="chip"><input type="radio" name="pval" value="unsure"><span>Not sure</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Has this property claimed a Solar Homes PV rebate before?</span>
+          <p class="hint">One solar rebate per property per ten years. Hot water is counted separately.</p>
+          <div class="chips" role="radiogroup" aria-label="Prior rebate">
+            <label class="chip"><input type="radio" name="prior" value="no" checked><span>No</span></label>
+            <label class="chip"><input type="radio" name="prior" value="yes"><span>Yes, within 10 years</span></label>
+            <label class="chip"><input type="radio" name="prior" value="unsure"><span>Not sure</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">What are you most interested in?</span>
+          <p class="hint">Choose as many as you like — this only shapes what we show first.</p>
+          <div class="chips" role="group" aria-label="Interests">
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="solar" checked><span>Solar panels</span></label>
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="battery"><span>Battery</span></label>
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="hotwater" checked><span>Hot water</span></label>
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="heating"><span>Heating &amp; cooling</span></label>
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="ev"><span>EV charger</span></label>
+            <label class="chip chip-multi"><input type="checkbox" name="want" value="insulation"><span>Insulation</span></label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost" data-prev="3">Back</button>
+          <button class="btn btn-volt spacer" id="calcBtn">Show my estimate</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 5: RESULTS ── -->
+      <div class="step" data-step="5">
+        <div class="res-hero">
+          <p class="eyebrow">Estimate &mdash; not a quote</p>
+          <div class="res-figs">
+            <div class="res-fig"><div class="n" id="rSaving">$0</div><div class="l">Estimated saving in year one</div></div>
+            <div class="res-fig"><div class="n" id="rRebate">$0</div><div class="l">Rebates &amp; certificates you appear to qualify for</div></div>
+            <div class="res-fig"><div class="n" id="rPayback">&ndash;</div><div class="l">Estimated payback on your out-of-pocket cost</div></div>
+          </div>
+        </div>
+
+        <div id="eligNotes"></div>
+
+        <h4 style="font-size:1.15rem;margin-bottom:.3rem">Your recommended package</h4>
+        <p style="font-size:.88rem;color:var(--ink-2);margin-bottom:1rem" id="pkgIntro"></p>
+
+        <div class="tblwrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Upgrade</th>
+                <th class="num">Typical price</th>
+                <th class="num">Rebates &amp; certs</th>
+                <th class="num">Your cost</th>
+                <th class="num">Saving / year</th>
+              </tr>
+            </thead>
+            <tbody id="pkgBody"></tbody>
+          </table>
+        </div>
+
+        <!-- bill strip: before / after -->
+        <div class="billcard" style="margin-top:1.6rem">
+          <div class="billcard-head">
+            <p class="eyebrow">Your quarterly energy bill &mdash; electricity and gas combined</p>
+            <strong id="rZone">VIC</strong>
+          </div>
+          <div class="billcard-body">
+            <div class="strip" id="resStrip" style="height:132px" aria-hidden="true"></div>
+            <div class="strip-axis"><span>Today</span><span>After the upgrade</span></div>
+            <div class="legend">
+              <span><i class="swatch" style="background:var(--grid)"></i> What you'd still pay</span>
+              <span><i class="swatch" style="background:var(--volt)"></i> What the upgrade covers</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="splitNote"></div>
+        <div id="financeNote"></div>
+
+        <details class="acc">
+          <summary>Every assumption behind these numbers</summary>
+          <div class="acc-body" id="assumptions"></div>
+        </details>
+
+        <div class="note note-peak">
+          <strong>This is a modelled estimate, not an offer.</strong> Actual rebate eligibility is
+          determined by Solar Victoria and the Clean Energy Regulator, not by us. Certificate values
+          (STCs and VEECs) move with the market, and final pricing depends on your switchboard, roof
+          structure and meter. A consultation is where these become real numbers.
+        </div>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost" data-prev="4">Change my answers</button>
+          <button class="btn btn-volt spacer" data-next="6">Book a consultation</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 6: BOOKING ── -->
+      <div class="step" data-step="6">
+        <h3 class="step-h">Talk it through with someone who knows the paperwork.</h3>
+        <p class="step-p">
+          A 30-minute call or home visit. We confirm eligibility properly, size the system against your
+          actual meter data, and put a written proposal in front of you. No obligation, no fee.
+        </p>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="bname">Full name</label>
+            <input class="input" id="bname" type="text" autocomplete="name" placeholder="Alex Nguyen" style="font-family:var(--f-body)">
+            <p class="errmsg" data-err="bname">We need a name to put on the booking.</p>
+          </div>
+          <div class="field">
+            <label for="bemail">Email</label>
+            <input class="input" id="bemail" type="email" autocomplete="email" placeholder="alex@example.com" style="font-family:var(--f-body)">
+            <p class="errmsg" data-err="bemail">Enter an email address we can send the written estimate to.</p>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="field">
+            <label for="bphone">Mobile</label>
+            <p class="hint">Used for the consultation only.</p>
+            <input class="input" id="bphone" type="tel" autocomplete="tel" placeholder="0412 345 678">
+            <p class="errmsg" data-err="bphone">Enter a mobile number of at least 8 digits.</p>
+          </div>
+          <div class="field">
+            <span class="field-label">Best time to reach you</span>
+            <p class="hint">We'll call within this window, on a business day.</p>
+            <div class="chips" role="radiogroup" aria-label="Preferred time">
+              <label class="chip"><input type="radio" name="slot" value="morning" checked><span>Morning</span></label>
+              <label class="chip"><input type="radio" name="slot" value="afternoon"><span>Afternoon</span></label>
+              <label class="chip"><input type="radio" name="slot" value="evening"><span>After 5pm</span></label>
+              <label class="chip"><input type="radio" name="slot" value="weekend"><span>Weekend</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">How would you prefer to meet?</span>
+          <div class="chips" role="radiogroup" aria-label="Consultation format">
+            <label class="chip"><input type="radio" name="fmt" value="phone" checked><span>Phone call</span></label>
+            <label class="chip"><input type="radio" name="fmt" value="video"><span>Video call</span></label>
+            <label class="chip"><input type="radio" name="fmt" value="home"><span>Visit the property</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bnotes">Anything we should know? <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>
+          <input class="input" id="bnotes" type="text" placeholder="Switchboard looks old, planning a reno next year…" style="font-family:var(--f-body)">
+        </div>
+
+        <div class="field" style="border:1px solid var(--rule);border-radius:var(--r);padding:.4rem 1.05rem;background:#fff">
+          <div class="consent">
+            <input type="checkbox" id="c1">
+            <label for="c1"><b>Yes, contact me about this estimate.</b> <span class="req">Required.</span> You may call, text or email me about the consultation I've asked for. I can withdraw this at any time and you'll stop.</label>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="c2">
+            <label for="c2"><b>Yes, pass my details to one accredited installer.</b> <span class="req">Required to proceed.</span> Voltside doesn't install. We'll name the installer before we send anything, and we share your details with <b>one</b> — never a panel of them.</label>
+          </div>
+          <div class="consent">
+            <input type="checkbox" id="c3">
+            <label for="c3">Send me occasional updates when rebate rules change in Victoria. Optional, and there's an unsubscribe link on every one.</label>
+          </div>
+        </div>
+        <p class="errmsg" data-err="consent" style="margin-top:-.8rem;margin-bottom:1.2rem">Both required boxes need ticking before we can book this in.</p>
+
+        <p style="font-size:.79rem;color:var(--ink-3);max-width:44rem">
+          We handle your information under the Australian Privacy Principles. We never buy contact lists,
+          never doorknock, and never cold-call — every conversation starts because you asked for one.
+        </p>
+
+        <div class="step-nav">
+          <button class="btn btn-ghost" data-prev="5">Back to my estimate</button>
+          <button class="btn btn-volt spacer" id="bookBtn">Book my consultation</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 7: DONE ── -->
+      <div class="step" data-step="7">
+        <div class="done">
+          <svg class="done-mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" stroke="#12615E" stroke-width="3"/>
+            <path d="M19 33.5 28 42l17-19" stroke="#FFCE1F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3>Booked. We'll be in touch <span id="doneWindow">tomorrow morning</span>.</h3>
+          <p>A written copy of this estimate is on its way to <strong id="doneEmail">your inbox</strong>, including the assumptions behind every figure so you can check our working.</p>
+          <div class="ref">Reference <strong id="doneRef">VS-000000</strong></div>
+
+          <div class="next">
+            <div>
+              <h4>Before we call</h4>
+              <p>Dig out a recent electricity bill and, if you have gas, a gas bill. Actual meter data makes the estimate far sharper.</p>
+            </div>
+            <div>
+              <h4>On the call</h4>
+              <p>We confirm eligibility against the current program rules, size the system to your real consumption, and answer whatever you throw at us.</p>
+            </div>
+            <div>
+              <h4>Afterwards</h4>
+              <p>A written proposal with itemised rebates. If you go ahead, we introduce one accredited installer who lodges the rebate paperwork for you.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /calc -->
+  </div>
+</section>
+
+<!-- ══════════════════ PROCESS ══════════════════ -->
+<section class="sec" id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps, and you can stop at any of them.</h2>
+    </div>
+    <div class="proc">
+      <div class="proc-step">
+        <div class="proc-n">STEP 01</div>
+        <h3>You run the numbers</h3>
+        <p>The calculator above, on your own, with nobody watching. If the payback doesn't work for your house, you'll know in two minutes and we'll never hear from you.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">STEP 02</div>
+        <h3>We check the paperwork</h3>
+        <p>A consultation where we verify eligibility against the current rules, review your meter data, and produce a written proposal with every rebate itemised — including the ones you don't qualify for, and why.</p>
+      </div>
+      <div class="proc-step">
+        <div class="proc-n">STEP 03</div>
+        <h3>One installer, introduced</h3>
+        <p>We don't install. If you go ahead, we introduce a single accredited installer from our panel who does the work and lodges your rebate. Your details go to them and no one else.</p>
+      </div>
+    </div>
+
+    <div class="promise" style="margin-top:2.6rem">
+      <div>
+        <svg class="tick" style="width:20px;height:20px;margin-top:.2rem" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h4>Your details go to one installer</h4><p>Not five. The reason solar has a bad name in this state is lead brokers selling the same enquiry to a panel of installers who then all ring you. We don't do that.</p></div>
+      </div>
+      <div>
+        <svg class="tick" style="width:20px;height:20px;margin-top:.2rem" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h4>We only ever contact people who ask us to</h4><p>No doorknocking, no cold calls, no purchased lists. Both are prohibited in this sector in Victoria, and we'd rather not do them anyway.</p></div>
+      </div>
+      <div>
+        <svg class="tick" style="width:20px;height:20px;margin-top:.2rem" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h4>Every figure shows its source</h4><p>The assumptions panel in your estimate lists the tariff, generation and pricing figures we used, with where each came from. Check them against your own bill.</p></div>
+      </div>
+      <div>
+        <svg class="tick" style="width:20px;height:20px;margin-top:.2rem" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.2 12 13 4.5" stroke="#12615E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h4>We'll tell you when the answer is no</h4><p>Heavily shaded south-facing roof, or a rental where the numbers don't stack up for you? We'd rather say so than sell you a system that disappoints.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FAQ ══════════════════ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">Questions we get asked</p>
+      <h2>The honest answers.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Is solar actually still worth it now that feed-in tariffs have collapsed?</summary>
+        <div class="fa">Yes, but for a different reason than five years ago. Victoria stopped setting a mandatory minimum feed-in tariff on 1 July 2025, and retailer offers are now low. That means exporting power earns you little — the value is in <em>using</em> what you generate, which is why we ask when your house is busiest and whether a battery makes sense. A system sized to your consumption still pays back in roughly four to seven years in Melbourne. A system sized to your roof might not.</div>
+      </details>
+      <details>
+        <summary>What does it cost me to use Voltside?</summary>
+        <div class="fa">Nothing. We're paid a referral fee by the installer when a job goes ahead. That's worth knowing when you read our advice, so we're telling you up front. It also means we have no incentive to sell you a bigger system than you need — an oversized system that disappoints you is a job that gets cancelled, and we don't get paid on cancelled jobs.</div>
+      </details>
+      <details>
+        <summary>Can I really claim state and federal rebates at the same time?</summary>
+        <div class="fa">For solar, yes — the federal certificate discount and the Solar Homes rebate stack, and they're calculated in that order. For hot water there's one important exception: a system can generate Victorian VEECs <em>or</em> federal STCs, never both. We calculate both paths and take whichever is worth more to you. Batteries currently draw on the federal program only, since Victoria's battery loan closed to new applications in May 2025.</div>
+      </details>
+      <details>
+        <summary>I'm over the income threshold. Is there anything for me?</summary>
+        <div class="fa">Plenty. The $150,000 combined household income test applies to the Solar Homes rebate specifically. Federal certificates for solar and batteries have no income test at all, and neither does the Victorian Energy Upgrades program — so heat pump hot water, reverse-cycle heating and insulation discounts are all still available to you.</div>
+      </details>
+      <details>
+        <summary>I rent. Is any of this relevant?</summary>
+        <div class="fa">Some of it. Solar Victoria runs a separate stream for rental properties that requires your landlord to apply, and from 1 March 2027 Victorian rental minimum standards change significantly — gas heaters and hot water systems won't be replaceable with gas at end of life. If you're renting, the useful move is usually to talk to your landlord or agent, and we're happy to give you something in writing to hand them.</div>
+      </details>
+      <details>
+        <summary>Why do you keep mentioning dates and deadlines?</summary>
+        <div class="fa">Because in this sector they're real, not a sales tactic. The federal certificate deeming period drops every 1 January until the scheme ends in 2030. The battery discount steps down each January and July. The Solar Homes income threshold already fell from $210,000 to $150,000 on 1 July 2026. None of that is urgency we invented — but equally, none of it means you should rush a decision you're unsure about. The programs will still exist next quarter; they'll just be worth slightly less.</div>
+      </details>
+      <details>
+        <summary>What happens to my personal information?</summary>
+        <div class="fa">Nothing leaves your browser until you book a consultation. When you do, we hold it under the Australian Privacy Principles and pass it to exactly one accredited installer — named to you beforehand — for the purpose of quoting your job. We don't sell data, we don't buy lists, and we don't share your details with a panel of retailers.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top" style="color:#fff;text-decoration:none">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect width="32" height="32" rx="3" fill="#FFCE1F"/>
+            <path d="M17.6 6 9 17.4h5.4L13.2 26 22 14.4h-5.6L17.6 6Z" fill="#16202B"/>
+          </svg>
+          Voltside
+        </a>
+        <p style="margin-top:.9rem;max-width:24rem">
+          An independent rebate assessment service for Victorian households and small businesses.
+          We size the upgrade, confirm the rebates, and introduce one accredited installer.
+        </p>
+      </div>
+      <div>
+        <h4>Programs</h4>
+        <ul>
+          <li><a href="#rebates">Solar Homes</a></li>
+          <li><a href="#rebates">Small-scale certificates</a></li>
+          <li><a href="#rebates">Cheaper Home Batteries</a></li>
+          <li><a href="#rebates">Victorian Energy Upgrades</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#process">How it works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="apply.html">Check my rebates</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of use</a></li>
+          <li><a href="business-plan.html">Business plan</a></li>
+          <li><a href="campaign.html">Campaign plan</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <p><sup>†</sup> <strong>Placeholder figures.</strong> The three headline statistics above are illustrative
+      and must be replaced with verified, substantiated data before this page goes live. Under the Australian
+      Consumer Law, performance claims of this kind must be capable of substantiation, and the ACCC has taken
+      enforcement action over unsubstantiated savings claims in this industry. Keep the records that back them.</p>
+
+      <p>Savings and rebate figures shown by the calculator are modelled estimates based on published
+      Victorian Default Offer tariffs, typical Melbourne solar generation, and indicative installed pricing.
+      They are not a quote and not an offer. Rebate eligibility is determined by Solar Victoria and the
+      Clean Energy Regulator. Certificate values (STCs and VEECs) are set by market trading and change
+      frequently. Your actual result depends on your consumption pattern, roof, switchboard, retailer
+      tariff and installer.</p>
+
+      <p>Voltside does not install equipment and is not a licensed electrical contractor. Installation is
+      carried out by independent accredited retailers and installers. We are not licensed to provide
+      financial or credit advice; references to loan products are general information only. We do not
+      conduct unsolicited telemarketing or door-to-door sales.</p>
+
+      <p>By using this site you accept our <a href="terms.html" style="color:rgba(255,255,255,.72)">terms of
+      use</a> and <a href="privacy.html" style="color:rgba(255,255,255,.72)">privacy policy</a>.</p>
+
+      <p style="color:rgba(255,255,255,.38)">Demonstration site. ABN, NETCC signatory number and
+      complaints process to be added before launch. &copy; 2026 Voltside.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ════════════════════════════════════════════════════════════
+   ASSUMPTIONS — single source of truth for every number.
+   Update quarterly. Sources noted for each.
+   ════════════════════════════════════════════════════════════ */
+const A = {
+  // Victorian Default Offer 2026–27, avg of 5 distribution zones, incl GST
+  tariff: 0.282,          // $/kWh
+  supply: 1.27,           // $/day
+  peakTariff: 0.42,       // $/kWh 4–9pm (indicative TOU peak)
+  fit: 0.04,              // $/kWh — no regulated minimum since 1 Jul 2025
+
+  // Melbourne generation
+  genPerKw: 1300,         // kWh per kW per year, north-facing, unshaded
+  orient: {n:1.00, ne:0.96, nw:0.96, e:0.85, w:0.85, s:0.68, flat:0.93, unsure:0.92},
+  shade:  {none:1.00, light:0.92, mod:0.80, heavy:0.62},
+
+  // Self-consumption by household pattern
+  selfUse: {day:0.45, mixed:0.38, evening:0.30},
+  selfUseBattery: 0.72,
+
+  // Solar pricing (installed, before any support)
+  solarFixed: 1000, solarPerKw: 850,
+  stcRating: 1.185,       // Melbourne = Zone 4
+  stcDeeming: 5,          // 2026 deeming period (drops 1 yr each January)
+  stcPrice: 39.85,
+
+  // Solar Homes
+  shRebate: 1400, shLoan: 1400, incomeCap: 150000,
+
+  // Battery — federal Cheaper Home Batteries, tiered since 1 May 2026
+  battPerKwh: 750,
+  battRebatePerKwh: 260,
+  battRebateFullTier: 14, // kWh at full rate
+
+  // Heat pump hot water
+  hpPrice: 4200, hpVeec: 700, hpRebateCap: 1000,
+  hpSaveVsGas: 400, hpSaveVsElectric: 550,
+
+  // Reverse-cycle replacing gas ducted
+  rcPrice: 9000, rcVeec: 3000, rcSaveVsDucted: 650, rcSaveVsWall: 380,
+
+  // Insulation
+  insPrice: 2600, insVeec: 900, insSave: 280
+};
+
+const $  = (s,c)=> (c||document).querySelector(s);
+const $$ = (s,c)=> Array.prototype.slice.call((c||document).querySelectorAll(s));
+const money = n => "$" + Math.round(n).toLocaleString("en-AU");
+const radio = name => { const el = document.querySelector('input[name="'+name+'"]:checked'); return el ? el.value : null; };
+
+/* ── hero bill strip: the signature moment ───────────────── */
+const heroQ = [
+  {l:"Q1 25", h:74, s:0}, {l:"Q2 25", h:88, s:0}, {l:"Q3 25", h:92, s:0}, {l:"Q4 25", h:70, s:0},
+  {l:"Q1 26", h:48, s:26}, {l:"Q2 26", h:41, s:47}, {l:"Q3 26", h:38, s:54}, {l:"Q4 26", h:29, s:41}
+];
+(function buildHero(){
+  const strip = $("#heroStrip");
+  if(!strip) return;
+  heroQ.forEach(function(q){
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    bar.innerHTML = '<div class="bar-save" style="--s:0%"></div><div class="bar-fill" style="--h:0%"></div><span class="bar-lab">'+q.l+'</span>';
+    strip.appendChild(bar);
+  });
+  const reveal = function(){
+    $$(".bar", strip).forEach(function(bar,i){
+      setTimeout(function(){
+        bar.querySelector(".bar-fill").style.setProperty("--h", heroQ[i].h + "%");
+        bar.querySelector(".bar-save").style.setProperty("--s", heroQ[i].s + "%");
+      }, 90*i + 180);
+    });
+  };
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    $$(".bar", strip).forEach(function(bar,i){
+      bar.querySelector(".bar-fill").style.setProperty("--h", heroQ[i].h+"%");
+      bar.querySelector(".bar-save").style.setProperty("--s", heroQ[i].s+"%");
+    });
+  } else { reveal(); }
+  // caption cycles between the two states
+  const cap = $("#heroCap");
+  if(cap){
+    let showBefore = true;
+    cap.textContent = "$612 → $198 per quarter";
+    setInterval(function(){
+      showBefore = !showBefore;
+      cap.textContent = showBefore ? "$612 → $198 per quarter" : "same house, same year";
+    }, 3800);
+  }
+})();
+
+/* ── animated stat counters ──────────────────────────────── */
+(function counters(){
+  const els = $$("[data-count]");
+  if(!els.length) return;
+  const run = function(el){
+    const target = parseFloat(el.dataset.count);
+    const dec = parseInt(el.dataset.dec || "0", 10);
+    const pre = el.dataset.prefix || "", suf = el.dataset.suffix || "";
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){ el.textContent = pre + target.toLocaleString("en-AU",{minimumFractionDigits:dec,maximumFractionDigits:dec}) + suf; return; }
+    const dur = 1200, t0 = performance.now();
+    const tick = function(t){
+      const p = Math.min((t-t0)/dur, 1);
+      const e = 1 - Math.pow(1-p, 3);
+      const v = target * e;
+      el.textContent = pre + v.toLocaleString("en-AU",{minimumFractionDigits:dec,maximumFractionDigits:dec}) + suf;
+      if(p<1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ run(en.target); io.unobserve(en.target); }
+    });
+  },{threshold:.4});
+  els.forEach(function(el){ io.observe(el); });
+})();
+
+/* ── calculator: step navigation ─────────────────────────── */
+let current = 1;
+const LAST_INPUT = 4;
+
+function goto(n){
+  $$(".step").forEach(function(s){ s.dataset.active = (parseInt(s.dataset.step,10)===n) ? "true" : "false"; });
+  $$(".rail-item").forEach(function(r){
+    const i = parseInt(r.dataset.rail,10);
+    const marker = Math.min(n,5);
+    r.dataset.state = i===marker ? "active" : (i<marker ? "done" : "");
+  });
+  current = n;
+  const calc = $(".calc");
+  if(calc){
+    const y = calc.getBoundingClientRect().top + window.scrollY - 78;
+    window.scrollTo({top:y, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  }
+}
+goto(1);
+
+function showErr(key, on){
+  const el = document.querySelector('[data-err="'+key+'"]');
+  if(el) el.dataset.show = on ? "true" : "false";
+}
+
+function validate(step){
+  let ok = true;
+  if(step===1){
+    const pc = $("#postcode").value.trim();
+    const bad = !/^3\d{3}$/.test(pc);
+    showErr("postcode", bad); $("#postcode").classList.toggle("err", bad);
+    if(bad) ok = false;
+  }
+  if(step===2){
+    const v = parseFloat($("#bill").value);
+    const bad = !(v >= 50 && v <= 20000);
+    showErr("bill", bad); $("#bill").classList.toggle("err", bad);
+    if(bad) ok = false;
+  }
+  return ok;
+}
+
+$$("[data-next]").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    const target = parseInt(btn.dataset.next,10);
+    if(!validate(current)) return;
+    goto(target);
+  });
+});
+$$("[data-prev]").forEach(function(btn){
+  btn.addEventListener("click", function(){ goto(parseInt(btn.dataset.prev,10)); });
+});
+
+/* gas sub-questions reveal */
+$$('input[name="gas"]').forEach(function(r){
+  r.addEventListener("change", function(){
+    $("#gasBlock").dataset.show = (radio("gas")==="yes") ? "true" : "false";
+  });
+});
+
+/* ════════════════════════════════════════════════════════════
+   THE MODEL
+   ════════════════════════════════════════════════════════════ */
+function model(){
+  const bill      = parseFloat($("#bill").value) || 450;
+  const ptype     = radio("ptype");
+  const own       = radio("own");
+  const gas       = radio("gas")==="yes";
+  const hw        = gas ? radio("hw") : "electric";
+  const heat      = gas ? radio("heat") : "rc";
+  const existing  = radio("solar");
+  const orient    = radio("orient");
+  const shade     = radio("shade");
+  const pattern   = radio("pattern");
+  const income    = radio("income");
+  const pval      = radio("pval");
+  const prior     = radio("prior");
+  const wants     = $$('input[name="want"]:checked').map(function(c){ return c.value; });
+
+  /* consumption from bill */
+  const annualBill = bill * 4;
+  const supplyYr   = A.supply * 365;
+  const usageSpend = Math.max(annualBill - supplyYr, 250);
+  let kWh = usageSpend / A.tariff;
+  kWh = Math.min(Math.max(kWh, 1500), 30000);
+
+  /* Solar Homes eligibility */
+  const elig = { ok:true, reasons:[] };
+  if(own !== "owner"){ elig.ok=false; elig.reasons.push(
+    own==="renter" ? "The Solar Homes PV rebate is claimed by the property owner, not the tenant — Solar Victoria runs a separate Solar for Rentals stream your landlord would apply through."
+                   : "The standard Solar Homes rebate is for owner-occupiers. Rental properties and businesses go through separate Solar Victoria streams with different rules."); }
+  if(income === "o150"){ elig.ok=false; elig.reasons.push(
+    "Combined household income above $150,000 sits over the Solar Homes threshold that took effect on 1 July 2026. Federal certificates and the Victorian Energy Upgrades program have no income test, so those are unaffected."); }
+  if(pval === "over"){ elig.ok=false; elig.reasons.push(
+    "Solar Homes applies a property value cap of $3 million."); }
+  if(prior === "yes"){ elig.ok=false; elig.reasons.push(
+    "A property can claim one Solar Homes solar PV rebate every ten years. Hot water is assessed separately, so a heat pump rebate may still be open to you."); }
+  if(income === "skip"){ elig.reasons.push(
+    "We've assumed you're under the $150,000 income threshold. If not, remove the Solar Homes rebate from the solar line — the rest is unaffected."); }
+  if(prior === "unsure" || pval === "unsure"){ elig.reasons.push(
+    "We've assumed the eligibility items you weren't sure about are in your favour. We'll verify them properly in the consultation."); }
+  if(ptype === "apt"){ elig.ok=false; elig.reasons.push(
+    "Apartments and units are handled through Solar Victoria's Solar for Apartments stream, which usually runs through the owners corporation rather than an individual owner."); }
+
+  /* ---- solar sizing ---- */
+  const derate = A.orient[orient] * A.shade[shade];
+  let kW = 0;
+  const wantsSolar = wants.indexOf("solar") !== -1;
+  const canSolar = ptype !== "apt" && existing === "no" && wantsSolar && shade !== "heavy";
+  if(canSolar){
+    const ideal = (kWh * 1.25) / (A.genPerKw * derate);
+    const tiers = ptype === "biz" ? [6.6,10,13.2,20,30] : (ptype==="town" ? [4.4,6.6,8.8] : [6.6,8.8,10,13.2]);
+    kW = tiers.reduce(function(best,t){
+      return Math.abs(t-ideal) < Math.abs(best-ideal) ? t : best;
+    }, tiers[0]);
+  }
+
+  /* gas spend — needed because heat pump and reverse-cycle savings come off gas, not electricity */
+  const gasBillRaw = parseFloat($("#gasbill").value);
+  const gasQuarter = gas ? (isFinite(gasBillRaw) && gasBillRaw > 0 ? gasBillRaw : 280) : 0;
+  const gasSpend = gasQuarter * 4;
+
+  const lines = [];
+  let totalGross=0, totalSupport=0, totalNet=0, totalSave=0, elecSave=0, gasSave=0;
+  const push = function(o){
+    lines.push(o); totalGross+=o.gross; totalSupport+=o.support; totalNet+=o.net; totalSave+=o.save;
+    if(o.fuel === "gas") gasSave += o.save; else elecSave += o.save;
+  };
+
+  /* ---- solar line ---- */
+  let gen=0, selfUsed=0, exported=0, stc=0;
+  if(kW > 0){
+    gen = kW * A.genPerKw * derate;
+    const rate = A.selfUse[pattern];
+    selfUsed = Math.min(gen * rate, kWh);
+    exported = Math.max(gen - selfUsed, 0);
+    const save = selfUsed * A.tariff + exported * A.fit;
+    const gross = A.solarFixed + A.solarPerKw * kW;
+    stc = Math.floor(kW * A.stcRating * A.stcDeeming) * A.stcPrice;
+    const sh = elig.ok ? A.shRebate : 0;
+    push({
+      name: kW + " kW solar system",
+      sub: Math.round(gen).toLocaleString("en-AU") + " kWh/yr generated · " + Math.round(A.selfUse[pattern]*100) + "% used on site",
+      gross: gross,
+      support: stc + sh,
+      supportNote: elig.ok ? money(stc) + " STCs + " + money(sh) + " Solar Homes" : money(stc) + " STCs",
+      net: gross - stc - sh,
+      save: save, fuel: "elec"
+    });
+  }
+
+  /* ---- battery ---- */
+  const wantsBattery = wants.indexOf("battery") !== -1;
+  if(wantsBattery && (kW > 0 || existing !== "no") && ptype !== "apt"){
+    const genBase = kW > 0 ? gen : (existing === "big" ? 8 : 4) * A.genPerKw * derate;
+    const battKwh = kWh > 8000 ? 13.5 : 10;
+    const gross = A.battPerKwh * battKwh;
+    const rebate = A.battRebatePerKwh * Math.min(battKwh, A.battRebateFullTier);
+    const before = Math.min(genBase * A.selfUse[pattern], kWh);
+    const after  = Math.min(genBase * A.selfUseBattery, kWh);
+    const shifted = Math.max(after - before, 0);
+    const save = shifted * (A.peakTariff - A.fit) * 0.72; // conservative: not all shifted energy displaces peak
+    push({
+      name: battKwh + " kWh battery",
+      sub: "Shifts about " + Math.round(shifted).toLocaleString("en-AU") + " kWh/yr from export into your 4–9pm peak",
+      gross: gross,
+      support: rebate,
+      supportNote: money(rebate) + " federal battery discount",
+      net: gross - rebate,
+      save: save, fuel: "elec"
+    });
+  }
+
+  /* ---- hot water ---- */
+  const wantsHW = wants.indexOf("hotwater") !== -1;
+  if(wantsHW && hw !== "heatpump" && hw !== "solarhw" && ptype !== "apt"){
+    const afterVeec = A.hpPrice - A.hpVeec;
+    const rebate = own === "owner" && elig.reasons.indexOf("Solar Homes applies a property value cap of $3 million.") === -1
+      ? Math.min(afterVeec * 0.5, A.hpRebateCap) : 0;
+    const save = hw === "gas" ? A.hpSaveVsGas : A.hpSaveVsElectric;
+    push({
+      name: "Heat pump hot water",
+      sub: hw === "gas" ? "Replaces gas storage — often the shortest payback in the house"
+                        : "Uses roughly a quarter of the energy of an electric tank",
+      gross: A.hpPrice,
+      support: A.hpVeec + rebate,
+      supportNote: money(A.hpVeec) + " VEU + " + money(rebate) + " Solar Homes",
+      net: A.hpPrice - A.hpVeec - rebate,
+      save: save, fuel: hw === "gas" ? "gas" : "elec"
+    });
+  }
+
+  /* ---- heating ---- */
+  const wantsHeat = wants.indexOf("heating") !== -1;
+  if(wantsHeat && gas && (heat === "ducted" || heat === "wall")){
+    const save = heat === "ducted" ? A.rcSaveVsDucted : A.rcSaveVsWall;
+    const veec = heat === "ducted" ? A.rcVeec : A.rcVeec * 0.55;
+    push({
+      name: "Reverse-cycle heating & cooling",
+      sub: heat === "ducted" ? "Replacing gas ducted heating is the largest household VEU discount available"
+                             : "Replacing gas space heating, discounted through the VEU program",
+      gross: A.rcPrice,
+      support: veec,
+      supportNote: money(veec) + " VEU discount at point of sale",
+      net: A.rcPrice - veec,
+      save: save, fuel: "gas"
+    });
+  }
+
+  /* ---- insulation ---- */
+  if(wants.indexOf("insulation") !== -1 && ptype !== "apt"){
+    push({
+      name: "Ceiling insulation top-up",
+      sub: "Cuts the load on whatever heats and cools the house",
+      gross: A.insPrice,
+      support: A.insVeec,
+      supportNote: money(A.insVeec) + " VEU discount",
+      net: A.insPrice - A.insVeec,
+      save: A.insSave, fuel: (gas && (heat === "ducted" || heat === "wall")) ? "gas" : "elec"
+    });
+  }
+
+  /* ---- EV charger (honest: no rebate) ---- */
+  if(wants.indexOf("ev") !== -1){
+    push({
+      name: "EV charger",
+      sub: "No Victorian or federal rebate currently applies to home chargers",
+      gross: 1900, support: 0, supportNote: "No current rebate",
+      net: 1900, save: kW > 0 ? 340 : 0, fuel: "elec"
+    });
+  }
+
+  /* you cannot save more gas than you actually buy */
+  if(gasSave > gasSpend * 0.9){
+    const scale = gasSpend > 0 ? (gasSpend * 0.9) / gasSave : 0;
+    lines.forEach(function(l){ if(l.fuel === "gas"){ l.save = l.save * scale; } });
+    totalSave = totalSave - gasSave + gasSave * scale;
+    gasSave = gasSave * scale;
+  }
+  /* nor more electricity than you buy, less the fixed supply charge */
+  const elecCap = Math.max(annualBill - supplyYr, 0);
+  if(elecSave > elecCap){
+    const scale = elecSave > 0 ? elecCap / elecSave : 0;
+    lines.forEach(function(l){ if(l.fuel !== "gas"){ l.save = l.save * scale; } });
+    totalSave = totalSave - elecSave + elecSave * scale;
+    elecSave = elecSave * scale;
+  }
+
+  const currentBill = annualBill + gasSpend;
+  const newBill = Math.max(currentBill - totalSave, supplyYr * 0.75);
+  const payback = totalSave > 0 ? totalNet / totalSave : null;
+
+  /* both gas appliances replaced means the gas connection itself can go */
+  const gasFree = gas && lines.some(function(l){ return l.name.indexOf("Heat pump") === 0; })
+                      && lines.some(function(l){ return l.name.indexOf("Reverse-cycle") === 0; });
+
+  return {
+    kWh:kWh, kW:kW, gen:gen, lines:lines, elig:elig, derate:derate, pattern:pattern,
+    totalGross:totalGross, totalSupport:totalSupport, totalNet:totalNet, totalSave:totalSave,
+    elecSave:elecSave, gasSave:gasSave, gasSpend:gasSpend, gas:gas, gasFree:gasFree,
+    currentBill:currentBill, newBill:newBill, payback:payback,
+    tenYear: totalSave * 10 - totalNet,
+    shLoan: elig.ok && kW > 0 ? A.shLoan : 0
+  };
+}
+
+/* ── render results ──────────────────────────────────────── */
+function render(r){
+  $("#rSaving").textContent  = money(r.totalSave);
+  $("#rRebate").textContent  = money(r.totalSupport);
+  $("#rPayback").textContent = r.payback ? (r.payback < 25 ? r.payback.toFixed(1) + " yrs" : "25+ yrs") : "—";
+  $("#rZone").textContent    = "VIC " + ($("#postcode").value.trim() || "3xxx");
+
+  /* eligibility notes */
+  const notes = $("#eligNotes");
+  notes.innerHTML = "";
+  if(r.lines.length === 0){
+    notes.innerHTML = '<div class="note note-peak"><strong>We couldn\'t build a package from these answers.</strong> '+
+      'That usually means the upgrades you selected are already installed, or the property type routes through a '+
+      'different program. Go back and widen your selections, or book a consultation and we\'ll work through it properly.</div>';
+  }
+  if(r.elig.reasons.length){
+    const cls = r.elig.ok ? "note note-grid" : "note";
+    const head = r.elig.ok ? "Worth noting" : "About your Solar Homes eligibility";
+    notes.innerHTML += '<div class="'+cls+'"><strong>'+head+'</strong><ul style="margin:.5rem 0 0;padding-left:1.1rem">'+
+      r.elig.reasons.map(function(x){ return "<li>"+x+"</li>"; }).join("") + '</ul></div>';
+  }
+
+  /* we said we'd tell people when the answer is no — so tell them */
+  const solarLine = r.lines.filter(function(l){ return l.name.indexOf("kW solar") !== -1; })[0];
+  if(solarLine && solarLine.save > 0){
+    const solarPayback = solarLine.net / solarLine.save;
+    if(solarPayback > 12){
+      notes.innerHTML += '<div class="note note-peak"><strong>Be careful with the solar line specifically.</strong> '+
+        'On your roof orientation, shading and consumption, the panels alone would take around '+
+        solarPayback.toFixed(0)+' years to pay for themselves — well outside what we\'d normally call a good outcome. '+
+        'The other upgrades in this package stand up on their own merits. We\'d rather flag this now than have you '+
+        'find out in year three.</div>';
+    }
+  }
+
+  /* package intro */
+  const intro = $("#pkgIntro");
+  if(r.kW > 0){
+    intro.textContent = "Sized against roughly " + Math.round(r.kWh).toLocaleString("en-AU") +
+      " kWh a year of consumption, which is what your bill implies. We've matched the system to what you use, not to what the roof would hold.";
+  } else if(r.lines.length){
+    intro.textContent = "No new solar in this package — based on your answers, these are the upgrades that stack up.";
+  } else {
+    intro.textContent = "";
+  }
+
+  /* table */
+  const body = $("#pkgBody");
+  body.innerHTML = r.lines.map(function(l){
+    return '<tr>'+
+      '<td class="item"><strong>'+l.name+'</strong><small>'+l.sub+'</small></td>'+
+      '<td class="num">'+money(l.gross)+'</td>'+
+      '<td class="num reb">'+(l.support>0 ? "−"+money(l.support) : "—")+'<br><small style="color:var(--ink-3);font-family:var(--f-body)">'+l.supportNote+'</small></td>'+
+      '<td class="num cost"><strong>'+money(l.net)+'</strong></td>'+
+      '<td class="num save">'+(l.save>0 ? money(l.save)+"/yr" : "—")+'</td>'+
+    '</tr>';
+  }).join("") +
+  (r.lines.length ? '<tr class="total">'+
+      '<td>Total package</td>'+
+      '<td class="num">'+money(r.totalGross)+'</td>'+
+      '<td class="num reb">−'+money(r.totalSupport)+'</td>'+
+      '<td class="num">'+money(r.totalNet)+'</td>'+
+      '<td class="num save">'+money(r.totalSave)+'/yr</td>'+
+    '</tr>' : "");
+
+  /* result bill strip */
+  const strip = $("#resStrip");
+  const max = Math.max(r.currentBill, 1) / 4;
+  const nowH = 100;
+  const afterPay = (r.newBill/4) / max * 100;
+  const afterSave = Math.max(100 - afterPay, 0);
+  strip.innerHTML =
+    '<div class="bar" style="max-width:120px"><div class="bar-save" style="--s:0%"></div><div class="bar-fill" style="--h:'+nowH+'%"></div><span class="bar-lab">'+money(r.currentBill/4)+'</span></div>'+
+    '<div class="bar" style="max-width:120px"><div class="bar-save" style="--s:'+afterSave+'%"></div><div class="bar-fill" style="--h:'+afterPay+'%"></div><span class="bar-lab">'+money(r.newBill/4)+'</span></div>'+
+    '<div style="flex:3"></div>';
+
+  /* split note: where the saving lands */
+  if(r.gas && r.gasSave > 0){
+    $("#splitNote").innerHTML = '<div class="note note-grid"><strong>Where the saving actually lands.</strong> '+
+      'Roughly <strong>'+money(r.elecSave)+'</strong> a year comes from generating your own power, and <strong>'+money(r.gasSave)+
+      '</strong> from moving load off gas. Worth being precise about that second figure: electrifying an appliance '+
+      'pushes your gas bill down by more than the amount shown, while nudging your electricity bill up, because the '+
+      'heat pump has to run on something. The number quoted is the net effect of both.' +
+      (r.gasFree ? ' And since this package replaces both your gas hot water and your gas heating, you may be able to '+
+        'disconnect gas altogether and stop paying the daily supply charge — worth a few hundred dollars a year on its own. '+
+        'Worth raising in the consultation, as it depends on whether anything else in the house runs on gas.' : '') +
+      '</div>';
+  } else {
+    $("#splitNote").innerHTML = "";
+  }
+
+  /* finance note */
+  const fin = $("#financeNote");
+  let f = "";
+  if(r.shLoan > 0){
+    f += '<div class="note"><strong>You can halve the upfront cost without a bank.</strong> '+
+      'Solar Victoria offers an interest-free loan matching your solar rebate — up to '+money(r.shLoan)+' — '+
+      'repaid over four years. It has to be elected at the time you apply, not added later, so this is worth deciding before the application goes in.</div>';
+  }
+  if(r.totalNet > 6000){
+    f += '<div class="note note-grid"><strong>On the rest.</strong> The federal Household Energy Upgrades Fund backs '+
+      'discounted green loans through several Australian lenders at rates below standard personal-loan pricing. '+
+      'We can point you at who offers what, but we\'re not licensed to give credit advice and we don\'t earn anything on finance.</div>';
+  }
+  if(r.tenYear > 0){
+    f += '<p style="font-size:.9rem;color:var(--ink-2);margin-top:1.1rem">Over ten years, and holding tariffs flat — '+
+      'which they historically have not been — this package is about <strong style="font-family:var(--f-mono)">'+money(r.tenYear)+
+      '</strong> ahead of doing nothing, after you\'ve paid it off.</p>';
+  }
+  fin.innerHTML = f;
+
+  /* assumptions */
+  $("#assumptions").innerHTML =
+    '<p>We\'d rather you checked these than trusted them. Every figure below is what the calculator actually used.</p>'+
+    '<ul>'+
+    '<li><strong>Electricity rate '+(A.tariff*100).toFixed(1)+'c/kWh</strong> and <strong>'+money(A.supply)+'/day supply</strong> — average across Victoria\'s five distribution zones under the Victorian Default Offer for 2026&ndash;27. Your retailer\'s rate may differ.</li>'+
+    '<li><strong>Peak rate '+(A.peakTariff*100).toFixed(0)+'c/kWh</strong> for 4&ndash;9pm, used only to value battery discharge.</li>'+
+    '<li><strong>Feed-in tariff '+(A.fit*100).toFixed(0)+'c/kWh.</strong> Victoria removed the mandatory minimum feed-in tariff on 1 July 2025, so this is an indicative retailer offer rather than a regulated floor.</li>'+
+    '<li><strong>Your consumption: '+Math.round(r.kWh).toLocaleString("en-AU")+' kWh/year</strong>, derived from the bill you entered less the supply charge. A real meter read would sharpen this considerably.</li>'+
+    '<li><strong>Generation '+A.genPerKw+' kWh per kW per year</strong> for Melbourne, north-facing and unshaded, adjusted to <strong>'+Math.round(r.derate*100)+'%</strong> for the orientation and shading you selected.</li>'+
+    '<li><strong>Self-consumption '+Math.round(A.selfUse[r.pattern]*100)+'%</strong> without a battery, rising to '+Math.round(A.selfUseBattery*100)+'% with one, based on the usage pattern you chose.</li>'+
+    '<li><strong>STCs</strong> at '+money(A.stcPrice)+' each, Zone 4 rating '+A.stcRating+', '+A.stcDeeming+'-year deeming for 2026. The deeming period drops by one year every January until the scheme closes in 2030.</li>'+
+    '<li><strong>Battery discount</strong> at about '+money(A.battRebatePerKwh)+'/kWh on the first '+A.battRebateFullTier+' kWh, reflecting the tiered rate that took effect 1 May 2026. It steps down again each January and July.</li>'+
+    '<li><strong>VEU discounts</strong> are estimates. VEEC values are set by market trading and move week to week, so the actual discount is confirmed at the point of sale by an accredited provider.</li>'+
+    '<li><strong>Hot water:</strong> a system can generate VEECs <em>or</em> STCs, never both. We\'ve modelled the VEU path, which is generally worth more for heat pumps in 2026, and the Solar Homes rebate is calculated on the price after that discount.</li>'+
+    '<li><strong>Installed pricing</strong> is indicative Victorian market pricing for a straightforward install. Switchboard upgrades, tile roofs, two-storey access and long cable runs all add cost.</li>'+
+    (r.gas ? '<li><strong>Gas spend '+money(r.gasSpend)+'/year</strong>, from the gas bill you entered (or $280 a quarter if you left it blank). Heat pump and reverse-cycle savings are capped at 90% of it — you can\'t save more gas than you buy.</li>' : '')+
+    '<li><strong>Payback</strong> is your out-of-pocket cost divided by first-year saving, with no tariff inflation, no discount rate and no maintenance assumed.</li>'+
+    '</ul>';
+}
+
+$("#calcBtn").addEventListener("click", function(){
+  if(!validate(4)) return;
+  render(model());
+  goto(5);
+});
+
+/* ── booking ─────────────────────────────────────────────── */
+$("#bookBtn").addEventListener("click", function(){
+  let ok = true;
+  const name = $("#bname").value.trim();
+  const email = $("#bemail").value.trim();
+  const phone = $("#bphone").value.replace(/\D/g,"");
+
+  const badName = name.length < 2;
+  showErr("bname", badName); $("#bname").classList.toggle("err", badName); if(badName) ok=false;
+
+  const badEmail = !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email);
+  showErr("bemail", badEmail); $("#bemail").classList.toggle("err", badEmail); if(badEmail) ok=false;
+
+  const badPhone = phone.length < 8;
+  showErr("bphone", badPhone); $("#bphone").classList.toggle("err", badPhone); if(badPhone) ok=false;
+
+  const badConsent = !($("#c1").checked && $("#c2").checked);
+  showErr("consent", badConsent); if(badConsent) ok=false;
+
+  if(!ok) return;
+
+  const r = model();
+  const slot = radio("slot");
+  const windows = {morning:"tomorrow morning", afternoon:"tomorrow afternoon", evening:"tomorrow evening", weekend:"this weekend"};
+  $("#doneWindow").textContent = windows[slot] || "shortly";
+  $("#doneEmail").textContent = email;
+  $("#doneRef").textContent = "VS-" + String(Math.floor(100000 + Math.random()*899999));
+
+  /* ─────────────────────────────────────────────────────────
+     INTEGRATION POINT — wire this to your CRM.
+     Payload below is everything the consultation needs.
+     Record consent flags and timestamp: under the Spam Act and
+     the Privacy Act you must be able to evidence consent later.
+     ───────────────────────────────────────────────────────── */
+  const payload = {
+    submittedAt: new Date().toISOString(),
+    contact: {name:name, email:email, phone:phone, preferredSlot:slot, format:radio("fmt"), notes:$("#bnotes").value.trim()},
+    property: {postcode:$("#postcode").value.trim(), street:$("#street").value.trim(), type:radio("ptype"), ownership:radio("own")},
+    energy: {quarterlyBill:parseFloat($("#bill").value), household:radio("hh"), gas:radio("gas"), hotWater:radio("hw"), heating:radio("heat"), existingSolar:radio("solar")},
+    roof: {orientation:radio("orient"), shading:radio("shade"), pattern:radio("pattern")},
+    eligibility: {incomeBand:radio("income"), propertyValue:radio("pval"), priorRebate:radio("prior")},
+    interests: $$('input[name="want"]:checked').map(function(c){return c.value;}),
+    estimate: {annualSaving:Math.round(r.totalSave), totalSupport:Math.round(r.totalSupport), netCost:Math.round(r.totalNet), paybackYears:r.payback ? +r.payback.toFixed(1) : null},
+    consent: {contactMe:$("#c1").checked, shareWithOneInstaller:$("#c2").checked, marketingUpdates:$("#c3").checked, capturedAt:new Date().toISOString()}
+  };
+  console.log("[Voltside] lead payload — POST this to your CRM:", payload);
+
+  goto(7);
+});
+
+/* keep gas block in sync on load */
+$("#gasBlock").dataset.show = (radio("gas")==="yes") ? "true" : "false";
+
+})();
+</script>
+</body>
+</html>

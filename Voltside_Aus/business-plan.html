@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltside — Business plan, Victorian energy upgrade lead generation</title>
+<meta name="description" content="Business plan for a Victorian energy rebate lead generation company: rebate landscape, compliance, market analysis, unit economics, go-to-market and expansion roadmap.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202B; --ink-2:#33434F; --ink-3:#6A7B86;
+  --paper:#F2F5F4; --panel:#FFFFFF; --rule:#D3DBD9; --rule-2:#E6EBEA;
+  --volt:#FFCE1F; --volt-deep:#E0AC00;
+  --grid:#12615E; --grid-soft:#DCEAE8;
+  --peak:#D6452E; --peak-soft:#FBE4E0;
+  --sp:clamp(1rem,2.5vw,1.7rem); --r:3px;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5{font-family:var(--f-display);font-weight:800;line-height:1.06;letter-spacing:-.022em;margin:0}
+p{margin:0}
+a{color:var(--grid)}
+:focus-visible{outline:3px solid var(--grid);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ── top bar ── */
+.top{position:sticky;top:0;z-index:70;background:var(--ink);color:#fff}
+.top-in{display:flex;align-items:center;gap:1.2rem;padding:.6rem var(--sp);max-width:1500px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:#fff;font-family:var(--f-display);font-weight:800;font-size:1.08rem;letter-spacing:-.03em}
+.brand svg{width:23px;height:23px}
+.doctitle{font-family:var(--f-mono);font-size:.74rem;color:rgba(255,255,255,.55);letter-spacing:.08em;text-transform:uppercase;padding-left:1.2rem;border-left:1px solid rgba(255,255,255,.2)}
+@media(max-width:700px){.doctitle{display:none}}
+.top-links{margin-left:auto;display:flex;gap:1.1rem;font-size:.82rem}
+.top-links a{color:rgba(255,255,255,.7);text-decoration:none}
+.top-links a:hover{color:var(--volt)}
+.menu-btn{display:none;margin-left:auto;background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
+  padding:.4rem .7rem;border-radius:var(--r);font-family:var(--f-mono);font-size:.75rem;cursor:pointer}
+@media(max-width:980px){.menu-btn{display:block}.top-links{display:none}}
+
+/* ── shell ── */
+.shell{display:grid;grid-template-columns:255px 1fr;max-width:1500px;margin:0 auto;align-items:start}
+@media(max-width:980px){.shell{grid-template-columns:1fr}}
+
+/* ── sidebar ── */
+.side{position:sticky;top:47px;height:calc(100vh - 47px);overflow-y:auto;
+  border-right:1px solid var(--rule);padding:1.6rem 0 2rem;background:var(--paper)}
+@media(max-width:980px){
+  .side{position:fixed;top:47px;left:0;right:0;height:auto;max-height:70vh;z-index:65;
+    border-right:0;border-bottom:1px solid var(--rule);display:none;box-shadow:0 20px 40px -30px rgba(0,0,0,.5)}
+  .side[data-open="true"]{display:block}
+}
+.side-sec{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-3);padding:0 var(--sp) .5rem;margin-top:1.4rem}
+.side-sec:first-child{margin-top:0}
+.navlink{display:flex;gap:.7rem;align-items:baseline;width:100%;text-align:left;background:transparent;
+  border:0;border-left:2.5px solid transparent;padding:.5rem var(--sp);cursor:pointer;
+  font:inherit;font-size:.885rem;color:var(--ink-2);line-height:1.35}
+.navlink:hover{color:var(--ink);background:rgba(255,255,255,.6)}
+.navlink[aria-current="true"]{color:var(--ink);font-weight:600;border-left-color:var(--volt);background:#fff}
+.navlink .nn{font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3);flex:none;width:1.3rem}
+.navlink[aria-current="true"] .nn{color:var(--volt-deep)}
+
+/* ── page area ── */
+.main{padding:0 0 5rem;min-width:0}
+.page{display:none;padding:clamp(1.8rem,4vw,3rem) var(--sp) 0;max-width:1000px}
+.page[data-active="true"]{display:block;animation:fade .3s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.page-h{padding-bottom:1.4rem;border-bottom:2px solid var(--ink);margin-bottom:2rem}
+.page-h h1{font-size:clamp(1.9rem,4.4vw,2.9rem);margin:.5rem 0 0}
+.page-h .lede{margin-top:1rem;color:var(--ink-2);font-size:clamp(1rem,1.6vw,1.1rem);max-width:60ch}
+
+h2.h{font-size:clamp(1.3rem,2.6vw,1.65rem);margin:2.6rem 0 .8rem;padding-top:1.6rem;border-top:1px solid var(--rule)}
+h2.h:first-of-type{margin-top:0;padding-top:0;border-top:0}
+h3.h3{font-size:1.08rem;margin:1.7rem 0 .55rem}
+.page p + p{margin-top:.85rem}
+.page > p, .page li{color:var(--ink-2)}
+.page strong{color:var(--ink)}
+ul.body{margin:.7rem 0;padding-left:1.2rem}
+ul.body li{margin-bottom:.45rem}
+
+/* ── key figures ── */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:1.5rem 0 2rem}
+.fig{background:#fff;padding:1.1rem 1.15rem}
+.fig .v{font-family:var(--f-display);font-weight:800;font-size:1.85rem;letter-spacing:-.035em;line-height:1;color:var(--grid)}
+.fig .v.alt{color:var(--volt-deep)}
+.fig .l{font-size:.8rem;color:var(--ink-3);margin-top:.45rem;line-height:1.4}
+
+/* ── tables ── */
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin:1.1rem 0 1.6rem}
+table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:580px}
+th{text-align:left;font-family:var(--f-mono);font-size:.64rem;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);padding:.68rem .8rem;border-bottom:1.5px solid var(--ink);
+  white-space:nowrap;background:#FAFCFB}
+td{padding:.68rem .8rem;border-bottom:1px solid var(--rule-2);vertical-align:top;color:var(--ink-2)}
+tbody tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.c,th.c{text-align:center}
+td strong{color:var(--ink);font-weight:600}
+td small{display:block;color:var(--ink-3);font-size:.77rem;margin-top:.15rem}
+tr.tot td{border-top:1.5px solid var(--ink);font-weight:700;background:#FAFCFB;color:var(--ink)}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.67rem;padding:.14rem .45rem;
+  border-radius:2px;font-weight:600;white-space:nowrap}
+.p-hi{background:var(--volt);color:var(--ink)}
+.p-md{background:var(--grid-soft);color:var(--grid)}
+.p-lo{background:var(--rule-2);color:var(--ink-3)}
+.p-no{background:var(--peak-soft);color:var(--peak)}
+
+/* ── boxes ── */
+.box{border:1px solid var(--rule);border-left:3px solid var(--volt);background:#FFFBEB;
+  padding:1.05rem 1.2rem;border-radius:0 var(--r) var(--r) 0;margin:1.3rem 0;font-size:.92rem;color:var(--ink-2)}
+.box strong{color:var(--ink)}
+.box-grid{border-left-color:var(--grid);background:var(--grid-soft)}
+.box-peak{border-left-color:var(--peak);background:var(--peak-soft)}
+.box ul{margin:.55rem 0 0;padding-left:1.15rem}
+.box li{margin-bottom:.35rem}
+
+/* ── cards ── */
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:1.2rem 0 1.6rem}
+.gc{background:#fff;padding:1.15rem 1.2rem}
+.gc h4{font-size:.99rem;margin-bottom:.4rem}
+.gc p{font-size:.86rem;color:var(--ink-2)}
+.gc .k{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.55rem}
+
+/* ── chart ── */
+.chart{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:1.25rem 1.35rem;margin:1.3rem 0 1.7rem}
+.chart-t{font-family:var(--f-display);font-weight:700;font-size:1rem;margin-bottom:.2rem}
+.chart-s{font-size:.81rem;color:var(--ink-3);margin-bottom:1rem}
+.chart svg{width:100%;height:auto;display:block}
+.chart-n{font-size:.78rem;color:var(--ink-3);margin-top:.9rem;padding-top:.8rem;border-top:1px dashed var(--rule)}
+
+/* ── timeline ── */
+.tl{border-left:2px solid var(--rule);margin:1.4rem 0 1.6rem;padding-left:1.4rem}
+.tl-item{position:relative;padding-bottom:1.6rem}
+.tl-item::before{content:"";position:absolute;left:calc(-1.4rem - 6px);top:.45rem;width:10px;height:10px;
+  border-radius:50%;background:var(--volt);border:2px solid var(--paper)}
+.tl-item.done::before{background:var(--grid)}
+.tl-w{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.tl-item h4{font-size:1.02rem;margin:.25rem 0 .4rem}
+.tl-item p{font-size:.88rem;color:var(--ink-2)}
+
+/* ── stack ── */
+.stack{display:flex;flex-direction:column;gap:2px;margin:1.3rem 0 1.7rem}
+.srow{display:flex;align-items:center;gap:.9rem;background:#fff;border:1px solid var(--rule);padding:.7rem .95rem}
+.sbar{height:26px;flex:none;border-radius:2px}
+.smeta{flex:1;display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.smeta b{font-size:.9rem;font-weight:600;color:var(--ink)}
+.smeta small{color:var(--ink-3);font-size:.79rem}
+.snum{font-family:var(--f-mono);font-weight:600;font-size:.9rem;white-space:nowrap;color:var(--ink)}
+
+.pagenav{display:flex;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.5rem;
+  border-top:1px solid var(--rule);flex-wrap:wrap}
+.pagenav button{background:#fff;border:1.5px solid var(--rule);border-radius:var(--r);padding:.7rem 1.1rem;
+  font:inherit;font-size:.87rem;cursor:pointer;color:var(--ink);font-weight:600}
+.pagenav button:hover{border-color:var(--ink)}
+.pagenav button[hidden]{visibility:hidden}
+
+.fine{font-size:.79rem;color:var(--ink-3);line-height:1.65;margin-top:2.4rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="3" fill="#FFCE1F"/><path d="M17.6 6 9 17.4h5.4L13.2 26 22 14.4h-5.6L17.6 6Z" fill="#16202B"/></svg>
+      Voltside
+    </a>
+    <span class="doctitle">Business plan · v1 · Aug 2026</span>
+    <div class="top-links">
+      <a href="index.html">Landing page</a>
+      <a href="campaign.html">Campaign plan</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false">Contents</button>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- ── SIDEBAR ── -->
+  <nav class="side" id="side" aria-label="Document sections">
+    <p class="side-sec">The opportunity</p>
+    <button class="navlink" data-go="1"><span class="nn">01</span> Overview</button>
+    <button class="navlink" data-go="2"><span class="nn">02</span> Rebates &amp; incentives</button>
+    <button class="navlink" data-go="3"><span class="nn">03</span> Market</button>
+    <p class="side-sec">The constraints</p>
+    <button class="navlink" data-go="4"><span class="nn">04</span> Compliance &amp; licensing</button>
+    <button class="navlink" data-go="5"><span class="nn">05</span> Risks</button>
+    <p class="side-sec">The business</p>
+    <button class="navlink" data-go="6"><span class="nn">06</span> Model &amp; economics</button>
+    <button class="navlink" data-go="7"><span class="nn">07</span> Go-to-market</button>
+    <button class="navlink" data-go="8"><span class="nn">08</span> Roadmap &amp; expansion</button>
+    <p class="side-sec">Reference</p>
+    <button class="navlink" data-go="9"><span class="nn">09</span> Calculator data</button>
+  </nav>
+
+  <main class="main">
+
+  <!-- ═══════════ 01 OVERVIEW ═══════════ -->
+  <section class="page" data-page="1" data-active="true">
+    <div class="page-h">
+      <p class="eyebrow">Section 01</p>
+      <h1>An independent rebate assessment business for Victorian households and small business</h1>
+      <p class="lede">
+        Voltside advertises to Victorians who are already looking to cut their energy bills, works out
+        which of four overlapping government programs they qualify for, models what an upgrade would
+        actually cost them after every rebate, and — with their explicit consent — introduces one
+        accredited installer. We do not install, and we do not sell leads to a panel.
+      </p>
+    </div>
+
+    <div class="figs">
+      <div class="fig"><div class="v">31%</div><p class="l">Victorian dwellings with rooftop solar — a large remaining market</p></div>
+      <div class="fig"><div class="v">4</div><p class="l">Separate government programs that stack for a single household</p></div>
+      <div class="fig"><div class="v alt">2027</div><p class="l">Year new Victorian homes can no longer connect to gas</p></div>
+      <div class="fig"><div class="v alt">2030</div><p class="l">Year federal solar certificates disappear entirely</p></div>
+    </div>
+
+    <h2 class="h">The thesis in three sentences</h2>
+    <p>
+      <strong>Subsidy design is doing the marketing.</strong> Federal solar certificates shrink every
+      January until they vanish in 2030. The battery discount now steps down twice a year. The Solar
+      Homes income threshold already fell from $210,000 to $150,000 on 1 July 2026. And from 1 January
+      2027 new Victorian homes cannot connect to gas at all. Every one of those is a real, dated,
+      externally-imposed reason to act — which means this business never has to manufacture urgency.
+    </p>
+    <p>
+      <strong>Regulation has already killed the incumbent playbook.</strong> Cold-call telemarketing for
+      Victorian Energy Upgrades products was banned in May 2024, door-knocking in August 2024, and buying
+      someone's contact details from a third party is explicitly prohibited. The ACCC opened an in-depth
+      review of lead generation itself in June 2025. The call-centre-and-a-list model that built the
+      incumbent solar sales industry is no longer available.
+    </p>
+    <p>
+      <strong>That leaves consent-based digital inbound as the only durable route — which is a moat, not
+      a limitation.</strong> A competitor cannot undercut you by doing something you've chosen not to do,
+      because the thing they'd do is prohibited. The winning position is the one this industry has never
+      credibly occupied: transparent numbers, exclusive leads, and a customer who was never contacted
+      without asking.
+    </p>
+
+    <h2 class="h">How the money moves</h2>
+    <div class="stack">
+      <div class="srow"><div class="sbar" style="width:16%;background:var(--grid)"></div><div class="smeta"><div><b>1 · Paid advertising</b> <small>Google Search and Meta, targeted at Victorian owner-occupiers and small business</small></div><div class="snum">$32k/mo at scale</div></div></div>
+      <div class="srow"><div class="sbar" style="width:28%;background:var(--grid)"></div><div class="smeta"><div><b>2 · Self-qualification</b> <small>The calculator collects property, consumption, roof and eligibility data before any human contact</small></div><div class="snum">~450 leads/mo</div></div></div>
+      <div class="srow"><div class="sbar" style="width:44%;background:var(--volt)"></div><div class="smeta"><div><b>3 · Consultation</b> <small>Verify eligibility, size against real meter data, produce a written proposal</small></div><div class="snum">~145 held/mo</div></div></div>
+      <div class="srow"><div class="sbar" style="width:62%;background:var(--volt)"></div><div class="smeta"><div><b>4 · Exclusive referral</b> <small>One named accredited installer, who lodges the rebate paperwork and does the work</small></div><div class="snum">~32 installs/mo</div></div></div>
+      <div class="srow"><div class="sbar" style="width:100%;background:var(--ink)"></div><div class="smeta"><div><b>5 · Fee</b> <small>Hybrid: a small per-qualified-lead fee plus a completion fee on installation</small></div><div class="snum">~$62k revenue/mo</div></div></div>
+    </div>
+
+    <h2 class="h">What we're deliberately not doing</h2>
+    <div class="g3">
+      <div class="gc"><p class="k">Not this</p><h4>Not installing</h4><p>Installation means electrical licensing, staff, vehicles, warranty exposure and working capital. The referral model stays asset-light and lets us stay genuinely product-neutral.</p></div>
+      <div class="gc"><p class="k">Not this</p><h4>Not a comparison marketplace</h4><p>Sending one enquiry to five installers is the practice that gave this industry its reputation. It also removes any reason for an installer to value your lead. One lead, one installer.</p></div>
+      <div class="gc"><p class="k">Not this</p><h4>Not an authorised retailer — yet</h4><p>Becoming a Solar Victoria authorised retailer requires NETCC signatory status and is slow and costly. Partner installers already hold it and lodge the rebates. Revisit once volume justifies it.</p></div>
+      <div class="gc"><p class="k">Not this</p><h4>Not a finance broker</h4><p>We show people what the interest-free Solar Homes loan and the federal green loan products offer, and stop there. Credit advice requires licensing we won't hold and incentives we don't want.</p></div>
+    </div>
+
+    <div class="box box-grid">
+      <strong>The one-line version.</strong> Buy high-intent search traffic, let people qualify
+      themselves against real eligibility rules, hand one installer a customer who already understands
+      their own numbers, and get paid twice — a little for the lead, properly for the install.
+    </div>
+
+    <div class="pagenav"><button hidden></button><button data-go="2">Rebates &amp; incentives &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 02 REBATES ═══════════ -->
+  <section class="page" data-page="2">
+    <div class="page-h">
+      <p class="eyebrow">Section 02</p>
+      <h1>Four programs, and they stack</h1>
+      <p class="lede">
+        The central insight of the product is that Victorian households are eligible for more than they
+        realise, and that the programs are administered by three different bodies with entirely
+        different eligibility logic. Understanding the interaction is the service.
+      </p>
+    </div>
+
+    <h2 class="h">The stack, on a typical household</h2>
+    <div class="chart">
+      <p class="chart-t">Where the money comes off a $22,000 package</p>
+      <p class="chart-s">Freestanding house, 10&nbsp;kW solar + 10&nbsp;kWh battery + heat pump hot water, owner-occupier under the income threshold</p>
+      <svg viewBox="0 0 780 250" role="img" aria-label="Waterfall chart showing rebates reducing a package price from $22,000 to about $12,000">
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#6A7B86">
+          <text x="60" y="35" text-anchor="end">$22k</text>
+          <text x="60" y="200" text-anchor="end">$0</text>
+        </g>
+        <line x1="66" y1="196" x2="770" y2="196" stroke="#16202B" stroke-width="1.5"/>
+        <!-- scale: 22000 over 165px -> 1000 = 7.5px -->
+        <!-- gross 22000 -->
+        <rect x="82" y="31" width="86" height="165" fill="#16202B"/>
+        <text x="125" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#16202B">$22,000</text>
+        <text x="125" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">Package price</text>
+        <text x="125" y="228" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">before support</text>
+
+        <!-- STCs 2400 -->
+        <rect x="212" y="31" width="86" height="18" fill="#12615E"/>
+        <text x="255" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">−$2,400</text>
+        <text x="255" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">Solar STCs</text>
+        <text x="255" y="228" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">federal</text>
+
+        <!-- battery 2600 -->
+        <rect x="342" y="49" width="86" height="19" fill="#12615E"/>
+        <text x="385" y="42" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">−$2,600</text>
+        <text x="385" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">Battery discount</text>
+        <text x="385" y="228" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">federal</text>
+
+        <!-- solar homes 1400 -->
+        <rect x="472" y="68" width="86" height="11" fill="#FFCE1F"/>
+        <text x="515" y="61" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#E0AC00">−$1,400</text>
+        <text x="515" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">Solar Homes</text>
+        <text x="515" y="228" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">Victoria</text>
+
+        <!-- VEU + HW rebate 1700 -->
+        <rect x="602" y="79" width="86" height="13" fill="#FFCE1F"/>
+        <text x="645" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#E0AC00">−$1,700</text>
+        <text x="645" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">VEU + HW rebate</text>
+        <text x="645" y="228" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">Victoria</text>
+
+        <!-- net -->
+        <rect x="700" y="92" width="66" height="104" fill="#D6452E"/>
+        <text x="733" y="85" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#D6452E">$13,900</text>
+        <text x="733" y="214" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="#33434F">Out of pocket</text>
+      </svg>
+      <p class="chart-n">
+        Roughly 37% of the package price is covered by government support. Add the $1,400 interest-free
+        Solar Homes loan and the immediate cash requirement falls further. All figures are indicative
+        estimates — certificate values move with the market.
+      </p>
+    </div>
+
+    <h2 class="h">Program by program</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Program</th><th>Administered by</th><th>Covers</th><th class="n">Value</th><th>Eligibility tests</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Solar Homes</strong><small>solar PV + hot water</small></td>
+            <td>Solar Victoria</td>
+            <td>Solar PV rebate; solar and heat pump hot water rebate; matching interest-free loan</td>
+            <td class="n">$1,400 PV<br>$1,000&ndash;$1,400 HW</td>
+            <td>Owner-occupier · combined household income under <strong>$150,000</strong> (tightened from $210,000 on 1 Jul 2026) · property under $3m · one PV rebate per property per 10 years</td>
+          </tr>
+          <tr>
+            <td><strong>Small-scale certificates</strong><small>STCs, under the SRES</small></td>
+            <td>Clean Energy Regulator</td>
+            <td>Solar PV and eligible hot water. Discount applied by the installer, not claimed by you</td>
+            <td class="n">~$1,500&ndash;$3,100<br>on 6.6&ndash;13.2 kW</td>
+            <td>No income test. Accredited installer and compliant equipment required. Melbourne is Zone 4</td>
+          </tr>
+          <tr>
+            <td><strong>Cheaper Home Batteries</strong><small>federal, since Jul 2025</small></td>
+            <td>Clean Energy Regulator</td>
+            <td>Batteries 5&ndash;100 kWh. Program expanded to an estimated $7.2bn in Dec 2025</td>
+            <td class="n">~$250&ndash;$270/kWh<br>first 14 kWh</td>
+            <td>No income test. Tiered since 1 May 2026 — reduced rate above 14 kWh, nothing beyond 50 kWh</td>
+          </tr>
+          <tr>
+            <td><strong>Victorian Energy Upgrades</strong><small>VEECs</small></td>
+            <td>Essential Services Commission</td>
+            <td>Heat pump hot water, reverse-cycle heating, insulation, induction cooktops, commercial solar 30&ndash;200 kW</td>
+            <td class="n">$300&ndash;$5,000<br>by activity</td>
+            <td><strong>No income test.</strong> Discount applied at point of sale by an Accredited Provider. Extended to 2045</td>
+          </tr>
+          <tr>
+            <td><strong>Solar for Business</strong><small>+ Small Business Energy Saver</small></td>
+            <td>Solar Victoria</td>
+            <td>Solar PV up to 30 kW for businesses with 1&ndash;20 employees; equipment bonuses</td>
+            <td class="n">Up to $3,500<br>+ $2,000</td>
+            <td>Employee count test. Owner or tenant of the premises</td>
+          </tr>
+          <tr>
+            <td><strong>Household Energy Upgrades Fund</strong><small>not a rebate — finance</small></td>
+            <td>CEFC, via lenders</td>
+            <td>Discounted green loans through several Australian banks and lenders</td>
+            <td class="n">Rate discount</td>
+            <td>Lender's own credit assessment. We provide information only, never advice</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box box-peak">
+      <strong>The trap worth knowing.</strong> A hot water system can generate Victorian VEECs
+      <em>or</em> federal STCs — never both. For heat pumps in 2026 the VEU path is generally worth more,
+      and the Solar Homes rebate is then calculated on the price <em>after</em> that discount has been
+      applied. Getting this order wrong costs a customer real money, and it is precisely the kind of
+      detail that justifies the consultation.
+    </div>
+
+    <h2 class="h">Everything is on a clock</h2>
+    <div class="chart">
+      <p class="chart-t">Federal solar certificate value, by installation year</p>
+      <p class="chart-s">The deeming period drops one year every 1 January until the scheme closes. Indicative value on a 6.6&nbsp;kW system in Melbourne.</p>
+      <svg viewBox="0 0 720 220" role="img" aria-label="Bar chart showing solar certificate value declining from 2026 to 2030">
+        <line x1="56" y1="170" x2="700" y2="170" stroke="#16202B" stroke-width="1.5"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#6A7B86">
+          <text x="48" y="174" text-anchor="end">0</text>
+          <text x="48" y="120" text-anchor="end">$800</text>
+          <text x="48" y="72" text-anchor="end">$1,600</text>
+          <text x="48" y="28" text-anchor="end">$2,400</text>
+        </g>
+        <line x1="56" y1="120" x2="700" y2="120" stroke="#E6EBEA"/>
+        <line x1="56" y1="72" x2="700" y2="72" stroke="#E6EBEA"/>
+        <line x1="56" y1="28" x2="700" y2="28" stroke="#E6EBEA"/>
+        <!-- 5yr ~1554, 4yr ~1244, 3yr ~933, 2yr ~622, 1yr ~311 ; scale 2400=142px -> 1=0.0592px -->
+        <g>
+          <rect x="86" y="78" width="76" height="92" fill="#12615E"/>
+          <text x="124" y="70" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">$1,554</text>
+          <text x="124" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B">2026</text>
+          <text x="124" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">5-yr deeming</text>
+        </g>
+        <g>
+          <rect x="212" y="96" width="76" height="74" fill="#12615E" opacity=".85"/>
+          <text x="250" y="88" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">$1,243</text>
+          <text x="250" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B">2027</text>
+          <text x="250" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">4-yr</text>
+        </g>
+        <g>
+          <rect x="338" y="115" width="76" height="55" fill="#12615E" opacity=".7"/>
+          <text x="376" y="107" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">$932</text>
+          <text x="376" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B">2028</text>
+          <text x="376" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">3-yr</text>
+        </g>
+        <g>
+          <rect x="464" y="133" width="76" height="37" fill="#12615E" opacity=".55"/>
+          <text x="502" y="125" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#12615E">$621</text>
+          <text x="502" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B">2029</text>
+          <text x="502" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">2-yr</text>
+        </g>
+        <g>
+          <rect x="590" y="152" width="76" height="18" fill="#D6452E"/>
+          <text x="628" y="144" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#D6452E">$311</text>
+          <text x="628" y="190" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B">2030</text>
+          <text x="628" y="205" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="#6A7B86">final year</text>
+        </g>
+      </svg>
+      <p class="chart-n">
+        Each January step-down raises the effective price of the same system by roughly 4&ndash;5%.
+        This is a genuine, externally-set deadline — which makes it usable in marketing without
+        manufacturing anything, provided it is stated accurately.
+      </p>
+    </div>
+
+    <h3 class="h3">Other dated changes to plan around</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Date</th><th>Change</th><th>Effect on the business</th></tr></thead>
+        <tbody>
+          <tr><td class="n"><strong>1 Jul 2026</strong></td><td>Solar Homes income cap fell from $210,000 to $150,000</td><td><span class="pill p-no">Already happened</span> Shrinks the addressable pool for the PV rebate. Shifts higher-income targeting toward VEU products, which have no income test.</td></tr>
+          <tr><td class="n"><strong>~Sep 2026</strong></td><td>VEU caps on multi-split air conditioners above 20 kW</td><td><span class="pill p-hi">Imminent</span> Follows ESC compliance activity over system oversizing. Affects larger residential and small commercial jobs.</td></tr>
+          <tr><td class="n"><strong>~Oct 2026</strong></td><td>SRES solar eligibility expands from 100 kW to 1 MW</td><td><span class="pill p-md">Opportunity</span> Materially improves commercial solar economics. Strengthens the B2B funnel.</td></tr>
+          <tr><td class="n"><strong>1 Jan 2027</strong></td><td>New Victorian homes and most new commercial buildings must be all-electric</td><td><span class="pill p-hi">Major driver</span> Creates a builder and developer channel, and a permanent gas-replacement narrative for existing homes.</td></tr>
+          <tr><td class="n"><strong>1 Jan 2027</strong></td><td>Battery discount steps down again; STC deeming drops to 4 years</td><td><span class="pill p-md">Seasonal peak</span> Expect a demand pull-forward into Nov&ndash;Dec. Plan installer capacity and ad budget accordingly.</td></tr>
+          <tr><td class="n"><strong>1 Mar 2027</strong></td><td>Rental minimum standards: gas heaters and hot water can't be replaced with gas at end of life</td><td><span class="pill p-md">New segment</span> Opens a landlord and property manager channel that barely exists today.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagenav"><button data-go="1">&larr; Overview</button><button data-go="3">Market &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 03 MARKET ═══════════ -->
+  <section class="page" data-page="3">
+    <div class="page-h">
+      <p class="eyebrow">Section 03</p>
+      <h1>Market and competition</h1>
+      <p class="lede">
+        Victoria is a large, subsidised, under-penetrated market experiencing a battery boom — and it is
+        served by an industry with a genuinely poor reputation. Both halves of that sentence matter.
+      </p>
+    </div>
+
+    <div class="figs">
+      <div class="fig"><div class="v">31.1%</div><p class="l">Victorian dwellings with rooftop solar</p></div>
+      <div class="fig"><div class="v">401k</div><p class="l">Batteries installed nationally in the first federal-rebate year</p></div>
+      <div class="fig"><div class="v">11.1 kW</div><p class="l">Average new system size, up from 10.3 kW in 2024</p></div>
+      <div class="fig"><div class="v alt">2m+</div><p class="l">Victorians still using mains gas</p></div>
+    </div>
+
+    <h2 class="h">Where the demand sits</h2>
+    <p>
+      Roughly two-thirds of Victorian dwellings still have no rooftop solar, and regional Victoria runs
+      ahead of Greater Melbourne on penetration — which tells you the constraint is housing stock and
+      ownership, not appetite. Battery uptake has been transformed: national installations under the
+      federal scheme ran more than twelve times the previous year's rate in the program's first eleven
+      months, and Victoria contributed roughly 22,000 of them in under six months.
+    </p>
+    <p>
+      The more interesting market, though, is the one nobody is advertising into. Over two million
+      Victorians use mains gas. Every one of those households will face a decision when their ducted
+      heater or hot water unit fails, and from March 2027 rental properties will not be permitted to
+      replace gas with gas at end of life. Replacing gas ducted heating is currently the single largest
+      Victorian Energy Upgrades discount available to a household, and it carries no income test. That
+      combination — large pool, big incentive, no eligibility screening, forced replacement moment — is
+      structurally more attractive than the solar market everyone is fighting over.
+    </p>
+
+    <h2 class="h">Competitors, and the gap</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Type</th><th>How they operate</th><th>Weakness</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Lead aggregators</strong><small>National comparison sites</small></td><td>Rank on rebate keywords, capture an enquiry, sell it to three to five installers simultaneously</td><td>The customer receives multiple calls and disengages. Installers pay for leads they have a 20% chance of winning. Nobody is happy, and the model is squarely in the ACCC's field of view.</td></tr>
+          <tr><td><strong>Vertically integrated retailers</strong><small>Sell and install</small></td><td>Own sales teams, own installers, heavy brand spend</td><td>Cannot be product-neutral — they recommend what they stock. Their advice is structurally suspect and customers increasingly know it.</td></tr>
+          <tr><td><strong>Local installers</strong><small>Small, trade-led</small></td><td>Word of mouth, some local search, referral from plumbers and sparkies</td><td>Excellent at the work, generally weak at digital acquisition and rebate paperwork. These are our partners, not our competitors.</td></tr>
+          <tr><td><strong>Legacy hard-sell operators</strong><small>Historically call-centre driven</small></td><td>Volume outbound, high-pressure in-home closes</td><td>Their core channels are now prohibited in Victoria. Many are still adapting, and some are still non-compliant.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box box-grid">
+      <strong>The gap, stated plainly.</strong> Nobody in this market currently combines three things:
+      genuine product neutrality (because we don't install), exclusive leads (because we refuse to
+      share), and transparent modelling (because we publish our assumptions). Each is individually
+      unremarkable. Together they answer the exact objection a Victorian homeowner brings to the first
+      conversation, which is "how do I know you're not going to rip me off".
+    </div>
+
+    <h2 class="h">Why this industry has the reputation it does</h2>
+    <p>These are the failure modes to design against, not just avoid:</p>
+    <ul class="body">
+      <li><strong>The five phone calls.</strong> One web form, five installers, five sales calls in an afternoon. The customer stops answering unknown numbers for a week.</li>
+      <li><strong>Headline rebate figures that don't apply.</strong> A big number in the ad, eligibility conditions in eight-point grey at the bottom. The ACCC has specifically flagged this pattern in lead generation.</li>
+      <li><strong>Systems sized to the roof, not the bill.</strong> Bigger system, bigger commission — and with feed-in tariffs now unregulated and low, the extra export earns the customer almost nothing.</li>
+      <li><strong>Savings claims nobody can substantiate.</strong> Confident annual figures with no stated assumptions, which then don't materialise.</li>
+      <li><strong>Pressure selling to people who shouldn't buy.</strong> Renters, heavily shaded roofs, households about to move.</li>
+      <li><strong>Finance bundled in opaquely.</strong> A monthly payment quoted instead of a price, with the credit terms discovered later.</li>
+    </ul>
+    <p>
+      Every one of these is a design decision we can invert cheaply — and each inversion is a marketing
+      asset. "One installer, not five" is a compliance-safe, genuinely differentiated ad headline
+      precisely because our competitors cannot honestly run it.
+    </p>
+
+    <div class="pagenav"><button data-go="2">&larr; Rebates</button><button data-go="4">Compliance &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 04 COMPLIANCE ═══════════ -->
+  <section class="page" data-page="4">
+    <div class="page-h">
+      <p class="eyebrow">Section 04</p>
+      <h1>Compliance and licensing</h1>
+      <p class="lede">
+        This section determines the shape of the business more than any other. Read it before the
+        marketing plan, not after. Nothing here is legal advice — it is a map of what to take to an
+        Australian lawyer before launch.
+      </p>
+    </div>
+
+    <div class="box box-peak">
+      <strong>The four hard prohibitions in Victoria.</strong>
+      <ul>
+        <li><strong>Cold-call telemarketing</strong> for Victorian Energy Upgrades products — banned since 1 May 2024. Express prior consent required before any marketing call.</li>
+        <li><strong>Door-knocking</strong> — banned for VEU since 1 August 2024, and for Solar Homes since 2021.</li>
+        <li><strong>Buying contact details from a third party</strong> and marketing to them — explicitly prohibited under the VEU rules.</li>
+        <li><strong>Misleading rebate and savings claims</strong> — Australian Consumer Law, with the ACCC actively enforcing in this sector and Consumer Affairs Victoria having previously succeeded against a solar retailer over conduct by its third-party lead generators.</li>
+      </ul>
+    </div>
+
+    <h2 class="h">Do we need to be an authorised retailer?</h2>
+    <p>
+      To submit Solar Homes rebate applications on a customer's behalf and receive rebate payments through
+      the retailer portal, a business must be an <strong>authorised Solar Victoria retailer</strong>, which
+      requires being a signatory to the <strong>New Energy Tech Consumer Code</strong> and maintaining
+      approved-seller status. Authorised retailers must also use accredited installers, hold appropriate
+      electrical licensing for the work, and provide a whole-of-system warranty.
+    </p>
+    <p>
+      A pure referral business that does not install and does not lodge rebate applications does not
+      itself need that authorisation — the partner installer, who is already an authorised retailer,
+      lodges the rebate. <strong>That is the recommended launch structure.</strong> It is faster, cheaper,
+      and keeps warranty and installation liability where the expertise sits. Revisit the question only
+      if volume later justifies controlling the rebate lodgement process directly.
+    </p>
+
+    <h2 class="h">Obligations that apply to us regardless</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Area</th><th>Instrument</th><th>What we must do</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Electronic messages</strong></td><td>Spam Act 2003</td><td>Consent before sending, clear sender identification, functional unsubscribe on every message. Critically: we must be able to <em>evidence</em> the consent later — so store what was ticked, when, and the exact wording shown.</td></tr>
+          <tr><td><strong>Phone contact</strong></td><td>Do Not Call Register Act</td><td>Scrub against the register. Express prior consent for VEU-related calls regardless. Call only within the window the person selected.</td></tr>
+          <tr><td><strong>Unsolicited agreements</strong></td><td>Australian Consumer Law</td><td>Cooling-off rights and disclosure obligations attach to unsolicited consumer agreements. Our inbound-only model is designed so these provisions are not triggered — but the design must hold in practice, not just on paper.</td></tr>
+          <tr><td><strong>Advertising claims</strong></td><td>ACL, ACCC guidance</td><td>Every rebate figure qualified with eligibility conditions. Savings framed as estimates with published assumptions. Substantiation records retained for every claim run.</td></tr>
+          <tr><td><strong>Personal information</strong></td><td>Privacy Act, APPs</td><td>Privacy policy (APP 1), collect only what's needed (APP 3), collection notice at point of capture (APP 5), and explicit consent before disclosing to a partner installer (APP 6).</td></tr>
+          <tr><td><strong>Lead generation itself</strong></td><td>ACCC review, open</td><td>The ACCC launched an in-depth review of lead generation in June 2025 following a designated complaint, and has recommended lead generation be brought within unsolicited-selling rules. Assume the rules will tighten and build to the stricter standard now.</td></tr>
+          <tr><td><strong>Insurance</strong></td><td>Commercial</td><td>Professional indemnity, public liability, and cyber/data cover — the last is not optional given the volume of personal information handled.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">How consent is actually captured</h2>
+    <div class="g3">
+      <div class="gc"><p class="k">Rule 1</p><h4>Two boxes, separately</h4><p>One consent to be contacted. A second, distinct consent to have details passed to one named installer. Bundling them into a single tick is the most common failure and the easiest to spot.</p></div>
+      <div class="gc"><p class="k">Rule 2</p><h4>Never pre-ticked</h4><p>Both start unticked. The person performs a positive act. Pre-ticked boxes are not consent.</p></div>
+      <div class="gc"><p class="k">Rule 3</p><h4>Name the recipient</h4><p>APP 6 disclosure works best when the customer knows who is receiving their information. We name the installer before we send anything.</p></div>
+      <div class="gc"><p class="k">Rule 4</p><h4>Timestamp everything</h4><p>An immutable consent ledger: what was ticked, when, from where, and the exact wording displayed at the time. This is the artefact that answers a regulator's question.</p></div>
+      <div class="gc"><p class="k">Rule 5</p><h4>Withdrawal is easy and honoured</h4><p>One-click unsubscribe on every message, a stated process for withdrawing contact consent, and a suppression list that is actually checked.</p></div>
+      <div class="gc"><p class="k">Rule 6</p><h4>One installer, contractually</h4><p>The exclusivity promise is written into the installer agreement, along with a prohibition on them on-selling the referral.</p></div>
+    </div>
+
+    <div class="box">
+      <strong>Before launch, take to a lawyer:</strong> the consent wording and privacy collection notice;
+      the installer referral agreement including data-handling and exclusivity terms; the disclaimer set
+      on the calculator; the substantiation file for every advertised claim; and a written assessment of
+      whether the inbound model sits outside the ACL's unsolicited consumer agreement provisions.
+    </div>
+
+    <div class="pagenav"><button data-go="3">&larr; Market</button><button data-go="5">Risks &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 05 RISKS ═══════════ -->
+  <section class="page" data-page="5">
+    <div class="page-h">
+      <p class="eyebrow">Section 05</p>
+      <h1>What could go wrong</h1>
+      <p class="lede">Ranked by expected damage rather than likelihood, with the mitigation that actually addresses each one.</p>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Risk</th><th class="c">Likelihood</th><th class="c">Impact</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Regulatory action over marketing conduct</strong><small>Misleading claim, consent failure, or an installer behaving badly with our lead</small></td><td class="c"><span class="pill p-lo">Low</span></td><td class="c"><span class="pill p-no">Severe</span></td><td>Substantiation file for every claim. Consent ledger. Written installer agreement with conduct standards and a right to terminate. Audit installer behaviour by calling a sample of referred customers.</td></tr>
+          <tr><td><strong>Rebate program changes or closes</strong><small>Solar Homes has already tightened once</small></td><td class="c"><span class="pill p-hi">High</span></td><td class="c"><span class="pill p-md">Moderate</span></td><td>Six revenue lines across three administering bodies, not one. VEU carries no income test and runs to 2045. If PV weakens, heating and hot water carry the business.</td></tr>
+          <tr><td><strong>CPL inflation from competitors</strong><small>Everyone bids the same rebate keywords</small></td><td class="c"><span class="pill p-hi">High</span></td><td class="c"><span class="pill p-md">Moderate</span></td><td>Own the SEO on rebate terms so a meaningful share of traffic is unpaid. Build the replacement-urgency keyword set, which competitors under-serve. Compete on conversion rate, not bid.</td></tr>
+          <tr><td><strong>Installer capacity or quality failure</strong><small>Our reputation rides on their work</small></td><td class="c"><span class="pill p-md">Medium</span></td><td class="c"><span class="pill p-no">Severe</span></td><td>Panel of four or more, none above 40% of volume. Post-install satisfaction check on every referral. Remove underperformers quickly — the referral is the product.</td></tr>
+          <tr><td><strong>Certificate price volatility</strong><small>VEEC and STC values move with the market</small></td><td class="c"><span class="pill p-hi">High</span></td><td class="c"><span class="pill p-lo">Low</span></td><td>Never quote certificate value as a fixed amount. The calculator says "estimate" and recalculates at quote time. Update assumptions quarterly.</td></tr>
+          <tr><td><strong>Lead quality complaints from installers</strong><small>They stop paying</small></td><td class="c"><span class="pill p-md">Medium</span></td><td class="c"><span class="pill p-md">Moderate</span></td><td>Optimise to installed jobs, not form fills, from Phase 2 onward. Qualify hard in the calculator. The hybrid fee structure means we share the risk rather than pushing it all downstream.</td></tr>
+          <tr><td><strong>Platform policy change</strong><small>Google or Meta restricts the category</small></td><td class="c"><span class="pill p-lo">Low</span></td><td class="c"><span class="pill p-md">Moderate</span></td><td>Three-channel minimum plus SEO and partnerships. Never let one platform exceed 60% of lead volume.</td></tr>
+          <tr><td><strong>Key-person and seasonality</strong><small>Demand spikes before January step-downs</small></td><td class="c"><span class="pill p-hi">High</span></td><td class="c"><span class="pill p-lo">Low</span></td><td>Plan installer capacity and ad budget around the Nov&ndash;Dec pull-forward. Document the eligibility logic so consultations aren't dependent on one person's memory.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box box-peak">
+      <strong>The risk that actually kills this business.</strong> Not any single item above — it's the
+      slow drift where CPL pressure makes shared leads look tempting, where a savings claim gets rounded
+      up, where an installer starts cold-calling old enquiries and nobody checks. Every one of those
+      decisions is individually small and locally rational. The defence is structural: publish the
+      assumptions, contract the exclusivity, audit the installers, and keep the consent ledger where an
+      auditor could read it.
+    </div>
+
+    <div class="pagenav"><button data-go="4">&larr; Compliance</button><button data-go="6">Model &amp; economics &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 06 ECONOMICS ═══════════ -->
+  <section class="page" data-page="6">
+    <div class="page-h">
+      <p class="eyebrow">Section 06</p>
+      <h1>Model and unit economics</h1>
+      <p class="lede">
+        Worked at steady-state Phase 3 spend using conservative mid-range Australian benchmarks. The
+        variable that decides everything is the referral fee.
+      </p>
+    </div>
+
+    <h2 class="h">The funnel</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Stage</th><th class="n">Volume</th><th class="n">Rate</th><th class="n">Unit cost</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Media spend</strong></td><td class="n">$32,000</td><td class="n">&mdash;</td><td class="n">&mdash;</td><td>Google 60% · Meta 30% · other 10%</td></tr>
+          <tr><td><strong>Clicks</strong></td><td class="n">~2,900</td><td class="n">&mdash;</td><td class="n">$11 CPC</td><td>Blended across search and social. Search alone runs $8&ndash;$20.</td></tr>
+          <tr><td><strong>Calculator starts</strong></td><td class="n">~640</td><td class="n">22%</td><td class="n">$50</td><td>The landing page's job. Below 15% means the ad is over-promising.</td></tr>
+          <tr><td><strong>Leads</strong></td><td class="n">~450</td><td class="n">70%</td><td class="n">$71 CPL</td><td>Reached the estimate and consented to contact.</td></tr>
+          <tr><td><strong>Appointments held</strong></td><td class="n">~145</td><td class="n">32%</td><td class="n">$221</td><td>Excludes no-shows. Callback speed is the dominant variable here.</td></tr>
+          <tr class="tot"><td><strong>Installs closed</strong></td><td class="n">~32</td><td class="n">22%</td><td class="n">$1,000 CPA</td><td>Installer's close rate, partly outside our control.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Fee structures compared</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Structure</th><th class="n">Monthly revenue</th><th class="n">Media cost</th><th class="n">Gross margin</th><th class="c">Verdict</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Exclusive leads at $110</strong><small>No completion fee</small></td><td class="n">$49,500</td><td class="n">$32,000</td><td class="n">$17,500</td><td class="c"><span class="pill p-md">Thin</span></td></tr>
+          <tr><td><strong>$1,200 per install</strong><small>Completion only</small></td><td class="n">$38,400</td><td class="n">$32,000</td><td class="n">$6,400</td><td class="c"><span class="pill p-no">Unviable</span></td></tr>
+          <tr><td><strong>$1,800 per install</strong><small>Completion only</small></td><td class="n">$57,600</td><td class="n">$32,000</td><td class="n">$25,600</td><td class="c"><span class="pill p-md">Viable</span></td></tr>
+          <tr><td><strong>8% of system value</strong><small>$14,000 average package</small></td><td class="n">$35,840</td><td class="n">$32,000</td><td class="n">$3,840</td><td class="c"><span class="pill p-no">Renegotiate</span></td></tr>
+          <tr class="tot"><td><strong>Hybrid — recommended</strong><small>$60/qualified lead + $1,100 on install</small></td><td class="n">$62,200</td><td class="n">$32,000</td><td class="n">$30,200</td><td class="c"><span class="pill p-hi">Best</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box box-grid">
+      <strong>Why hybrid.</strong> A pure completion fee puts all the risk on us and none on the
+      installer — a weak sales team becomes our problem. A pure lead fee removes our incentive to care
+      whether leads close, which is exactly the dynamic that produced this industry's reputation. A
+      modest per-lead fee covering roughly half our media cost, plus a completion fee, means we're paid
+      to send good leads and paid again when they convert. Both sides carry risk; both sides care about
+      quality.
+    </div>
+
+    <h2 class="h">Cost base beyond media</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Line</th><th class="n">Monthly, at Phase 3</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>Media spend</td><td class="n">$32,000</td><td>The dominant cost, and the one that scales with revenue</td></tr>
+          <tr><td>Consultation staff</td><td class="n">$14,000&ndash;$18,000</td><td>Two to three consultants handling ~145 appointments. The genuine bottleneck as volume grows.</td></tr>
+          <tr><td>CRM, tracking, call tracking</td><td class="n">$800&ndash;$1,500</td><td>Non-negotiable — offline conversion tracking is what makes the media spend work</td></tr>
+          <tr><td>Content and creative</td><td class="n">$3,000&ndash;$5,000</td><td>Three new Meta concepts weekly plus rebate page maintenance</td></tr>
+          <tr><td>Compliance, legal, insurance</td><td class="n">$1,500&ndash;$2,500</td><td>Amortised. Higher in the launch quarter.</td></tr>
+          <tr class="tot"><td><strong>Total operating</strong></td><td class="n">$51,300&ndash;$59,000</td><td>Against ~$62,200 revenue at the hybrid fee — positive but tight, which is why fee negotiation is the priority</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <strong>Read that last row carefully.</strong> At Phase 3 volumes on the recommended fee
+      structure, this business is modestly profitable, not comfortably so. The levers that change it are,
+      in order: negotiating the completion fee upward, lifting appointment-to-sale through better
+      qualification, and building enough organic search share to reduce blended CPL. Do not plan on
+      volume alone fixing the margin — at these ratios, scaling multiplies a thin margin rather than
+      thickening it.
+    </div>
+
+    <div class="pagenav"><button data-go="5">&larr; Risks</button><button data-go="7">Go-to-market &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 07 GTM ═══════════ -->
+  <section class="page" data-page="7">
+    <div class="page-h">
+      <p class="eyebrow">Section 07</p>
+      <h1>Go-to-market</h1>
+      <p class="lede">
+        Summarised here; the full account structures, keyword sets, ad copy and budget phasing live in
+        the <a href="campaign.html">campaign plan</a>.
+      </p>
+    </div>
+
+    <h2 class="h">Channel mix</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Channel</th><th class="n">Share</th><th>Role</th><th class="n">Target CPL</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Google Search</strong></td><td class="n">60%</td><td>Intercept existing intent — rebate searches, replacement urgency, price research</td><td class="n">$90&ndash;$240</td></tr>
+          <tr><td><strong>Meta</strong></td><td class="n">30%</td><td>Create demand among bill-annoyed homeowners who haven't named the product yet</td><td class="n">$35&ndash;$140</td></tr>
+          <tr><td><strong>Local Services Ads</strong></td><td class="n">~7%</td><td>Trust-badged placement above search results</td><td class="n">~$53</td></tr>
+          <tr><td><strong>SEO</strong></td><td class="n">Time</td><td>Compounding. One authoritative page per program, updated the day rules change.</td><td class="n">$0 marginal</td></tr>
+          <tr><td><strong>Partnerships</strong></td><td class="n">Time</td><td>Plumbers, electricians, brokers, builders. Plumbers at a dead hot water unit are the best heat pump source in the state.</td><td class="n">Referral fee</td></tr>
+          <tr><td><strong>LinkedIn</strong></td><td class="n">~3%</td><td>B2B only, Phase 3. Judge on CPA — commercial job values are multiples of residential.</td><td class="n">$120&ndash;$250</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Positioning</h2>
+    <p>
+      The category's default message is a big rebate number and a promise of savings. Every competitor
+      runs it, which means it differentiates nothing and invites exactly the misleading-claim exposure
+      we're trying to avoid. Our position is the opposite: <strong>we show our working</strong>.
+    </p>
+    <div class="g3">
+      <div class="gc"><p class="k">Message 1</p><h4>One installer, not five</h4><p>Names the industry's worst habit and commits to the opposite. Competitors running shared-lead models cannot honestly copy it.</p></div>
+      <div class="gc"><p class="k">Message 2</p><h4>Know your number before we call</h4><p>The calculator gives a real estimate before any contact. Inverts the usual sequence, where you surrender your phone number to learn anything.</p></div>
+      <div class="gc"><p class="k">Message 3</p><h4>Four programs, and they stack</h4><p>Educational, true, and genuinely surprising to most Victorians. Also the natural SEO territory.</p></div>
+      <div class="gc"><p class="k">Message 4</p><h4>Sized to your bill, not your roof</h4><p>Directly addresses the oversizing suspicion, and is more credible now that feed-in tariffs are unregulated and low.</p></div>
+    </div>
+
+    <div class="pagenav"><button data-go="6">&larr; Economics</button><button data-go="8">Roadmap &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 08 ROADMAP ═══════════ -->
+  <section class="page" data-page="8">
+    <div class="page-h">
+      <p class="eyebrow">Section 08</p>
+      <h1>Roadmap and expansion</h1>
+      <p class="lede">Three stages in Victoria, then one state at a time — with a clear reason for the order.</p>
+    </div>
+
+    <div class="tl">
+      <div class="tl-item">
+        <p class="tl-w">Stage 1 · Months 0&ndash;3</p>
+        <h4>Build the compliant foundation</h4>
+        <p>
+          Incorporate and insure. Sign two to four NETCC-authorised installers with written agreements
+          covering exclusivity, conduct and data handling. Build the consent architecture and ledger.
+          Legal review of consent wording, disclaimers and the referral agreement. Ship the calculator
+          and four cornerstone rebate pages. Launch paid at $8,000/month against the Phase 1 gate.
+        </p>
+      </div>
+      <div class="tl-item">
+        <p class="tl-w">Stage 2 · Months 3&ndash;6</p>
+        <h4>Prove the unit economics</h4>
+        <p>
+          Scale to $18,000/month. Get offline conversion tracking live so both platforms optimise to
+          installed jobs rather than form fills. Add a third installer. The gate to continue: CPL under
+          $90, lead-to-appointment above 30%, appointment-to-sale above 20%. If those don't hold,
+          fix conversion before adding spend.
+        </p>
+      </div>
+      <div class="tl-item">
+        <p class="tl-w">Stage 3 · Months 6&ndash;12</p>
+        <h4>Widen the front</h4>
+        <p>
+          $32,000/month. Open the commercial funnel — the SRES eligibility expansion to 1&nbsp;MW makes
+          this materially more attractive. Launch Performance Max now that clean conversion data exists.
+          Build the builder and developer channel ahead of the January 2027 all-electric requirement,
+          and the landlord channel ahead of the March 2027 rental standards.
+        </p>
+      </div>
+      <div class="tl-item">
+        <p class="tl-w">Stage 4 · Months 12+</p>
+        <h4>New South Wales</h4>
+        <p>
+          The strongest second market by some distance. Largest population, and the Home Energy Saver
+          program opened in June 2026 with zero-interest loans up to $15,000 over ten years plus targeted
+          discounts — a richer finance stack than Victoria currently offers. The Peak Demand Reduction
+          Scheme and Energy Savings Scheme provide the VEU-equivalent certificate layer.
+        </p>
+      </div>
+    </div>
+
+    <h2 class="h">Expansion ranking</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th class="c">Rank</th><th>Market</th><th>Why</th><th class="c">Priority</th></tr></thead>
+        <tbody>
+          <tr><td class="c n">1</td><td><strong>New South Wales</strong></td><td>Largest population. Home Energy Saver zero-interest loans to $15,000, plus targeted discounts for lower-income households. PDRS and ESS certificate schemes mirror the VEU model we already understand.</td><td class="c"><span class="pill p-hi">Next</span></td></tr>
+          <tr><td class="c n">2</td><td><strong>ACT</strong></td><td>Sustainable Household Scheme zero-interest loans, high incomes, high EV uptake, and a small compact market that's cheap to test in.</td><td class="c"><span class="pill p-md">After NSW</span></td></tr>
+          <tr><td class="c n">3</td><td><strong>South Australia</strong></td><td>High irradiance and fast paybacks make the sales conversation easy. But penetration is already high and the old battery scheme has closed.</td><td class="c"><span class="pill p-md">Evaluate</span></td></tr>
+          <tr><td class="c n">4</td><td><strong>Queensland</strong></td><td>First state past a million rooftop installs — proven demand, but the state battery program has folded into the federal one, so less to differentiate on.</td><td class="c"><span class="pill p-lo">Later</span></td></tr>
+          <tr><td class="c n">5</td><td><strong>Western Australia</strong></td><td>Separate grid, own residential battery scheme, fast paybacks. Geographically isolated installer network is the main friction.</td><td class="c"><span class="pill p-lo">Later</span></td></tr>
+          <tr><td class="c n">6</td><td><strong>Tasmania / NT</strong></td><td>Too small to justify a dedicated funnel until the model is fully systematised.</td><td class="c"><span class="pill p-lo">Not soon</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <strong>Sequence the product before the geography.</strong> Adding heating, hot water and
+      insulation in Victoria is cheaper than adding solar in New South Wales — same installers, same
+      customers, same compliance regime, no new regulatory learning curve. Exhaust the product expansion
+      first.
+    </div>
+
+    <div class="pagenav"><button data-go="7">&larr; Go-to-market</button><button data-go="9">Calculator data &rarr;</button></div>
+  </section>
+
+  <!-- ═══════════ 09 DATA ═══════════ -->
+  <section class="page" data-page="9">
+    <div class="page-h">
+      <p class="eyebrow">Section 09</p>
+      <h1>Calculator reference data</h1>
+      <p class="lede">
+        Every figure the savings calculator uses, in one place. This table is the single source of truth
+        — update it quarterly and change the calculator's assumption block to match.
+      </p>
+    </div>
+
+    <h2 class="h">Tariffs and consumption</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Input</th><th class="n">Value</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>Flat usage rate</td><td class="n">28.2 c/kWh</td><td>Average across Victoria's five distribution zones, Victorian Default Offer 2026&ndash;27, incl GST. Zone range runs roughly 26.0c (CitiPower) to 32.0c (AusNet).</td></tr>
+          <tr><td>Daily supply charge</td><td class="n">$1.27/day</td><td>Zone average; range roughly $1.19&ndash;$1.38.</td></tr>
+          <tr><td>Peak rate (4&ndash;9pm)</td><td class="n">~42 c/kWh</td><td>Indicative time-of-use peak under the new three-part VDO structure. Used only to value battery discharge.</td></tr>
+          <tr><td>Feed-in tariff</td><td class="n">4 c/kWh</td><td><strong>No regulated minimum since 1 July 2025.</strong> Retailer-set. This is an indicative offer, not a floor.</td></tr>
+          <tr><td>Average annual bill</td><td class="n">$1,591</td><td>VDO 2026&ndash;27 domestic reference, 4,000 kWh flat tariff. Down about 5% year on year.</td></tr>
+          <tr><td>Victorian average consumption</td><td class="n">~4,615 kWh/yr</td><td>Lowest state average, reflecting heavy gas use. ESC reference figure is 4,000 kWh.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Generation and self-consumption</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Input</th><th class="n">Value</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>Melbourne generation</td><td class="n">1,300 kWh per kW/yr</td><td>North-facing, minimal shading. A 6.6 kW system produces roughly 8,000&ndash;8,500 kWh/yr.</td></tr>
+          <tr><td>Orientation derate</td><td class="n">N 1.00 · NE/NW 0.96<br>E/W 0.85 · S 0.68</td><td>East/west loses roughly 15&ndash;20%. Flat roof 0.93.</td></tr>
+          <tr><td>Shading derate</td><td class="n">1.00 / 0.92 / 0.80 / 0.62</td><td>Clear, light, moderate, heavy.</td></tr>
+          <tr><td>Self-consumption, no battery</td><td class="n">30&ndash;45%</td><td>Varies by occupancy pattern. Daytime-occupied households sit at the top of the range.</td></tr>
+          <tr><td>Self-consumption, with battery</td><td class="n">~72%</td><td>Industry benchmark of roughly 70%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Equipment pricing and support</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Item</th><th class="n">Installed price</th><th class="n">Support</th><th class="n">Annual saving</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Solar 6.6 kW</strong></td><td class="n">~$6,600</td><td class="n">~$1,554 STC + $1,400</td><td class="n">varies by use</td></tr>
+          <tr><td><strong>Solar 10 kW</strong></td><td class="n">~$9,500</td><td class="n">~$2,354 STC + $1,400</td><td class="n">varies by use</td></tr>
+          <tr><td><strong>Solar 13.2 kW</strong></td><td class="n">~$12,220</td><td class="n">~$3,108 STC + $1,400</td><td class="n">varies by use</td></tr>
+          <tr><td><strong>Battery 10 kWh</strong></td><td class="n">~$7,500</td><td class="n">~$2,600</td><td class="n">peak shifting</td></tr>
+          <tr><td><strong>Battery 13.5 kWh</strong></td><td class="n">~$10,125</td><td class="n">~$3,510</td><td class="n">peak shifting</td></tr>
+          <tr><td><strong>Heat pump hot water</strong></td><td class="n">~$4,200</td><td class="n">~$700 VEU + up to $1,000</td><td class="n">$400 vs gas<br>$550 vs electric</td></tr>
+          <tr><td><strong>Reverse-cycle (replacing ducted)</strong></td><td class="n">~$9,000</td><td class="n">~$3,000 VEU</td><td class="n">~$650</td></tr>
+          <tr><td><strong>Ceiling insulation</strong></td><td class="n">~$2,600</td><td class="n">~$900 VEU</td><td class="n">~$280</td></tr>
+          <tr><td><strong>EV charger</strong></td><td class="n">~$1,900</td><td class="n"><span class="pill p-no">None</span></td><td class="n">~$340 with solar</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Certificate parameters</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Parameter</th><th class="n">Value</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>STC price</td><td class="n">~$39.85</td><td>Held near $39.90 through 2025. Clearing House price fixed at $40 ex-GST.</td></tr>
+          <tr><td>Zone rating (Melbourne)</td><td class="n">1.185</td><td>Zone 4.</td></tr>
+          <tr><td>Deeming period 2026</td><td class="n">5 years</td><td>Drops one year each 1 January to zero in 2030.</td></tr>
+          <tr><td>Battery STC rate</td><td class="n">~$260/kWh</td><td>First 14 kWh at full rate since 1 May 2026; reduced 14&ndash;28 kWh, further reduced 28&ndash;50 kWh, nothing beyond. Steps down each January and July.</td></tr>
+          <tr><td>VEEC spot price</td><td class="n">~$83</td><td><strong>Volatile.</strong> Market-traded and published quarterly. Never quote as fixed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="h">Payback benchmarks</h2>
+    <div class="figs">
+      <div class="fig"><div class="v">4&ndash;7 yrs</div><p class="l">Solar, 6.6 kW in Melbourne</p></div>
+      <div class="fig"><div class="v">7&ndash;9 yrs</div><p class="l">Battery — inside typical 10-year warranty</p></div>
+      <div class="fig"><div class="v">3&ndash;7 yrs</div><p class="l">Commercial solar</p></div>
+      <div class="fig"><div class="v alt">Shortest</div><p class="l">Heat pump hot water, usually the fastest in the house</p></div>
+    </div>
+
+    <p class="fine">
+      <strong>Currency of this data.</strong> Figures were compiled in August 2026 from Victorian Default
+      Offer determinations, Clean Energy Regulator and Solar Victoria program materials, and industry
+      pricing sources. Certificate prices, installed pricing and program parameters all change — treat
+      this page as a snapshot with a quarterly review date, not a permanent reference. Installed pricing
+      in particular is indicative market pricing for a straightforward job; switchboard upgrades, tile
+      roofs, two-storey access and long cable runs all add cost. Rebate eligibility is determined by the
+      administering bodies, not by this document, and nothing here is legal, financial or credit advice.
+    </p>
+
+    <div class="pagenav"><button data-go="8">&larr; Roadmap</button><button hidden></button></div>
+  </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+var pages = Array.prototype.slice.call(document.querySelectorAll(".page"));
+var links = Array.prototype.slice.call(document.querySelectorAll(".navlink"));
+var side  = document.getElementById("side");
+var menu  = document.getElementById("menuBtn");
+
+function show(n, push){
+  pages.forEach(function(p){ p.dataset.active = (p.dataset.page === String(n)) ? "true" : "false"; });
+  links.forEach(function(l){
+    if(l.dataset.go === String(n)) l.setAttribute("aria-current","true");
+    else l.removeAttribute("aria-current");
+  });
+  if(push !== false && history.replaceState) history.replaceState(null,"","#p"+n);
+  window.scrollTo({top:0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+  if(window.innerWidth <= 980){ side.dataset.open = "false"; menu.setAttribute("aria-expanded","false"); }
+}
+
+document.addEventListener("click", function(e){
+  var btn = e.target.closest("[data-go]");
+  if(!btn) return;
+  show(parseInt(btn.dataset.go,10));
+});
+
+menu.addEventListener("click", function(){
+  var open = side.dataset.open === "true";
+  side.dataset.open = open ? "false" : "true";
+  menu.setAttribute("aria-expanded", open ? "false" : "true");
+});
+
+var m = /^#p(\d+)$/.exec(location.hash);
+show(m ? parseInt(m[1],10) : 1, false);
+})();
+</script>
+</body>
+</html>

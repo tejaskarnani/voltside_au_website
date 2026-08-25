@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltside — Targeted advertising campaign, Victoria launch</title>
+<meta name="description" content="Google, Meta and secondary channel campaign plan for a Victorian energy rebate lead generation business. Account structures, keywords, ad copy, budgets and 90-day phasing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202B; --ink-2:#33434F; --ink-3:#6A7B86;
+  --paper:#F2F5F4; --panel:#FFFFFF; --rule:#D3DBD9; --rule-2:#E6EBEA;
+  --volt:#FFCE1F; --volt-deep:#E0AC00;
+  --grid:#12615E; --grid-soft:#DCEAE8;
+  --peak:#D6452E; --peak-soft:#FBE4E0;
+  --sp:clamp(1rem,2.5vw,1.6rem); --maxw:1220px; --r:3px;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:800;line-height:1.05;letter-spacing:-.022em;margin:0}
+p{margin:0}
+a{color:var(--grid)}
+:focus-visible{outline:3px solid var(--grid);outline-offset:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:60;background:rgba(242,245,244,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:.65rem var(--sp);display:flex;align-items:center;gap:1.4rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:800;font-size:1.1rem;letter-spacing:-.03em}
+.brand svg{width:24px;height:24px}
+.nav-links{display:flex;gap:1.2rem;margin-left:auto;font-size:.86rem}
+.nav-links a{text-decoration:none;color:var(--ink-2);border-bottom:1.5px solid transparent;padding:.2rem 0}
+.nav-links a:hover{color:var(--ink);border-bottom-color:var(--volt)}
+.nav-links a[aria-current]{color:var(--ink);font-weight:600;border-bottom-color:var(--volt)}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* header */
+.head{padding:clamp(2.2rem,5vw,3.8rem) 0 clamp(1.8rem,3vw,2.6rem);border-bottom:1px solid var(--rule)}
+.head h1{font-size:clamp(2.1rem,5.2vw,3.5rem);max-width:22ch;margin-top:.6rem}
+.head .lede{margin-top:1.15rem;font-size:clamp(1rem,1.7vw,1.14rem);color:var(--ink-2);max-width:56ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.tag{font-family:var(--f-mono);font-size:.72rem;padding:.32rem .7rem;border:1px solid var(--rule);border-radius:var(--r);background:#fff;color:var(--ink-2)}
+
+/* toc */
+.toc{background:var(--ink);color:#fff;padding:1rem 0}
+.toc-in{display:flex;flex-wrap:wrap;gap:.3rem 1.4rem;max-width:var(--maxw);margin:0 auto;padding:0 var(--sp);font-size:.82rem}
+.toc-in a{color:rgba(255,255,255,.72);text-decoration:none;font-family:var(--f-mono);font-size:.76rem}
+.toc-in a:hover{color:var(--volt)}
+.toc-in span{color:rgba(255,255,255,.3)}
+
+/* sections */
+.sec{padding:clamp(2.6rem,5.5vw,4.2rem) 0;border-bottom:1px solid var(--rule)}
+.sec-num{font-family:var(--f-mono);font-size:.72rem;font-weight:600;letter-spacing:.16em;color:var(--volt-deep)}
+.sec h2{font-size:clamp(1.65rem,3.6vw,2.4rem);margin:.5rem 0 .9rem}
+.sec .intro{color:var(--ink-2);max-width:62ch;font-size:1.01rem;margin-bottom:2rem}
+h3.sub{font-size:1.2rem;margin:2.2rem 0 .7rem;padding-top:1.4rem;border-top:1px solid var(--rule)}
+h4.sub2{font-size:1rem;margin:1.6rem 0 .55rem}
+.sec p + p{margin-top:.8rem}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin:1rem 0 1.4rem}
+table{width:100%;border-collapse:collapse;font-size:.855rem;min-width:600px}
+th{text-align:left;font-family:var(--f-mono);font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:.7rem .8rem;border-bottom:1.5px solid var(--ink);white-space:nowrap;background:#FAFCFB}
+td{padding:.7rem .8rem;border-bottom:1px solid var(--rule-2);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.c,th.c{text-align:center}
+td strong{font-weight:600}
+td small{display:block;color:var(--ink-3);font-size:.78rem;margin-top:.15rem}
+tr.tot td{border-top:1.5px solid var(--ink);font-weight:700;background:#FAFCFB}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.68rem;padding:.14rem .45rem;border-radius:2px;font-weight:600;white-space:nowrap}
+.p-hi{background:var(--volt);color:var(--ink)}
+.p-md{background:var(--grid-soft);color:var(--grid)}
+.p-lo{background:var(--rule-2);color:var(--ink-3)}
+.p-no{background:var(--peak-soft);color:var(--peak)}
+
+/* callouts */
+.box{border:1px solid var(--rule);border-left:3px solid var(--volt);background:#FFFBEB;padding:1.1rem 1.25rem;border-radius:0 var(--r) var(--r) 0;margin:1.4rem 0;font-size:.92rem;color:var(--ink-2)}
+.box strong{color:var(--ink)}
+.box-grid{border-left-color:var(--grid);background:var(--grid-soft)}
+.box-peak{border-left-color:var(--peak);background:var(--peak-soft)}
+.box ul{margin:.55rem 0 0;padding-left:1.15rem}
+.box li{margin-bottom:.35rem}
+
+/* cards */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:1.2rem 0}
+.gcard{background:#fff;padding:1.25rem}
+.gcard h4{font-size:1rem;margin-bottom:.45rem}
+.gcard p{font-size:.87rem;color:var(--ink-2)}
+.gcard .k{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.6rem}
+
+/* structure tree */
+.tree{font-family:var(--f-mono);font-size:.82rem;background:var(--ink);color:#CBD6DC;padding:1.3rem 1.4rem;border-radius:var(--r);overflow-x:auto;line-height:1.85;white-space:pre;margin:1.1rem 0 1.5rem}
+.tree b{color:var(--volt);font-weight:600}
+.tree i{color:#7FB8B4;font-style:normal}
+.tree u{color:#8A9BA6;text-decoration:none}
+
+/* ad preview */
+.ads{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin:1.2rem 0 1.5rem}
+.ad{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:1.05rem 1.15rem}
+.ad .badge{font-family:var(--f-mono);font-size:.62rem;font-weight:600;letter-spacing:.1em;
+  background:var(--ink);color:var(--volt);padding:.15rem .4rem;border-radius:2px;text-transform:uppercase}
+.ad .url{font-size:.8rem;color:var(--ink-3);margin:.6rem 0 .2rem;font-family:var(--f-mono)}
+.ad .hl{font-size:1.05rem;color:#1a0dab;font-weight:500;line-height:1.35;margin-bottom:.35rem;font-family:var(--f-body)}
+.ad .ds{font-size:.85rem;color:var(--ink-2)}
+.ad .cc{margin-top:.7rem;padding-top:.6rem;border-top:1px dashed var(--rule);font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3)}
+
+/* charts */
+.chart{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:1.3rem 1.4rem;margin:1.2rem 0 1.5rem}
+.chart-t{font-family:var(--f-display);font-weight:700;font-size:1rem;margin-bottom:.2rem}
+.chart-s{font-size:.82rem;color:var(--ink-3);margin-bottom:1.1rem}
+.chart svg{width:100%;height:auto;display:block}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:2px;margin:1.2rem 0 1.5rem}
+.fstep{display:flex;align-items:center;gap:1rem;background:#fff;border:1px solid var(--rule);padding:.85rem 1.1rem}
+.fbar{height:34px;background:var(--grid);flex:none;border-radius:2px;min-width:6px}
+.fmeta{flex:1;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.fmeta b{font-size:.93rem;font-weight:600}
+.fmeta small{color:var(--ink-3);font-size:.8rem}
+.fnum{font-family:var(--f-mono);font-weight:600;font-size:.95rem;white-space:nowrap}
+
+/* timeline */
+.phase{border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin-bottom:1rem;overflow:hidden}
+.phase-h{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;padding:.9rem 1.15rem;background:var(--ink);color:#fff}
+.phase-h .w{font-family:var(--f-mono);font-size:.72rem;color:var(--volt);letter-spacing:.1em}
+.phase-h h4{font-size:1.02rem;color:#fff}
+.phase-h .sp{margin-left:auto;font-family:var(--f-mono);font-size:.8rem;color:rgba(255,255,255,.75)}
+.phase-b{padding:1.1rem 1.15rem;display:grid;grid-template-columns:1fr 1fr;gap:1.3rem}
+@media(max-width:760px){.phase-b{grid-template-columns:1fr;gap:1rem}}
+.phase-b h5{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .5rem;font-weight:600}
+.phase-b ul{margin:0;padding-left:1.1rem;font-size:.87rem;color:var(--ink-2)}
+.phase-b li{margin-bottom:.35rem}
+
+/* foot */
+.foot{background:var(--ink);color:rgba(255,255,255,.62);padding:2.6rem 0 2rem;font-size:.84rem}
+.foot a{color:var(--volt)}
+.foot .fine{font-size:.76rem;color:rgba(255,255,255,.42);max-width:70ch;margin-top:1.2rem;line-height:1.65}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="3" fill="#16202B"/><path d="M17.6 6 9 17.4h5.4L13.2 26 22 14.4h-5.6L17.6 6Z" fill="#FFCE1F"/></svg>
+      Voltside
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Landing page</a>
+      <a href="business-plan.html">Business plan</a>
+      <a href="campaign.html" aria-current="page">Campaign plan</a>
+    </div>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Paid acquisition plan &middot; Victoria &middot; 90-day launch</p>
+    <h1>Buy attention from people already looking for the rebate.</h1>
+    <p class="lede">
+      This sector's growth channel used to be a call centre and a list. Both are now banned in Victoria.
+      What's left is harder and better: intercept the search, earn the click, and let the person qualify
+      themselves before anyone picks up a phone. This is how we do that across Google, Meta and three
+      secondary channels.
+    </p>
+    <div class="meta">
+      <span class="tag">Google Ads</span>
+      <span class="tag">Meta Ads</span>
+      <span class="tag">Local Services Ads</span>
+      <span class="tag">SEO</span>
+      <span class="tag">LinkedIn &middot; B2B</span>
+      <span class="tag">Target CPL &lt; $90</span>
+      <span class="tag">Target CPA $250&ndash;$600</span>
+    </div>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-in">
+    <a href="#guardrails">01 Guardrails</a><span>/</span>
+    <a href="#who">02 Who we target</a><span>/</span>
+    <a href="#google">03 Google Ads</a><span>/</span>
+    <a href="#meta">04 Meta Ads</a><span>/</span>
+    <a href="#secondary">05 Secondary channels</a><span>/</span>
+    <a href="#budget">06 Budget &amp; phasing</a><span>/</span>
+    <a href="#economics">07 Funnel economics</a><span>/</span>
+    <a href="#stack">08 Measurement</a>
+  </div>
+</div>
+
+<!-- ═══════════ 01 GUARDRAILS ═══════════ -->
+<section class="sec" id="guardrails">
+  <div class="wrap">
+    <p class="sec-num">01</p>
+    <h2>The guardrails come first, because they eliminate most of the playbook</h2>
+    <p class="intro">
+      Every other plan you'll read for this sector opens with channels. That's the wrong order here.
+      Victoria has specifically outlawed the two tactics that built the incumbent solar sales industry,
+      and the ACCC has an open review into lead generation itself. Design the campaign around the
+      constraints and you get a durable business. Design it around the tactics and you get a
+      compliance problem eighteen months in.
+    </p>
+
+    <div class="box box-peak">
+      <strong>What we will not do, under any circumstances.</strong>
+      <ul>
+        <li><strong>No cold-call telemarketing.</strong> Banned for Victorian Energy Upgrades products since 1 May 2024. Express prior consent is required before any marketing call.</li>
+        <li><strong>No door-knocking.</strong> Banned for VEU since 1 August 2024 and for Solar Homes since 2021.</li>
+        <li><strong>No purchased or rented contact lists.</strong> Explicitly prohibited under the VEU rules — you cannot buy someone's details from a third party and market to them.</li>
+        <li><strong>No shared leads.</strong> Selling one enquiry to a panel of installers is legal but it is the single practice most responsible for this industry's reputation. One lead, one installer, named to the customer.</li>
+        <li><strong>No "free solar" or unqualified rebate headlines.</strong> The ACCC has flagged that lead-generation headline claims which are contradicted by the fine print are misleading.</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">What that means for the ads themselves</h3>
+    <div class="grid3">
+      <div class="gcard">
+        <p class="k">Claim discipline</p>
+        <h4>Every rebate figure carries its condition</h4>
+        <p>"Up to $1,400 if eligible", never "$1,400 rebate". Savings claims are framed as estimates and the landing page shows the assumptions. Keep substantiation records for every claim you run — the ACL requires you to be able to back them.</p>
+      </div>
+      <div class="gcard">
+        <p class="k">Consent architecture</p>
+        <h4>Two separate tick-boxes, both unticked</h4>
+        <p>One for contacting them, one for passing details to a single named installer. Timestamped and stored. Pre-ticked boxes and bundled consent are the failure mode regulators look for first.</p>
+      </div>
+      <div class="gcard">
+        <p class="k">Speed vs pressure</p>
+        <h4>Fast callback, no urgency theatre</h4>
+        <p>Ring back inside the window they chose. The deadlines in this sector are genuinely real — certificate step-downs, the income threshold change — so state them factually and let them do the work. Manufactured scarcity is both unnecessary and a compliance risk.</p>
+      </div>
+    </div>
+
+    <div class="box box-grid">
+      <strong>The upside of the constraint.</strong> Because inbound consent is the only permitted route,
+      paid search and paid social become the whole acquisition engine rather than one channel among many.
+      That concentrates spend, which means the account structure and creative discipline below aren't
+      optimisation niceties — they're the business.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 WHO ═══════════ -->
+<section class="sec" id="who">
+  <div class="wrap">
+    <p class="sec-num">02</p>
+    <h2>Who we're buying, and where they live</h2>
+    <p class="intro">
+      Victorian rooftop solar penetration sits around 31% of dwellings, with regional Victoria ahead of
+      Greater Melbourne. That leaves a large remaining market, but it is not evenly distributed — and
+      after the July 2026 income threshold change, the highest-income postcodes are now <em>less</em>
+      attractive for the solar rebate while remaining fully addressable for VEU-funded upgrades, which
+      carry no income test.
+    </p>
+
+    <h3 class="sub">Geographic priority tiers</h3>
+    <div class="tw">
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Areas</th><th>Why</th><th class="c">Solar Homes fit</th><th class="c">VEU fit</th><th class="n">Bid mod.</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="pill p-hi">Tier 1</span></td>
+            <td><strong>Outer-metro growth corridors</strong><small>Casey, Wyndham, Melton, Whittlesea, Hume, Cardinia</small></td>
+            <td>Detached housing, high owner-occupier rates, large simple roofs, household incomes clustered around the $150k threshold, low existing penetration relative to stock.</td>
+            <td class="c"><span class="pill p-hi">Strong</span></td>
+            <td class="c"><span class="pill p-md">Good</span></td>
+            <td class="n">+20%</td>
+          </tr>
+          <tr>
+            <td><span class="pill p-hi">Tier 1</span></td>
+            <td><strong>Regional centres</strong><small>Ballarat, Bendigo, Geelong, Shepparton, Wodonga, Latrobe Valley</small></td>
+            <td>Highest penetration in the state already, which proves demand. Cheaper CPCs than metro, strong detached-housing stock, heavy gas ducted heating usage in the colder centres.</td>
+            <td class="c"><span class="pill p-hi">Strong</span></td>
+            <td class="c"><span class="pill p-hi">Strong</span></td>
+            <td class="n">+15%</td>
+          </tr>
+          <tr>
+            <td><span class="pill p-md">Tier 2</span></td>
+            <td><strong>Established middle metro</strong><small>Knox, Maroondah, Manningham, Banyule, Kingston, Monash</small></td>
+            <td>Older housing stock means gas ducted heating and old electric or gas hot water — the VEU replacement market. Incomes often above the Solar Homes threshold, so lead with heating and hot water rather than PV.</td>
+            <td class="c"><span class="pill p-lo">Mixed</span></td>
+            <td class="c"><span class="pill p-hi">Strong</span></td>
+            <td class="n">+10%</td>
+          </tr>
+          <tr>
+            <td><span class="pill p-md">Tier 2</span></td>
+            <td><strong>Small business clusters</strong><small>Dandenong South, Campbellfield, Braeside, Laverton North, regional industrial estates</small></td>
+            <td>Solar for Business rebate plus the VEU commercial solar discount. Longer cycle, far higher job value. Separate campaign, separate landing page, separate sales motion.</td>
+            <td class="c"><span class="pill p-md">B2B stream</span></td>
+            <td class="c"><span class="pill p-hi">Strong</span></td>
+            <td class="n">Separate</td>
+          </tr>
+          <tr>
+            <td><span class="pill p-lo">Tier 3</span></td>
+            <td><strong>Inner metro</strong><small>Melbourne, Yarra, Port Phillip, Stonnington, Boroondara</small></td>
+            <td>High apartment share, heritage overlays, small or shaded roofs, property values frequently over the $3m cap. Poor solar economics, though heat pump hot water still converts.</td>
+            <td class="c"><span class="pill p-no">Weak</span></td>
+            <td class="c"><span class="pill p-md">Good</span></td>
+            <td class="n">−30%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <strong>The counterintuitive move.</strong> Most competitors bid hardest on affluent inner-eastern
+      suburbs because the job values look higher. After 1 July 2026 those households often fail the
+      Solar Homes income test and many fail the $3m property cap — so the headline rebate offer doesn't
+      apply to them and the lead disappoints. Bid down there on rebate-led solar messaging, and reach
+      them instead through VEU heating and hot water campaigns, which have no income test at all.
+    </div>
+
+    <h3 class="sub">Audience segments and the offer that fits each</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Segment</th><th>Trigger</th><th>Lead offer</th><th>Primary channel</th><th class="n">Est. share of leads</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bill-shocked owner-occupier</strong><small>Quarterly bill over $500</small></td><td>Bill arrives; searches "reduce electricity bill Victoria"</td><td>Savings calculator — "see your bill after"</td><td>Google Search, Meta</td><td class="n">~40%</td></tr>
+          <tr><td><strong>Rebate hunter</strong><small>Knows a program exists, not which</small></td><td>Searches "solar rebate Victoria 2026"</td><td>Eligibility check — "which do you qualify for"</td><td>Google Search, SEO</td><td class="n">~25%</td></tr>
+          <tr><td><strong>Gas replacer</strong><small>Failing ducted heater or hot water unit</small></td><td>Appliance dies; searches replacement</td><td>VEU discount on heat pump / reverse-cycle</td><td>Google Search, LSA</td><td class="n">~20%</td></tr>
+          <tr><td><strong>Battery upgrader</strong><small>Existing solar, low feed-in tariff</small></td><td>Feed-in credit drops; searches battery payback</td><td>Federal battery discount, taper deadline</td><td>Meta retargeting, Search</td><td class="n">~10%</td></tr>
+          <tr><td><strong>Small business owner</strong><small>1&ndash;20 employees, owns or leases premises</small></td><td>Rising commercial bills, tax planning</td><td>Solar for Business + VEU commercial</td><td>Google Search, LinkedIn</td><td class="n">~5%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 GOOGLE ═══════════ -->
+<section class="sec" id="google">
+  <div class="wrap">
+    <p class="sec-num">03</p>
+    <h2>Google Ads — the intent channel</h2>
+    <p class="intro">
+      Roughly 60% of budget. Solar search terms in Australia are expensive — $8 to $20 a click is normal
+      and competitive rebate terms run higher — but the intent is unmatched. The discipline that matters
+      most is <em>negative</em> keywords: this vertical bleeds money on people researching DIY installs,
+      looking for jobs, or comparing panel brands with no purchase intent.
+    </p>
+
+    <h3 class="sub">Account structure</h3>
+    <div class="tree"><b>Voltside AU</b> — Google Ads account
+│
+├── <b>01 · Search — Rebate Intent</b>          <i>[Manual CPC → tCPA once 30 conv/mo]</i>
+│   ├── AG: Solar rebate VIC              <u>exact + phrase</u>
+│   ├── AG: Solar Homes program           <u>exact</u>
+│   ├── AG: Battery rebate                <u>exact + phrase</u>
+│   ├── AG: Heat pump hot water rebate    <u>exact + phrase</u>
+│   └── AG: VEU / energy upgrades         <u>phrase</u>
+│
+├── <b>02 · Search — Product &amp; Price</b>         <i>[tCPA]</i>
+│   ├── AG: Solar quotes / cost           <u>exact + phrase</u>
+│   ├── AG: System size (6.6kW / 10kW)    <u>exact</u>
+│   ├── AG: Battery cost / payback        <u>phrase</u>
+│   └── AG: Heat pump vs gas              <u>phrase</u>
+│
+├── <b>03 · Search — Replacement Urgency</b>     <i>[tCPA, +30% mobile]</i>
+│   ├── AG: Hot water replacement         <u>exact + phrase</u>
+│   ├── AG: Ducted heating replacement    <u>phrase</u>
+│   └── AG: Gas to electric conversion    <u>phrase</u>
+│
+├── <b>04 · Search — Brand</b>                   <i>[Manual CPC, low bid, defensive]</i>
+│
+├── <b>05 · Search — Commercial / B2B</b>        <i>[separate budget + landing page]</i>
+│   ├── AG: Commercial solar VIC
+│   └── AG: Small business energy rebate
+│
+├── <b>06 · Performance Max</b>                  <i>[DO NOT LAUNCH until 60+ qualified-lead conversions]</i>
+│   └── Asset group: Residential rebate · audience signals from CRM closed-won list
+│
+├── <b>07 · Display — Retargeting only</b>       <i>[calculator abandoners, 30-day window]</i>
+│
+└── <b>08 · YouTube</b>                          <i>[Phase 3. Explainer: "which rebate applies to you"]</i></div>
+
+    <div class="box box-peak">
+      <strong>Do not launch Performance Max on day one.</strong> PMax optimises toward whatever
+      conversion signal you give it. On a fresh account that signal is "form submitted", so it will find
+      you the cheapest form-fillers in Victoria — renters, apartment dwellers, tyre-kickers. Feed it
+      offline conversions from closed installer jobs for six to eight weeks first, then let it loose.
+      This one sequencing error is the most common way this vertical wastes its first $20,000.
+    </div>
+
+    <h3 class="sub">Priority keyword themes</h3>
+    <p style="font-size:.9rem;color:var(--ink-3);margin-bottom:.5rem">CPC ranges are indicative Australian benchmarks for this vertical and should be replaced with your own Keyword Planner pull for Victoria before launch.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Ad group</th><th>Representative terms</th><th class="c">Match</th><th class="n">Indic. CPC</th><th class="c">Intent</th><th>Landing page</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Solar rebate VIC</strong></td><td>solar rebate victoria · victoria solar rebate 2026 · government solar rebate vic</td><td class="c">Exact</td><td class="n">$12&ndash;$22</td><td class="c"><span class="pill p-hi">Very high</span></td><td>/ &rarr; calculator</td></tr>
+          <tr><td><strong>Solar Homes program</strong></td><td>solar homes rebate · solar victoria rebate · solar homes eligibility</td><td class="c">Exact</td><td class="n">$10&ndash;$18</td><td class="c"><span class="pill p-hi">Very high</span></td><td>/solar-homes</td></tr>
+          <tr><td><strong>Battery rebate</strong></td><td>home battery rebate · battery rebate victoria · cheaper home batteries</td><td class="c">Exact + phrase</td><td class="n">$9&ndash;$19</td><td class="c"><span class="pill p-hi">Very high</span></td><td>/battery</td></tr>
+          <tr><td><strong>Heat pump HW rebate</strong></td><td>heat pump hot water rebate victoria · hot water rebate vic</td><td class="c">Exact + phrase</td><td class="n">$7&ndash;$14</td><td class="c"><span class="pill p-hi">Very high</span></td><td>/hot-water</td></tr>
+          <tr><td><strong>VEU upgrades</strong></td><td>victorian energy upgrades · veu rebate · energy upgrade discount vic</td><td class="c">Phrase</td><td class="n">$5&ndash;$11</td><td class="c"><span class="pill p-md">High</span></td><td>/veu</td></tr>
+          <tr><td><strong>Solar quotes / cost</strong></td><td>solar quotes melbourne · solar panel cost victoria · solar installation quote</td><td class="c">Exact + phrase</td><td class="n">$14&ndash;$28</td><td class="c"><span class="pill p-md">High</span></td><td>/ &rarr; calculator</td></tr>
+          <tr><td><strong>System size</strong></td><td>6.6kw solar price · 10kw solar system cost · 13kw solar melbourne</td><td class="c">Exact</td><td class="n">$8&ndash;$16</td><td class="c"><span class="pill p-md">High</span></td><td>/solar-cost</td></tr>
+          <tr><td><strong>Hot water replacement</strong></td><td>hot water system replacement melbourne · hot water leaking replace</td><td class="c">Phrase</td><td class="n">$9&ndash;$18</td><td class="c"><span class="pill p-hi">Urgent</span></td><td>/hot-water</td></tr>
+          <tr><td><strong>Ducted heating replace</strong></td><td>replace gas ducted heating · ducted heating not working replace</td><td class="c">Phrase</td><td class="n">$6&ndash;$13</td><td class="c"><span class="pill p-hi">Urgent</span></td><td>/heating</td></tr>
+          <tr><td><strong>Bill reduction</strong></td><td>reduce electricity bill victoria · lower power bill melbourne</td><td class="c">Phrase</td><td class="n">$4&ndash;$9</td><td class="c"><span class="pill p-lo">Mid</span></td><td>/ &rarr; calculator</td></tr>
+          <tr><td><strong>Commercial</strong></td><td>commercial solar victoria · small business solar rebate vic</td><td class="c">Exact + phrase</td><td class="n">$11&ndash;$24</td><td class="c"><span class="pill p-md">High</span></td><td>/business</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="sub2">Negative keyword list — build this before you spend a dollar</h4>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Category</th><th>Negatives</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Employment</strong></td><td>jobs, careers, apprenticeship, hiring, salary, wage, courses, training, licence, accreditation</td><td>High volume, zero intent. Solar attracts a lot of job seekers.</td></tr>
+          <tr><td><strong>DIY &amp; trade</strong></td><td>diy, kit, wholesale, bulk, supplier, distributor, second hand, used, install myself, how to install</td><td>People buying components, not services.</td></tr>
+          <tr><td><strong>Free-seekers</strong></td><td>free solar, free panels, no cost solar, government free, 100% free, giveaway</td><td>These convert at a high rate and never buy. They also invite exactly the misleading-claim exposure we're avoiding.</td></tr>
+          <tr><td><strong>Wrong geography</strong></td><td>nsw, queensland, qld, sydney, brisbane, perth, adelaide, wa, sa, tasmania, act, nz</td><td>Location targeting leaks. Add these as account-level negatives regardless.</td></tr>
+          <tr><td><strong>Wrong product</strong></td><td>portable, camping, caravan, boat, shed only, garden lights, calculator app, pool heating</td><td>Different market entirely.</td></tr>
+          <tr><td><strong>Research-only</strong></td><td>meaning, definition, how does it work, wikipedia, reddit, forum, review of, vs, comparison</td><td>Move these to SEO, not paid. Keep "vs" live only in the heat pump ad group where it signals purchase intent.</td></tr>
+          <tr><td><strong>Rental &amp; ineligible</strong></td><td>renting, tenant, landlord obligation, apartment body corporate, public housing</td><td>These leads can't proceed through the main stream. Route them to a content page instead of a paid click.</td></tr>
+          <tr><td><strong>Complaints</strong></td><td>scam, complaint, ombudsman, refund, sue, class action, ripped off</td><td>Not buyers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="sub2">Responsive search ad assets</h4>
+    <p style="font-size:.9rem;color:var(--ink-2)">
+      Fifteen headlines and four descriptions per ad group, pinned selectively. Note that every rebate
+      figure carries "up to" and an eligibility qualifier — that isn't timidity, it's the difference
+      between a compliant ad and an ACCC problem.
+    </p>
+
+    <div class="ads">
+      <div class="ad">
+        <span class="badge">Ad group · Solar rebate VIC</span>
+        <p class="url">voltside.com.au/victoria-solar-rebate</p>
+        <p class="hl">Victorian Solar Rebates 2026 | Check What You Qualify For</p>
+        <p class="ds">See which state and federal rebates apply to your home, and your cost after them. Two minutes, no call.</p>
+        <p class="cc">H1 28ch · H2 26ch · D1 89ch — all within limits</p>
+      </div>
+      <div class="ad">
+        <span class="badge">Ad group · Battery rebate</span>
+        <p class="url">voltside.com.au/battery-rebate</p>
+        <p class="hl">Home Battery Discount VIC | Steps Down Each Jan &amp; Jul</p>
+        <p class="ds">The federal battery discount tapers twice a year. See what yours is worth at today's rate.</p>
+        <p class="cc">H1 25ch · H2 27ch · D1 86ch</p>
+      </div>
+      <div class="ad">
+        <span class="badge">Ad group · Heat pump HW</span>
+        <p class="url">voltside.com.au/hot-water-rebate</p>
+        <p class="hl">Heat Pump Hot Water Rebate | Up To $1,000 If Eligible</p>
+        <p class="ds">Victorian rebate plus VEU discount, stacked. Often the shortest payback in the house.</p>
+        <p class="cc">H1 26ch · H2 28ch · D1 82ch</p>
+      </div>
+      <div class="ad">
+        <span class="badge">Ad group · Ducted heating</span>
+        <p class="url">voltside.com.au/replace-ducted-heating</p>
+        <p class="hl">Replacing Gas Ducted Heating? | Biggest VEU Discount Going</p>
+        <p class="ds">Swapping gas ducted for reverse-cycle attracts the largest household VEU discount available.</p>
+        <p class="cc">H1 29ch · H2 28ch · D1 89ch</p>
+      </div>
+    </div>
+
+    <div class="box box-grid">
+      <strong>Headline bank to rotate.</strong>
+      "One Installer, Not Five" (23) · "No Cold Calls. Ever." (20) · "See Your Cost After Rebates" (27) ·
+      "Income Under $150k? Check" (25) · "Melbourne &amp; Regional VIC" (24) · "Free Rebate Assessment" (22) ·
+      "Estimate In Under 2 Minutes" (27) · "We Show Our Working" (19) · "Sized To Your Bill" (18) ·
+      "Rebates Stack — Here's How" (26).
+      <br><br>
+      Pin "One Installer, Not Five" or "No Cold Calls. Ever." into headline position 2 across every ad
+      group. It is the differentiator, it addresses the exact objection this industry has earned, and it
+      lifts click-through in a way generic rebate copy does not.
+    </div>
+
+    <h4 class="sub2">Assets and extensions</h4>
+    <div class="grid3">
+      <div class="gcard"><p class="k">Sitelinks</p><h4>Four, always</h4><p>Which rebates apply to me · How the calculator works · Heat pump hot water · Why one installer only. The last one earns clicks from people burned previously.</p></div>
+      <div class="gcard"><p class="k">Callouts</p><h4>Trust, not features</h4><p>No cold calls · Accredited installers only · Estimate before contact · Victoria-wide · Rebate paperwork handled.</p></div>
+      <div class="gcard"><p class="k">Structured snippets</p><h4>Header: Services</h4><p>Solar · Batteries · Heat pump hot water · Reverse-cycle heating · Insulation · EV chargers.</p></div>
+      <div class="gcard"><p class="k">Lead form asset</p><h4>Off</h4><p>Deliberately disabled. The calculator qualifies far better than a two-field Google lead form, and the estimate is what earns the consent.</p></div>
+      <div class="gcard"><p class="k">Call asset</p><h4>Business hours only</h4><p>Scheduled to when a human answers. An unanswered call from a paid click is money set on fire.</p></div>
+      <div class="gcard"><p class="k">Image assets</p><h4>Real Victorian roofs</h4><p>Tiled and Colorbond, recognisably local. Stock photography of a Californian tract home reads as fake to this audience.</p></div>
+    </div>
+
+    <h4 class="sub2">Bidding</h4>
+    <p style="font-size:.92rem;color:var(--ink-2)">
+      Start on Manual CPC or Maximise Clicks with a cap for the first two to three weeks to gather data
+      cleanly. Move to Target CPA once an ad group has thirty conversions in thirty days. Set the initial
+      target at $70&ndash;$90 for a calculator completion, then — critically — switch the optimisation
+      target to <em>qualified lead</em> or <em>booked consultation</em> as soon as CRM offline
+      conversion import is live. Optimising to raw form fills teaches Google to find you people who
+      fill in forms, which is not the same as people who install solar.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 04 META ═══════════ -->
+<section class="sec" id="meta">
+  <div class="wrap">
+    <p class="sec-num">04</p>
+    <h2>Meta — the demand-creation channel</h2>
+    <p class="intro">
+      Roughly 30% of budget. Nobody on Facebook is searching for a heat pump. What Meta does well here
+      is reach the far larger group who are annoyed about their bill but haven't connected that feeling
+      to a specific product yet — and, increasingly, reach owners of ageing gas appliances before the
+      appliance fails. Creative carries more of the outcome than targeting does.
+    </p>
+
+    <h3 class="sub">Campaign structure</h3>
+    <div class="tree"><b>Voltside AU</b> — Meta Ads
+│
+├── <b>PROSPECTING — 65% of Meta budget</b>
+│   ├── Advantage+ Sales · broad VIC 30&ndash;70   <i>[let the algorithm find them]</i>
+│   ├── Interest stack · homeowners, home improvement, energy saving
+│   └── Lookalike 1&ndash;3% from CRM closed-won  <i>[Phase 2, needs 500+ records]</i>
+│
+├── <b>RETARGETING — 35% of Meta budget</b>
+│   ├── Calculator abandoners      <u>started, didn't finish · 14-day</u>
+│   ├── Saw estimate, didn't book  <u>highest-value pool · 30-day</u>
+│   ├── Site visitors, no calculator <u>60-day</u>
+│   └── Video viewers 50%+         <u>30-day</u>
+│
+└── <b>B2B — small budget, Phase 3</b>
+    └── Business owners · Solar for Business angle</div>
+
+    <div class="box">
+      <strong>On targeting restrictions.</strong> Meta limits detailed targeting on some sensitive
+      categories and its housing-related restrictions vary by market — verify the current position for
+      Australia before building audiences, and don't assume a US-market playbook transfers. In practice
+      broad geographic targeting plus strong creative and a well-fed Conversions API now outperforms
+      elaborate interest stacking anyway.
+    </div>
+
+    <h3 class="sub">Creative concepts to test</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Concept</th><th>Hook</th><th>Format</th><th>Segment</th><th class="c">Priority</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The two bills</strong></td><td>Same house, same quarter, twelve months apart. Straight comparison of the two statements.</td><td>Static carousel</td><td>Bill-shocked</td><td class="c"><span class="pill p-hi">Test first</span></td></tr>
+          <tr><td><strong>Which of these do you qualify for?</strong></td><td>Four program logos as a quiz. Most Victorians can name one of the four; almost nobody can name all four.</td><td>Static / interactive</td><td>Rebate hunter</td><td class="c"><span class="pill p-hi">Test first</span></td></tr>
+          <tr><td><strong>2027 is coming</strong></td><td>New Victorian homes can't connect to gas from 1 January 2027. Your ducted heater is 14 years old. Do the maths.</td><td>Short video</td><td>Gas replacer</td><td class="c"><span class="pill p-hi">Test first</span></td></tr>
+          <tr><td><strong>The five phone calls</strong></td><td>Names the industry's worst habit directly, then commits to the opposite. Uncomfortable and highly shareable.</td><td>Short video / UGC</td><td>All</td><td class="c"><span class="pill p-md">Wave 2</span></td></tr>
+          <tr><td><strong>Feed-in tariff reality check</strong></td><td>Victoria dropped the minimum feed-in tariff in July 2025. Exporting barely pays now — which changes what a good system looks like.</td><td>Explainer video</td><td>Battery upgrader</td><td class="c"><span class="pill p-md">Wave 2</span></td></tr>
+          <tr><td><strong>Calculator screen-record</strong></td><td>Thirty seconds of somebody actually using the tool and reaching a number. Shows the payoff before the click.</td><td>Vertical video</td><td>All</td><td class="c"><span class="pill p-md">Wave 2</span></td></tr>
+          <tr><td><strong>Installer at work</strong></td><td>Named accredited installer on a recognisable Victorian roof. Local proof.</td><td>Photo / reel</td><td>Late-funnel</td><td class="c"><span class="pill p-lo">Wave 3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="sub2">Instant lead forms or landing page?</h4>
+    <div class="grid3">
+      <div class="gcard"><p class="k">Prospecting</p><h4>Landing page</h4><p>Send cold traffic to the calculator. Yes, CPL is higher. But the calculator does the qualifying — postcode, ownership, income band, roof — and a lead that has seen its own numbers converts at a completely different rate.</p></div>
+      <div class="gcard"><p class="k">Retargeting</p><h4>Instant form, conditionally</h4><p>For people who already reached the estimate screen and left, an instant form is reasonable — they've self-qualified. Still requires the two explicit consent tick-boxes inside the form.</p></div>
+      <div class="gcard"><p class="k">Never</p><h4>Instant form on cold traffic</h4><p>Produces the cheapest CPL in the account and the worst leads. Renters, apartments, other states, people who tapped by accident. It will make your dashboard look excellent and your installer relationship terrible.</p></div>
+    </div>
+
+    <div class="box box-grid">
+      <strong>Operating discipline.</strong> Ship three new creative concepts a week — creative fatigue
+      now drives more CPL variance in this vertical than targeting does. Keep Conversions API event
+      match quality above 7.5. Hold a 65/35 prospecting-to-retargeting split. And feed Meta the same
+      offline conversion signal you feed Google, so both platforms are optimising toward installed jobs
+      rather than form submissions.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 05 SECONDARY ═══════════ -->
+<section class="sec" id="secondary">
+  <div class="wrap">
+    <p class="sec-num">05</p>
+    <h2>Secondary channels</h2>
+    <p class="intro">Roughly 10% of paid budget, plus the compounding channels that cost time rather than media spend.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Channel</th><th>Role</th><th>When</th><th class="n">Indic. CPL</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Google Local Services Ads</strong></td><td>The Google Guaranteed badge sits above search results and carries real trust weight on a high-ticket purchase.</td><td>Phase 2</td><td class="n">~$50&ndash;$60</td><td>Roughly half the CPL of standard search in this vertical. Requires eligibility checks and background verification — start the application early, it takes weeks.</td></tr>
+          <tr><td><strong>SEO &amp; rebate content</strong></td><td>The compounding asset. Rebate rules change constantly, which means constant fresh search demand and constant reasons to update pages.</td><td>Week 1, ongoing</td><td class="n">$0 marginal</td><td>One authoritative page per program, updated the day rules change. "Solar Homes eligibility 2026", "VEU heat pump discount", "battery rebate taper explained". This is also what earns you the AI-assistant citations that increasingly precede the click.</td></tr>
+          <tr><td><strong>LinkedIn</strong></td><td>B2B only. Small business owners and facility managers for Solar for Business and VEU commercial.</td><td>Phase 3</td><td class="n">$120&ndash;$250</td><td>Expensive per lead, but commercial job values are multiples of residential. Judge on CPA, never CPL.</td></tr>
+          <tr><td><strong>Partnerships</strong></td><td>Mortgage brokers, real estate agents, electricians, plumbers, home builders.</td><td>Week 3, ongoing</td><td class="n">Referral fee</td><td>Builders matter more each month as the 1 January 2027 all-electric requirement approaches. Plumbers called to a dead hot water unit are the single best heat pump referral source in the state.</td></tr>
+          <tr><td><strong>Referral program</strong></td><td>Past customers. Solar has unusually high word-of-mouth because the bill drop is visible and people talk about it.</td><td>Phase 3</td><td class="n">$40&ndash;$80</td><td>Only worth building once you have installed jobs and verified satisfaction. Premature referral programs advertise your inexperience.</td></tr>
+          <tr><td><strong>Community groups</strong></td><td>Local Facebook and Buy-Nothing-style groups, suburb pages.</td><td>Opportunistic</td><td class="n">&mdash;</td><td>Handle carefully. Genuine participation only — posting promotional content into local groups reads as spam and can breach group and platform rules.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 06 BUDGET ═══════════ -->
+<section class="sec" id="budget">
+  <div class="wrap">
+    <p class="sec-num">06</p>
+    <h2>Budget and 90-day phasing</h2>
+    <p class="intro">
+      Three phases, each with a gate. Do not advance to the next spend level until the previous phase's
+      gate is met — scaling a funnel that hasn't proven its conversion rate just buys more bad leads faster.
+    </p>
+
+    <div class="chart">
+      <p class="chart-t">Monthly media spend by channel</p>
+      <p class="chart-s">Ramping from $8k to $32k a month across the launch quarter</p>
+      <svg viewBox="0 0 760 260" role="img" aria-label="Stacked bar chart of monthly media spend by channel across three phases">
+        <line x1="52" y1="210" x2="740" y2="210" stroke="#16202B" stroke-width="1.5"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#6A7B86">
+          <text x="44" y="214" text-anchor="end">0</text>
+          <text x="44" y="160" text-anchor="end">10k</text>
+          <text x="44" y="110" text-anchor="end">20k</text>
+          <text x="44" y="60" text-anchor="end">30k</text>
+        </g>
+        <line x1="52" y1="160" x2="740" y2="160" stroke="#E6EBEA"/>
+        <line x1="52" y1="110" x2="740" y2="110" stroke="#E6EBEA"/>
+        <line x1="52" y1="60" x2="740" y2="60" stroke="#E6EBEA"/>
+
+        <!-- Phase 1: 8k total -> Google 5k, Meta 2.6k, Other 0.4k. scale: 10k = 50px -> 1k=5px -->
+        <g>
+          <rect x="110" y="185" width="118" height="25" fill="#12615E"/>
+          <rect x="110" y="172" width="118" height="13" fill="#FFCE1F"/>
+          <rect x="110" y="170" width="118" height="2" fill="#6A7B86"/>
+          <text x="169" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B" font-weight="600">Phase 1</text>
+          <text x="169" y="243" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#6A7B86">Weeks 1–4 · $8k</text>
+        </g>
+        <!-- Phase 2: 18k -> Google 10.8k, Meta 5.4k, Other 1.8k -->
+        <g>
+          <rect x="290" y="156" width="118" height="54" fill="#12615E"/>
+          <rect x="290" y="129" width="118" height="27" fill="#FFCE1F"/>
+          <rect x="290" y="120" width="118" height="9" fill="#6A7B86"/>
+          <text x="349" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B" font-weight="600">Phase 2</text>
+          <text x="349" y="243" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#6A7B86">Weeks 5–8 · $18k</text>
+        </g>
+        <!-- Phase 3: 32k -> Google 19.2k, Meta 9.6k, Other 3.2k -->
+        <g>
+          <rect x="470" y="114" width="118" height="96" fill="#12615E"/>
+          <rect x="470" y="66" width="118" height="48" fill="#FFCE1F"/>
+          <rect x="470" y="50" width="118" height="16" fill="#6A7B86"/>
+          <text x="529" y="228" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#16202B" font-weight="600">Phase 3</text>
+          <text x="529" y="243" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#6A7B86">Weeks 9–12 · $32k</text>
+        </g>
+        <!-- legend -->
+        <g font-family="IBM Plex Sans, sans-serif" font-size="11" fill="#33434F">
+          <rect x="630" y="70" width="11" height="11" fill="#12615E"/><text x="648" y="80">Google · 60%</text>
+          <rect x="630" y="92" width="11" height="11" fill="#FFCE1F"/><text x="648" y="102">Meta · 30%</text>
+          <rect x="630" y="114" width="11" height="11" fill="#6A7B86"/><text x="648" y="124">Other · 10%</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="w">WEEKS 1&ndash;4</span><h4>Phase 1 — Prove the funnel</h4><span class="sp">$8,000 / month</span></div>
+      <div class="phase-b">
+        <div>
+          <h5>Do</h5>
+          <ul>
+            <li>Launch Search campaigns 01 and 03 only. Rebate intent and replacement urgency — the two highest-intent clusters.</li>
+            <li>Meta: two prospecting ad sets, three creative concepts, landing page traffic only.</li>
+            <li>Full negative keyword list loaded before the first impression serves.</li>
+            <li>CRM live, lead routing to two partner installers agreed in writing, consent capture timestamped.</li>
+            <li>Start the Local Services Ads application — verification takes weeks.</li>
+            <li>Publish four cornerstone rebate pages.</li>
+          </ul>
+        </div>
+        <div>
+          <h5>Gate to Phase 2</h5>
+          <ul>
+            <li>CPL under <strong>$110</strong> blended</li>
+            <li>Calculator completion rate above <strong>35%</strong> of starts</li>
+            <li>At least <strong>60 leads</strong> delivered</li>
+            <li>Installer confirms lead quality is workable</li>
+            <li>At least one closed job attributable to paid</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="w">WEEKS 5&ndash;8</span><h4>Phase 2 — Scale what worked</h4><span class="sp">$18,000 / month</span></div>
+      <div class="phase-b">
+        <div>
+          <h5>Do</h5>
+          <ul>
+            <li>Add Search campaign 02 (product and price) and the brand campaign.</li>
+            <li>Move winning ad groups to Target CPA. Import offline conversions from the CRM.</li>
+            <li>Meta: add all four retargeting audiences, push to six live creatives, build the 1&ndash;3% lookalike once you hold 500+ CRM records.</li>
+            <li>Switch Local Services Ads on if verification has cleared.</li>
+            <li>Add a third installer to the panel — two is a capacity risk at this volume.</li>
+          </ul>
+        </div>
+        <div>
+          <h5>Gate to Phase 3</h5>
+          <ul>
+            <li>CPL under <strong>$90</strong> blended</li>
+            <li>Lead-to-appointment above <strong>30%</strong></li>
+            <li>Appointment-to-sale above <strong>20%</strong></li>
+            <li>CPA inside <strong>$600</strong></li>
+            <li>60+ qualified-lead conversions recorded, which is what makes PMax viable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-h"><span class="w">WEEKS 9&ndash;12</span><h4>Phase 3 — Widen the front</h4><span class="sp">$32,000 / month</span></div>
+      <div class="phase-b">
+        <div>
+          <h5>Do</h5>
+          <ul>
+            <li>Launch Performance Max with CRM-derived audience signals — now, not earlier.</li>
+            <li>Open the commercial and B2B funnel: separate landing page, separate sales motion, LinkedIn test.</li>
+            <li>YouTube explainer as a retargeting layer.</li>
+            <li>Referral program to satisfied installed customers.</li>
+            <li>Begin NSW market preparation — the zero-interest Home Energy Saver loans make it the strongest second state.</li>
+          </ul>
+        </div>
+        <div>
+          <h5>Steady-state targets</h5>
+          <ul>
+            <li><strong>350&ndash;600 leads</strong> per month at this spend</li>
+            <li>CPL <strong>$50&ndash;$90</strong></li>
+            <li>CPA <strong>$250&ndash;$600</strong></li>
+            <li>Contribution margin positive on a per-lead basis</li>
+            <li>Installer panel of four or more, none above 40% of volume</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 07 ECONOMICS ═══════════ -->
+<section class="sec" id="economics">
+  <div class="wrap">
+    <p class="sec-num">07</p>
+    <h2>Does the arithmetic work?</h2>
+    <p class="intro">
+      Worked at Phase 3 spend, using conservative mid-range benchmarks. The critical variable is the
+      referral fee — everything else is within a few percentage points of industry norm, but the fee is
+      what you negotiate, and it decides whether this is a business or an expensive hobby.
+    </p>
+
+    <div class="funnel">
+      <div class="fstep"><div class="fbar" style="width:100%"></div></div>
+      <div class="fstep"><div class="fbar" style="width:96%"></div><div class="fmeta"><div><b>32,000 in media spend</b> <small>Google 60% · Meta 30% · other 10%</small></div><div class="fnum">$32,000</div></div></div>
+      <div class="fstep"><div class="fbar" style="width:70%"></div><div class="fmeta"><div><b>~2,900 clicks</b> <small>blended CPC across search and social ≈ $11</small></div><div class="fnum">$11 CPC</div></div></div>
+      <div class="fstep"><div class="fbar" style="width:44%"></div><div class="fmeta"><div><b>~640 calculator starts</b> <small>22% of clicks begin the tool</small></div><div class="fnum">22%</div></div></div>
+      <div class="fstep"><div class="fbar" style="width:30%"></div><div class="fmeta"><div><b>~450 leads</b> <small>70% of starts reach the estimate and consent to contact</small></div><div class="fnum">$71 CPL</div></div></div>
+      <div class="fstep"><div class="fbar" style="width:18%"></div><div class="fmeta"><div><b>~145 held appointments</b> <small>32% lead-to-appointment</small></div><div class="fnum">32%</div></div></div>
+      <div class="fstep"><div class="fbar" style="width:9%"></div><div class="fmeta"><div><b>~32 closed installs</b> <small>22% appointment-to-sale</small></div><div class="fnum">$1,000 CPA</div></div></div>
+    </div>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Scenario</th><th class="n">Referral fee / install</th><th class="n">Revenue</th><th class="n">Media spend</th><th class="n">Gross margin</th><th class="c">Verdict</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Per-lead sale only</strong><small>Selling qualified exclusive leads at $110</small></td><td class="n">$110 &times; 450</td><td class="n">$49,500</td><td class="n">$32,000</td><td class="n">$17,500</td><td class="c"><span class="pill p-md">Works, thin</span></td></tr>
+          <tr><td><strong>Per-install, low</strong><small>$1,200 flat referral fee</small></td><td class="n">$1,200</td><td class="n">$38,400</td><td class="n">$32,000</td><td class="n">$6,400</td><td class="c"><span class="pill p-no">Too thin</span></td></tr>
+          <tr><td><strong>Per-install, mid</strong><small>$1,800 flat, typical of exclusive-lead deals</small></td><td class="n">$1,800</td><td class="n">$57,600</td><td class="n">$32,000</td><td class="n">$25,600</td><td class="c"><span class="pill p-md">Viable</span></td></tr>
+          <tr><td><strong>Percentage of system value</strong><small>8% of a $14,000 average package</small></td><td class="n">$1,120</td><td class="n">$35,840</td><td class="n">$32,000</td><td class="n">$3,840</td><td class="c"><span class="pill p-no">Renegotiate</span></td></tr>
+          <tr class="tot"><td><strong>Hybrid — recommended</strong><small>$60/qualified lead + $1,100 on install</small></td><td class="n">mixed</td><td class="n">$62,200</td><td class="n">$32,000</td><td class="n">$30,200</td><td class="c"><span class="pill p-hi">Best</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <strong>Why the hybrid.</strong> A pure per-install fee puts all the risk on you and none on the
+      installer — if their sales team is weak, you subsidise it. A pure per-lead fee removes your
+      incentive to care about lead quality, which is the exact dynamic that ruined this industry's
+      reputation. A small per-lead fee that covers roughly half your media cost, plus a completion fee
+      on install, aligns both sides: you're paid to send good leads and paid again when they close.
+    </div>
+
+    <div class="box box-peak">
+      <strong>The number to watch is not CPL.</strong> It's cost per <em>installed job</em>. A channel
+      producing $40 leads that never close is more expensive than one producing $120 leads that convert
+      at 30%. Until offline conversion tracking is live, you are flying on a metric that can actively
+      mislead you — which is why the CRM integration is a week-one task, not a nice-to-have.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 08 STACK ═══════════ -->
+<section class="sec" id="stack">
+  <div class="wrap">
+    <p class="sec-num">08</p>
+    <h2>Measurement and the operating stack</h2>
+
+    <h3 class="sub">What gets tracked</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Event</th><th>Where it fires</th><th>Sent to</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td><strong>calculator_start</strong></td><td>Step 1 next-click</td><td>GA4</td><td>Landing page quality signal. If clicks are high and starts are low, the ad promised something the page doesn't deliver.</td></tr>
+          <tr><td><strong>calculator_step</strong></td><td>Each step advance</td><td>GA4</td><td>Shows exactly where people abandon. Expect the eligibility step to be the drop-off point — income questions always are.</td></tr>
+          <tr><td><strong>estimate_viewed</strong></td><td>Results render</td><td>GA4, Meta CAPI</td><td>The strongest retargeting audience in the account. They've seen their number.</td></tr>
+          <tr><td><strong>lead_submitted</strong></td><td>Booking confirmed</td><td>GA4, Google Ads, Meta CAPI</td><td>Primary conversion during Phase 1 only.</td></tr>
+          <tr><td><strong>lead_qualified</strong></td><td>CRM, after human check</td><td>Google offline import, Meta CAPI</td><td>Becomes the primary optimisation target from Phase 2. This is the switch that changes lead quality.</td></tr>
+          <tr><td><strong>appointment_held</strong></td><td>CRM</td><td>Google offline import</td><td>Filters out no-shows, which are a real cost.</td></tr>
+          <tr><td><strong>install_won</strong></td><td>CRM, installer feedback</td><td>Google offline import, Meta CAPI</td><td>The only number that actually pays for anything. Value-based bidding target from Phase 3.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub">Stack</h3>
+    <div class="grid3">
+      <div class="gcard"><p class="k">Analytics</p><h4>GA4 + server-side tagging</h4><p>Server-side container improves signal durability as browser tracking degrades. Consent Mode configured for Australian privacy expectations.</p></div>
+      <div class="gcard"><p class="k">CRM</p><h4>Pipeline with installer routing</h4><p>Must handle: exclusive assignment to one installer, consent flags with timestamps, offline conversion export back to Google and Meta, and SLA timers on callback windows.</p></div>
+      <div class="gcard"><p class="k">Call tracking</p><h4>Dynamic number insertion</h4><p>Attributes phone enquiries back to campaign. Record calls only with disclosed consent — Victorian law is strict on this.</p></div>
+      <div class="gcard"><p class="k">Consent ledger</p><h4>Immutable, timestamped</h4><p>Under the Spam Act you must be able to evidence consent at the time you sent a message. Store what was ticked, when, from which IP, and the exact wording shown.</p></div>
+      <div class="gcard"><p class="k">Creative ops</p><h4>Three new concepts weekly</h4><p>Fatigue is the dominant driver of Meta CPL drift. Maintain a backlog and retire creatives on performance, not on how attached you are to them.</p></div>
+      <div class="gcard"><p class="k">Reporting rhythm</p><h4>Weekly channel, monthly cohort</h4><p>Weekly on CPL and lead quality flags. Monthly on installed-job attribution, because the sales cycle is long enough that weekly CPA is noise.</p></div>
+    </div>
+
+    <div class="box box-grid">
+      <strong>One dashboard rule.</strong> Any report that shows CPL without showing lead-to-install rate
+      beside it is a report that will eventually be used to justify a bad decision. Put them in the same
+      table, always.
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Campaign plan &mdash; <a href="index.html">landing page</a> &middot; <a href="business-plan.html">business plan</a></p>
+    <p class="fine">
+      Cost-per-click, cost-per-lead and conversion-rate figures in this plan are indicative Australian
+      market benchmarks drawn from industry sources, not guarantees, and should be replaced with your own
+      Keyword Planner and platform data before budget is committed. Compliance points reflect the
+      Victorian regulatory position as researched in August 2026; the ACCC's review of lead generation
+      was ongoing at that time and the rules may have moved. Obtain Australian legal advice before
+      launch and before any change to contact methods.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
