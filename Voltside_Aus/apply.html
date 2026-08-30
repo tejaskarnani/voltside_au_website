@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Check your rebate eligibility — Voltside</title>
-<meta name="description" content="Find out which Victorian and federal energy rebates your home or business qualifies for, and what an upgrade would cost after them.">
+<meta name="description" content="Find out which Victorian and federal energy rebates your home or business qualifies for, and what solar or a battery would cost after them.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,7 +51,8 @@ button{font:inherit;color:inherit}
 
 .field{margin-bottom:1.4rem}
 .field:last-of-type{margin-bottom:0}
-.flabel{display:block;font-weight:600;font-size:.93rem;margin-bottom:.12rem}
+.flabel{display:flex;align-items:center;gap:.4rem;font-weight:600;font-size:.93rem;margin-bottom:.12rem}
+.flabel svg{flex:none;color:var(--ink-3)}
 .fhint{font-size:.79rem;color:var(--ink-3);margin-bottom:.55rem}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
 @media(max-width:620px){.row2{grid-template-columns:1fr;gap:0}}
@@ -62,9 +63,10 @@ button{font:inherit;color:inherit}
 .input.num{font-family:var(--f-mono)}
 .input:focus{border-color:var(--grid);outline:none;box-shadow:0 0 0 3px var(--grid-soft)}
 .input.err{border-color:var(--peak);background:var(--peak-soft)}
-.money{position:relative}
-.money span{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);font-family:var(--f-mono);color:var(--ink-3);pointer-events:none}
-.money .input{padding-left:1.8rem}
+.prefixed{position:relative}
+.prefixed span{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);font-family:var(--f-mono);color:var(--ink-3);pointer-events:none;font-size:.92rem}
+.prefixed .input{padding-left:1.85rem}
+.prefixed.tel .input{padding-left:2.6rem}
 .errmsg{color:var(--peak);font-size:.79rem;margin-top:.35rem;display:none;font-weight:500}
 .errmsg[data-show="true"]{display:block}
 
@@ -76,10 +78,28 @@ button{font:inherit;color:inherit}
 .chip span:hover{border-color:var(--ink-3)}
 .chip input:checked + span{border-color:var(--ink);background:var(--ink);color:#fff;font-weight:600}
 .chip input:focus-visible + span{outline:3px solid var(--grid);outline-offset:2px}
-.chip-multi input:checked + span{background:var(--volt);border-color:var(--volt);color:var(--ink)}
 .chip-wide{flex:1 1 100%}
 .chip-wide span{display:flex;flex-direction:column;gap:.1rem;padding:.75rem 1rem}
 .chip-wide small{font-size:.78rem;opacity:.75;font-weight:400}
+
+/* big icon choice cards — entity type, interest type */
+.bigchoices{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem}
+.bigchoice{position:relative}
+.bigchoice input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.bigchoice span{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.55rem;
+  padding:1.3rem 1rem;border:1.5px solid var(--rule);border-radius:var(--r);background:#fff;
+  cursor:pointer;transition:.14s ease;height:100%}
+.bigchoice span:hover{border-color:var(--ink-3)}
+.bigchoice svg{width:30px;height:30px;flex:none;color:var(--ink-2);transition:.14s ease}
+.bigchoice .bc-label{font-size:.95rem;font-weight:700}
+.bigchoice .bc-sub{font-size:.76rem;color:var(--ink-3);font-weight:400;line-height:1.35}
+.bigchoice input:checked + span{border-color:var(--ink);background:var(--ink)}
+.bigchoice input:checked + span svg{color:var(--volt)}
+.bigchoice input:checked + span .bc-sub{color:rgba(255,255,255,.62)}
+.bigchoice input:focus-visible + span{outline:3px solid var(--grid);outline-offset:2px}
+.bigchoice-lg span{padding:1.7rem 1.1rem}
+.bigchoice-lg svg{width:42px;height:42px}
+.bigchoice-lg .bc-label{font-size:1.05rem}
 
 .cond{display:none;margin-top:1.4rem;padding-left:1rem;border-left:2px solid var(--volt)}
 .cond[data-show="true"]{display:block;animation:fade .24s ease both}
@@ -101,10 +121,10 @@ button{font:inherit;color:inherit}
 .disclosure{font-size:.775rem;color:var(--ink-3);line-height:1.6;margin-top:.9rem}
 .disclosure a{color:var(--grid)}
 
-.nav-btns{display:flex;gap:.7rem;align-items:center;margin-top:1.7rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
+.nav-btns{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:1.7rem;padding-top:1.2rem;border-top:1px solid var(--rule)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.74rem 1.2rem;
   border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:var(--r);
-  font-weight:600;font-size:.89rem;cursor:pointer;text-decoration:none;transition:transform .12s ease,background .15s ease}
+  font-weight:600;font-size:.89rem;cursor:pointer;text-decoration:none;transition:transform .12s ease,background .15s ease;white-space:nowrap}
 .btn:hover{background:#0C1922;transform:translateY(-1px)}
 .btn-volt{background:var(--volt);border-color:var(--volt);color:var(--ink)}
 .btn-volt:hover{background:var(--volt-deep);border-color:var(--volt-deep)}
@@ -169,24 +189,31 @@ details.acc .accb{padding:0 1rem 1rem;font-size:.83rem;color:var(--ink-2)}
 details.acc .accb ul{margin:.35rem 0 0;padding-left:1.1rem}
 details.acc .accb li{margin-bottom:.3rem}
 
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:.45rem}
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:.4rem}
 .day{position:relative}
 .day input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
-.day span{display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.6rem .3rem;
+.day span{display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.55rem .25rem;
   border:1.5px solid var(--rule);border-radius:var(--r);background:#fff;cursor:pointer;transition:.13s}
-.day span b{font-family:var(--f-mono);font-size:1.05rem;font-weight:600}
-.day span em{font-style:normal;font-size:.7rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.06em}
+.day span b{font-family:var(--f-mono);font-size:1.02rem;font-weight:600}
+.day span em{font-style:normal;font-size:.66rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em}
 .day input:checked + span{border-color:var(--ink);background:var(--ink);color:#fff}
 .day input:checked + span em{color:rgba(255,255,255,.7)}
 .day input:focus-visible + span{outline:3px solid var(--grid);outline-offset:2px}
-.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.45rem}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.45rem}
+.slots-wide{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 
 .done{text-align:center;padding:clamp(1.6rem,4vw,2.8rem) 1rem}
 .done svg{width:58px;height:58px;margin-bottom:1.1rem}
 .done h2{font-size:clamp(1.45rem,3.4vw,2rem);margin-bottom:.6rem}
-.done p{color:var(--ink-2);max-width:36ch;margin:0 auto .55rem}
+.done p{color:var(--ink-2);max-width:38ch;margin:0 auto .55rem}
 .ref{display:inline-block;margin-top:1.1rem;padding:.55rem 1rem;background:var(--paper);
   border:1px dashed var(--rule);border-radius:var(--r);font-family:var(--f-mono);font-size:.84rem}
+
+.dead{text-align:center;padding:clamp(1.4rem,3vw,2rem) .5rem}
+.dead svg{width:46px;height:46px;margin-bottom:1rem;color:var(--ink-3)}
+.dead h2{font-size:clamp(1.3rem,2.8vw,1.7rem);margin-bottom:.7rem}
+.dead p{color:var(--ink-2);max-width:44ch;margin:0 auto .7rem;font-size:.94rem}
+.dead .nav-btns{justify-content:center;border-top:0;padding-top:.6rem;margin-top:1.4rem}
 
 .foot{background:var(--ink);color:rgba(255,255,255,.58);padding:2.2rem 0 1.8rem;font-size:.82rem;margin-top:2rem}
 .foot-in{max-width:820px;margin:0 auto;padding:0 var(--sp)}
@@ -233,8 +260,39 @@ details.acc .accb li{margin-bottom:.3rem}
       <input type="hidden" name="session_id" id="session_id">
       <input type="hidden" name="started_at" id="started_at">
 
-      <section class="step" data-step="loc" data-active="true">
-        <h2>Let's start with the property</h2>
+      <!-- ── ENTITY (very first page) ── -->
+      <section class="step" data-step="entity" data-active="true">
+        <h2>Let's start with the basics</h2>
+        <p class="step-sub">This decides which government programs and which consultation path apply to you.</p>
+        <div class="field">
+          <div class="bigchoices" role="radiogroup" aria-label="Residential or business">
+            <label class="bigchoice">
+              <input type="radio" name="entityType" value="residential" checked>
+              <span>
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15 16 6l11 9" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 13v12h16V13" stroke-linejoin="round"/><path d="M13 25v-6h6v6" stroke-linejoin="round"/></svg>
+                <span class="bc-label">Residential</span>
+                <span class="bc-sub">A home you own, rent, or manage</span>
+              </span>
+            </label>
+            <label class="bigchoice">
+              <input type="radio" name="entityType" value="business">
+              <span>
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="22" height="15" rx="2"/><path d="M12 11V8a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3" stroke-linejoin="round"/><path d="M5 17h22"/></svg>
+                <span class="bc-label">Business</span>
+                <span class="bc-sub">A commercial premises you run or own</span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="nav-btns">
+          <p class="fhint" style="margin:0;max-width:20rem">Nothing is sent anywhere while you answer.</p>
+          <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
+        </div>
+      </section>
+
+      <!-- ── DWELLING (residential) ── -->
+      <section class="step" data-step="dwelling">
+        <h2>Tell us about the property</h2>
         <p class="step-sub">Rebate eligibility in Victoria attaches to the property as much as to the person, so this is where everything begins.</p>
         <div class="field">
           <label class="flabel" for="postcode">Postcode</label>
@@ -245,44 +303,53 @@ details.acc .accb li{margin-bottom:.3rem}
         <div class="field">
           <span class="flabel">What kind of property is it?</span>
           <div class="chips" role="radiogroup" aria-label="Property type">
-            <label class="chip"><input type="radio" name="propertyType" value="house" checked><span>Freestanding house</span></label>
-            <label class="chip"><input type="radio" name="propertyType" value="townhouse"><span>Townhouse or semi</span></label>
-            <label class="chip"><input type="radio" name="propertyType" value="apartment"><span>Apartment or unit</span></label>
-            <label class="chip"><input type="radio" name="propertyType" value="business"><span>Business premises</span></label>
+            <label class="chip chip-wide"><input type="radio" name="dwellingType" value="standalone" checked><span>Standalone house<small>Full block, your own roof</small></span></label>
+            <label class="chip chip-wide"><input type="radio" name="dwellingType" value="townhouse"><span>Townhouse<small>Attached, on its own title</small></span></label>
+            <label class="chip chip-wide"><input type="radio" name="dwellingType" value="unit"><span>Unit<small>Individually titled, usually with its own roof access</small></span></label>
+            <label class="chip chip-wide"><input type="radio" name="dwellingType" value="apartment"><span>Apartment<small>Multi-storey building, shared roof</small></span></label>
           </div>
         </div>
         <div class="cond" id="aptNote">
-          <div class="note note-grid"><strong>Apartments follow a different path.</strong> Solar Victoria runs a dedicated Solar for Apartments stream, usually through the owners corporation rather than an individual owner. Keep going &mdash; hot water and heating upgrades may still be open to you individually.</div>
-        </div>
-        <div class="nav-btns">
-          <p class="fhint" style="margin:0;max-width:20rem">Nothing is sent anywhere while you answer.</p>
-          <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
-        </div>
-      </section>
-
-      <section class="step" data-step="own">
-        <h2>Your relationship to the property</h2>
-        <p class="step-sub">The single biggest determinant of what you can claim.</p>
-        <div class="field">
-          <span class="flabel">Which describes you?</span>
-          <div class="chips" role="radiogroup" aria-label="Ownership">
-            <label class="chip chip-wide"><input type="radio" name="ownership" value="owner_occupier" checked><span>I own it and live here<small>Full access to Solar Homes if you meet the income and value tests</small></span></label>
-            <label class="chip chip-wide"><input type="radio" name="ownership" value="landlord"><span>I own it and rent it out<small>Routes through Solar Victoria's rental stream</small></span></label>
-            <label class="chip chip-wide"><input type="radio" name="ownership" value="tenant"><span>I rent here<small>Some upgrades need your landlord, but not all of them</small></span></label>
-          </div>
-        </div>
-        <div class="cond" id="tenantNote">
-          <div class="note"><strong>You're not at a dead end, but the path is different.</strong> The solar rebate is claimed by the owner, not you. Two things still matter: from 1 March 2027 Victorian rental minimum standards mean gas heating and hot water can't be replaced with gas at end of life, and Solar Victoria runs a Solar for Rentals stream your landlord can apply through. Finish this and we'll send you a one-page summary written for a landlord or agent.</div>
+          <div class="note note-peak"><strong>Apartments aren't eligible through this pathway.</strong> Roof access is normally shared and controlled by the owners corporation, so an individual rebate application doesn't apply here. Continue and we'll explain the alternative.</div>
         </div>
         <div class="nav-btns">
           <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
+          <button type="button" class="btn btn-volt spacer" id="dwellingNext">Continue</button>
         </div>
       </section>
 
+      <!-- ── INELIGIBLE (apartment dead end) ── -->
+      <section class="step" data-step="ineligible">
+        <div class="dead">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke-linecap="round"/></svg>
+          <h2>This one's not for us — yet</h2>
+          <p>
+            Apartment buildings usually put the roof under the owners corporation's control, not any
+            individual apartment owner, so we can't run an individual eligibility check the way we can
+            for a house or unit.
+          </p>
+          <p>
+            Solar Victoria runs a separate <strong>Solar for Apartments</strong> stream that works
+            through the owners corporation rather than one resident. Worth raising at your next owners
+            corporation or body corporate meeting — that's the path that actually applies here.
+          </p>
+          <div class="nav-btns">
+            <button type="button" class="btn btn-ghost" id="deadBack">Choose a different property type</button>
+            <a class="btn btn-volt" href="index.html">Back to Voltside</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── BUSINESS ── -->
       <section class="step" data-step="biz">
         <h2>About the business</h2>
         <p class="step-sub">Commercial programs test employee numbers and tenure rather than household income.</p>
+        <div class="field">
+          <label class="flabel" for="bizPostcode">Postcode</label>
+          <p class="fhint">We operate across Victoria. Postcodes here start with 3.</p>
+          <input class="input num" id="bizPostcode" name="bizPostcode" type="text" inputmode="numeric" maxlength="4" placeholder="3121" autocomplete="postal-code">
+          <p class="errmsg" data-err="bizPostcode">Enter a Victorian postcode between 3000 and 3999.</p>
+        </div>
         <div class="field">
           <label class="flabel" for="businessName">Business name</label>
           <input class="input" id="businessName" name="businessName" type="text" placeholder="Northside Joinery Pty Ltd" autocomplete="organization">
@@ -299,11 +366,11 @@ details.acc .accb li{margin-bottom:.3rem}
           </div>
           <div class="field">
             <span class="flabel">How many people work here?</span>
-            <p class="fhint">Solar for Business is limited to 1&ndash;20 employees.</p>
+            <p class="fhint">Solar for Business is limited to 1–20 employees.</p>
             <div class="chips" role="radiogroup" aria-label="Employee count">
-              <label class="chip"><input type="radio" name="employees" value="1-5" checked><span>1&ndash;5</span></label>
-              <label class="chip"><input type="radio" name="employees" value="6-20"><span>6&ndash;20</span></label>
-              <label class="chip"><input type="radio" name="employees" value="21-50"><span>21&ndash;50</span></label>
+              <label class="chip"><input type="radio" name="employees" value="1-5" checked><span>1–5</span></label>
+              <label class="chip"><input type="radio" name="employees" value="6-20"><span>6–20</span></label>
+              <label class="chip"><input type="radio" name="employees" value="21-50"><span>21–50</span></label>
               <label class="chip"><input type="radio" name="employees" value="50+"><span>50+</span></label>
             </div>
           </div>
@@ -318,11 +385,11 @@ details.acc .accb li{margin-bottom:.3rem}
         <div class="cond" id="leaseBlock">
           <div class="field" style="margin-bottom:1.1rem">
             <span class="flabel">How long is left on the lease?</span>
-            <p class="fhint">Payback usually runs 3&ndash;7 years, so remaining tenure matters more than people expect.</p>
+            <p class="fhint">Payback usually runs 3–7 years, so remaining tenure matters more than people expect.</p>
             <div class="chips" role="radiogroup" aria-label="Lease remaining">
               <label class="chip"><input type="radio" name="leaseYears" value="0-3" checked><span>Under 3 years</span></label>
-              <label class="chip"><input type="radio" name="leaseYears" value="3-5"><span>3&ndash;5 years</span></label>
-              <label class="chip"><input type="radio" name="leaseYears" value="5-7"><span>5&ndash;7 years</span></label>
+              <label class="chip"><input type="radio" name="leaseYears" value="3-5"><span>3–5 years</span></label>
+              <label class="chip"><input type="radio" name="leaseYears" value="5-7"><span>5–7 years</span></label>
               <label class="chip"><input type="radio" name="leaseYears" value="7+"><span>Over 7 years</span></label>
             </div>
           </div>
@@ -348,21 +415,59 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
-      <section class="step" data-step="interest">
-        <h2>What are you weighing up?</h2>
-        <p class="step-sub">Pick as many as you like. Most people arrive thinking about solar and leave having found hot water was the faster payback.</p>
+      <!-- ── OWNERSHIP (residential) ── -->
+      <section class="step" data-step="own">
+        <h2>Your relationship to the property</h2>
+        <p class="step-sub">The single biggest determinant of what you can claim.</p>
         <div class="field">
-          <span class="flabel">Upgrades you're considering</span>
-          <div class="chips" role="group" aria-label="Upgrades of interest">
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="solar" checked><span>Solar panels</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="battery"><span>Battery storage</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="hotwater"><span>Hot water</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="heating"><span>Heating &amp; cooling</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="insulation"><span>Insulation</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="ev"><span>EV charger</span></label>
-            <label class="chip chip-multi"><input type="checkbox" name="interest" value="unsure"><span>Not sure &mdash; advise me</span></label>
+          <span class="flabel">Which describes you?</span>
+          <div class="chips" role="radiogroup" aria-label="Ownership">
+            <label class="chip chip-wide"><input type="radio" name="ownership" value="owner_occupier" checked><span>I own it and live here<small>Full access to Solar Homes if you meet the income and value tests</small></span></label>
+            <label class="chip chip-wide"><input type="radio" name="ownership" value="landlord"><span>I own it and rent it out<small>Routes through Solar Victoria's rental stream</small></span></label>
+            <label class="chip chip-wide"><input type="radio" name="ownership" value="tenant"><span>I rent here<small>Some upgrades need your landlord, but not all of them</small></span></label>
           </div>
-          <p class="errmsg" data-err="interest">Choose at least one, or select "not sure".</p>
+        </div>
+        <div class="cond" id="tenantNote">
+          <div class="note"><strong>You're not at a dead end, but the path is different.</strong> The solar rebate is claimed by the owner, not you. Two things still matter: from 1 March 2027 Victorian rental minimum standards mean gas heating and hot water can't be replaced with gas at end of life, and Solar Victoria runs a Solar for Rentals stream your landlord can apply through. Finish this and we'll send you a one-page summary written for a landlord or agent.</div>
+        </div>
+        <div class="nav-btns">
+          <button type="button" class="btn btn-ghost" data-back>Back</button>
+          <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
+        </div>
+      </section>
+
+      <!-- ── INTEREST ── -->
+      <section class="step" data-step="interest">
+        <h2>What are you after?</h2>
+        <p class="step-sub">Solar generates power. A battery stores it for later, so it's there in the evening peak instead of exported for a few cents a unit.</p>
+        <div class="field">
+          <div class="bigchoices" role="radiogroup" aria-label="Solar, battery, or both">
+            <label class="bigchoice bigchoice-lg">
+              <input type="radio" name="interest" value="solar">
+              <span>
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="9" width="22" height="14" rx="1"/><path d="M5 14.5h22M5 18.5h22M12 9v14M20 9v14"/></svg>
+                <span class="bc-label">Solar panels</span>
+                <span class="bc-sub">Generate your own power</span>
+              </span>
+            </label>
+            <label class="bigchoice bigchoice-lg">
+              <input type="radio" name="interest" value="battery">
+              <span>
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="6" width="14" height="21" rx="3"/><path d="M13 4v3M19 4v3" stroke-linecap="round"/><path d="M17.2 12 12 19.5h4l-1 4.5 5.8-8.5H17l.2-3.5Z" fill="currentColor" stroke="none"/></svg>
+                <span class="bc-label">Battery</span>
+                <span class="bc-sub">Store power for later</span>
+              </span>
+            </label>
+            <label class="bigchoice bigchoice-lg">
+              <input type="radio" name="interest" value="both">
+              <span>
+                <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="7" width="16" height="11" rx="1"/><path d="M4 11.7h16M4 14.7h16M9.3 7v11M14.7 7v11"/><path d="M23 13l-4.8 6.6h3.2L20 26l6-7.6h-3.4L23 13Z" fill="currentColor" stroke="none"/></svg>
+                <span class="bc-label">Solar + battery</span>
+                <span class="bc-sub">Generate and store</span>
+              </span>
+            </label>
+          </div>
+          <p class="errmsg" data-err="interest" style="margin-top:.7rem">Pick one to continue — you can change it later.</p>
         </div>
         <div class="field">
           <span class="flabel">When would you want this done?</span>
@@ -379,17 +484,18 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── ENERGY (+ storeys / building age folded in) ── -->
       <section class="step" data-step="energy">
-        <h2>What you're currently spending</h2>
+        <h2>What you're currently spending — and the property itself</h2>
         <p class="step-sub">Your bill is the most reliable input we have. We work backwards from it to estimate consumption.</p>
         <div class="row2">
           <div class="field">
             <label class="flabel" for="elecBill">Quarterly electricity bill</label>
             <p class="fhint">An average across the year if it swings.</p>
-            <div class="money"><span>$</span><input class="input num" id="elecBill" name="elecBill" type="number" inputmode="decimal" min="50" max="50000" placeholder="450"></div>
+            <div class="prefixed"><span>$</span><input class="input num" id="elecBill" name="elecBill" type="number" inputmode="decimal" min="50" max="50000" placeholder="450"></div>
             <p class="errmsg" data-err="elecBill">Enter a figure between $50 and $50,000.</p>
           </div>
-          <div class="field">
+          <div class="field cond" id="householdBlock" data-show="true">
             <span class="flabel">People in the household</span>
             <div class="chips" role="radiogroup" aria-label="Household size">
               <label class="chip"><input type="radio" name="household" value="1"><span>1</span></label>
@@ -400,40 +506,8 @@ details.acc .accb li{margin-bottom:.3rem}
             </div>
           </div>
         </div>
+
         <div class="field">
-          <span class="flabel">Is the property connected to mains gas?</span>
-          <p class="fhint">From 1 January 2027 new Victorian buildings can't connect to gas at all.</p>
-          <div class="chips" role="radiogroup" aria-label="Gas connection">
-            <label class="chip"><input type="radio" name="gas" value="yes" checked><span>Yes, we use gas</span></label>
-            <label class="chip"><input type="radio" name="gas" value="no"><span>No, all electric</span></label>
-          </div>
-        </div>
-        <div class="cond" id="gasBlock">
-          <div class="field">
-            <label class="flabel" for="gasBill">Quarterly gas bill <span style="font-weight:400;color:var(--ink-3)">(optional)</span></label>
-            <p class="fhint">Heat pumps and reverse-cycle cut gas rather than electricity, so without this we'd be guessing.</p>
-            <div class="money"><span>$</span><input class="input num" id="gasBill" name="gasBill" type="number" inputmode="decimal" min="0" max="20000" placeholder="280"></div>
-          </div>
-          <div class="field">
-            <span class="flabel">How is your water heated?</span>
-            <div class="chips" role="radiogroup" aria-label="Hot water type">
-              <label class="chip"><input type="radio" name="hotWater" value="gas" checked><span>Gas</span></label>
-              <label class="chip"><input type="radio" name="hotWater" value="electric"><span>Electric tank</span></label>
-              <label class="chip"><input type="radio" name="hotWater" value="heatpump"><span>Heat pump already</span></label>
-              <label class="chip"><input type="radio" name="hotWater" value="solar"><span>Solar hot water</span></label>
-            </div>
-          </div>
-          <div class="field" style="margin-bottom:0">
-            <span class="flabel">Main heating</span>
-            <div class="chips" role="radiogroup" aria-label="Heating type">
-              <label class="chip"><input type="radio" name="heating" value="ducted" checked><span>Gas ducted</span></label>
-              <label class="chip"><input type="radio" name="heating" value="wall"><span>Gas wall or space heater</span></label>
-              <label class="chip"><input type="radio" name="heating" value="rc"><span>Reverse-cycle already</span></label>
-              <label class="chip"><input type="radio" name="heating" value="other"><span>Something else</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="field" style="margin-top:1.4rem">
           <span class="flabel">Any solar on the roof already?</span>
           <div class="chips" role="radiogroup" aria-label="Existing solar">
             <label class="chip"><input type="radio" name="existingSolar" value="none" checked><span>No panels</span></label>
@@ -447,56 +521,14 @@ details.acc .accb li{margin-bottom:.3rem}
             <p class="fhint">Systems past about ten years often have inverters near end of life, which changes the battery maths.</p>
             <div class="chips" role="radiogroup" aria-label="System age">
               <label class="chip"><input type="radio" name="solarAge" value="0-5" checked><span>Under 5 years</span></label>
-              <label class="chip"><input type="radio" name="solarAge" value="5-10"><span>5&ndash;10 years</span></label>
+              <label class="chip"><input type="radio" name="solarAge" value="5-10"><span>5–10 years</span></label>
               <label class="chip"><input type="radio" name="solarAge" value="10+"><span>Over 10 years</span></label>
               <label class="chip"><input type="radio" name="solarAge" value="unsure"><span>No idea</span></label>
             </div>
           </div>
         </div>
-        <div class="nav-btns">
-          <button type="button" class="btn btn-ghost" data-back>Back</button>
-          <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
-        </div>
-      </section>
 
-      <section class="step" data-step="roof">
-        <h2>The roof itself</h2>
-        <p class="step-sub">A rough answer is fine. We verify all of it against satellite imagery before anyone quotes you.</p>
-        <div class="field">
-          <span class="flabel">Roof material</span>
-          <div class="chips" role="radiogroup" aria-label="Roof material">
-            <label class="chip"><input type="radio" name="roofType" value="colorbond" checked><span>Colorbond or steel</span></label>
-            <label class="chip"><input type="radio" name="roofType" value="tile"><span>Tile</span></label>
-            <label class="chip"><input type="radio" name="roofType" value="flat"><span>Flat or membrane</span></label>
-            <label class="chip"><input type="radio" name="roofType" value="other"><span>Something else</span></label>
-          </div>
-        </div>
-        <div class="row2">
-          <div class="field">
-            <span class="flabel">Which way does the main roof face?</span>
-            <p class="fhint">North is best in Victoria. Guess if you need to.</p>
-            <div class="chips" role="radiogroup" aria-label="Roof orientation">
-              <label class="chip"><input type="radio" name="orientation" value="n" checked><span>North</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="ne"><span>NE</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="nw"><span>NW</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="e"><span>East</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="w"><span>West</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="s"><span>South</span></label>
-              <label class="chip"><input type="radio" name="orientation" value="unsure"><span>Not sure</span></label>
-            </div>
-          </div>
-          <div class="field">
-            <span class="flabel">Shading between 9am and 4pm</span>
-            <p class="fhint">Trees, neighbours, chimneys.</p>
-            <div class="chips" role="radiogroup" aria-label="Shading">
-              <label class="chip"><input type="radio" name="shading" value="none" checked><span>Clear all day</span></label>
-              <label class="chip"><input type="radio" name="shading" value="minor"><span>A little</span></label>
-              <label class="chip"><input type="radio" name="shading" value="major"><span>A lot</span></label>
-              <label class="chip"><input type="radio" name="shading" value="unsure"><span>Not sure</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="row2">
+        <div class="row2" style="margin-top:1.4rem">
           <div class="field">
             <span class="flabel">Storeys</span>
             <div class="chips" role="radiogroup" aria-label="Storeys">
@@ -510,56 +542,29 @@ details.acc .accb li{margin-bottom:.3rem}
             <p class="fhint">Older switchboards sometimes need upgrading first.</p>
             <div class="chips" role="radiogroup" aria-label="Building age">
               <label class="chip"><input type="radio" name="buildingAge" value="0-10"><span>Under 10 yrs</span></label>
-              <label class="chip"><input type="radio" name="buildingAge" value="10-20" checked><span>10&ndash;20 yrs</span></label>
+              <label class="chip"><input type="radio" name="buildingAge" value="10-20" checked><span>10–20 yrs</span></label>
               <label class="chip"><input type="radio" name="buildingAge" value="20+"><span>Over 20 yrs</span></label>
             </div>
           </div>
         </div>
-        <div class="field">
-          <span class="flabel">When is the property busiest?</span>
-          <p class="fhint">This decides whether a battery earns its keep. Victorian peak rates run 4&ndash;9pm.</p>
-          <div class="chips" role="radiogroup" aria-label="Usage pattern">
-            <label class="chip"><input type="radio" name="pattern" value="day"><span>Someone's here during the day</span></label>
-            <label class="chip"><input type="radio" name="pattern" value="evening" checked><span>Evenings and weekends</span></label>
-            <label class="chip"><input type="radio" name="pattern" value="mixed"><span>A bit of both</span></label>
-          </div>
-        </div>
+
         <div class="nav-btns">
           <button type="button" class="btn btn-ghost" data-back>Back</button>
           <button type="button" class="btn btn-volt spacer" data-next>Continue</button>
         </div>
       </section>
 
+      <!-- ── ELIGIBILITY (residential) ── -->
       <section class="step" data-step="elig">
-        <h2>The eligibility tests</h2>
-        <p class="step-sub">Solar Victoria applies an income test and a property value cap. We ask for a band, never a figure.</p>
+        <h2>A couple of quick checks</h2>
+        <p class="step-sub">The income and property-value tests happen properly during your consultation — these two are enough to get started.</p>
         <div class="field">
-          <span class="flabel">Combined household income, before tax</span>
-          <p class="fhint">The Solar Homes threshold dropped to $150,000 for applications lodged after 30 June 2026. Federal certificates and the VEU program have no income test at all.</p>
-          <div class="chips" role="radiogroup" aria-label="Income band">
-            <label class="chip"><input type="radio" name="income" value="under100" checked><span>Under $100,000</span></label>
-            <label class="chip"><input type="radio" name="income" value="100-150"><span>$100,000&ndash;$150,000</span></label>
-            <label class="chip"><input type="radio" name="income" value="over150"><span>Over $150,000</span></label>
-            <label class="chip"><input type="radio" name="income" value="decline"><span>Rather not say</span></label>
-          </div>
-        </div>
-        <div class="row2">
-          <div class="field">
-            <span class="flabel">Property valued under $3 million?</span>
-            <div class="chips" role="radiogroup" aria-label="Property value">
-              <label class="chip"><input type="radio" name="propertyValue" value="under" checked><span>Yes</span></label>
-              <label class="chip"><input type="radio" name="propertyValue" value="over"><span>No</span></label>
-              <label class="chip"><input type="radio" name="propertyValue" value="unsure"><span>Not sure</span></label>
-            </div>
-          </div>
-          <div class="field">
-            <span class="flabel">Claimed a Solar Homes PV rebate here before?</span>
-            <p class="fhint">One per property per decade. Hot water counts separately.</p>
-            <div class="chips" role="radiogroup" aria-label="Prior rebate">
-              <label class="chip"><input type="radio" name="priorRebate" value="no" checked><span>No</span></label>
-              <label class="chip"><input type="radio" name="priorRebate" value="yes"><span>Yes</span></label>
-              <label class="chip"><input type="radio" name="priorRebate" value="unsure"><span>Not sure</span></label>
-            </div>
+          <span class="flabel">Claimed a Solar Homes PV rebate here before?</span>
+          <p class="fhint">One per property per decade.</p>
+          <div class="chips" role="radiogroup" aria-label="Prior rebate">
+            <label class="chip"><input type="radio" name="priorRebate" value="no" checked><span>No</span></label>
+            <label class="chip"><input type="radio" name="priorRebate" value="yes"><span>Yes</span></label>
+            <label class="chip"><input type="radio" name="priorRebate" value="unsure"><span>Not sure</span></label>
           </div>
         </div>
         <div class="field">
@@ -576,9 +581,10 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── ADDRESS ── -->
       <section class="step" data-step="address">
         <h2>Where is it, exactly?</h2>
-        <p class="step-sub">We check roof orientation and shading on satellite imagery before your consultation, so the numbers we bring are yours rather than typical.</p>
+        <p class="step-sub">We check the roof against satellite imagery before your consultation, so the numbers we bring are yours rather than typical.</p>
         <div class="field">
           <label class="flabel" for="street">Street address</label>
           <input class="input" id="street" name="street" type="text" placeholder="12 Bridge Road" autocomplete="street-address">
@@ -593,7 +599,7 @@ details.acc .accb li{margin-bottom:.3rem}
           <div class="field">
             <label class="flabel" for="postcode2">Postcode</label>
             <input class="input num" id="postcode2" name="postcodeConfirm" type="text" inputmode="numeric" maxlength="4" readonly>
-            <p class="fhint" style="margin-top:.35rem">Carried over from step one.</p>
+            <p class="fhint" style="margin-top:.35rem">Carried over from earlier.</p>
           </div>
         </div>
         <div class="nav-btns">
@@ -602,6 +608,7 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── CONTACT + CONSENT ── -->
       <section class="step" data-step="contact">
         <h2>Where should we send the result?</h2>
         <p class="step-sub">You'll get a written summary listing every program you qualify for, the ones you don't and why, and the assumptions behind each figure.</p>
@@ -626,7 +633,7 @@ details.acc .accb li{margin-bottom:.3rem}
           <div class="field">
             <label class="flabel" for="phone">Mobile</label>
             <p class="fhint">We'll text a code to confirm it's yours.</p>
-            <input class="input num" id="phone" name="phone" type="tel" placeholder="0412 345 678" autocomplete="tel">
+            <div class="prefixed tel"><span>+61</span><input class="input num" id="phone" name="phone" type="tel" placeholder="412 345 678" autocomplete="tel"></div>
             <p class="errmsg" data-err="phone">Enter a mobile number of at least 8 digits.</p>
           </div>
         </div>
@@ -637,7 +644,7 @@ details.acc .accb li{margin-bottom:.3rem}
           </div>
           <div class="consent">
             <input type="checkbox" id="consentShare" name="consentShare">
-            <label for="consentShare"><b>Yes, pass my details to one accredited installer.</b> <span class="req">Required to proceed.</span> Voltside doesn't install. We name the installer before we send anything, and we share with <b>one</b> &mdash; never a panel.</label>
+            <label for="consentShare"><b>Yes, pass my details to one accredited installer.</b> <span class="req">Required to proceed.</span> Voltside doesn't install. We name the installer before we send anything, and we share with <b>one</b> — never a panel.</label>
           </div>
           <div class="consent">
             <input type="checkbox" id="consentUpdates" name="consentUpdates">
@@ -660,6 +667,7 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── OTP ── -->
       <section class="step" data-step="otp">
         <h2>Confirm your mobile</h2>
         <p class="step-sub">We've sent a six-digit code to <strong id="otpPhone">your mobile</strong>. This stops other people submitting your number, and means we only ever call someone who asked us to.</p>
@@ -680,7 +688,7 @@ details.acc .accb li{margin-bottom:.3rem}
           </p>
         </div>
         <div class="dev">
-          <strong>Placeholder.</strong> SMS delivery isn't wired up yet &mdash; any six digits will pass.
+          <strong>Placeholder.</strong> SMS delivery isn't wired up yet — any six digits will pass.
           Before launch this needs a provider (Twilio, MessageMedia or similar), a resend rate limit, an
           expiry window, and a lockout after repeated failures.
         </div>
@@ -690,9 +698,10 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── RESULTS ── -->
       <section class="step" data-step="results">
         <div class="res-hero">
-          <p class="eyebrow">Your assessment &mdash; estimate, not a quote</p>
+          <p class="eyebrow">Your assessment — estimate, not a quote</p>
           <h2 id="resHeadline">Here's what you qualify for</h2>
           <div class="res-figs">
             <div class="res-fig"><div class="n" id="rPrograms">0</div><div class="l">Programs you appear to qualify for</div></div>
@@ -701,7 +710,7 @@ details.acc .accb li{margin-bottom:.3rem}
           </div>
         </div>
         <h3 style="font-size:1.05rem;margin-bottom:.2rem">Programs assessed</h3>
-        <p style="font-size:.86rem;color:var(--ink-2);margin-bottom:.4rem">Including the ones you don't qualify for, and why &mdash; that's usually the more useful half.</p>
+        <p style="font-size:.86rem;color:var(--ink-2);margin-bottom:.4rem">Including the ones you don't qualify for, and why — that's usually the more useful half.</p>
         <div class="prog-list" id="progList"></div>
         <div id="pkgWrap">
           <h3 style="font-size:1.05rem;margin-bottom:.2rem">What it would cost you</h3>
@@ -726,10 +735,16 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
         <div class="nav-btns">
           <button type="button" class="btn btn-ghost" data-back>Change my answers</button>
-          <button type="button" class="btn btn-volt spacer" data-next>Book my consultation</button>
+          <span class="spacer"></span>
+          <button type="button" class="btn btn-ghost" id="callbackNav">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 2.5h2.5L7 6 5.3 7.2a7 7 0 0 0 3.5 3.5L10 9l3.5 1.5V13c0 .8-.7 1.5-1.5 1.4C6.7 13.9 2.1 9.3 1.6 4c-.1-.8.6-1.5 1.4-1.5Z" stroke-linejoin="round"/></svg>
+            Get someone to call me
+          </button>
+          <button type="button" class="btn btn-volt" id="bookNav">Book my consultation</button>
         </div>
       </section>
 
+      <!-- ── BOOKING (full consultation) ── -->
       <section class="step" data-step="booking">
         <h2>Pick a time that suits</h2>
         <p class="step-sub">Thirty minutes with a consultant who'll verify eligibility properly, size against your real meter data, and put a written proposal in front of you. No obligation, no fee.</p>
@@ -737,19 +752,24 @@ details.acc .accb li{margin-bottom:.3rem}
           <span class="flabel">How would you like to meet?</span>
           <div class="chips" role="radiogroup" aria-label="Consultation format">
             <label class="chip"><input type="radio" name="format" value="phone" checked><span>Phone call</span></label>
-            <label class="chip"><input type="radio" name="format" value="video"><span>Video call</span></label>
-            <label class="chip"><input type="radio" name="format" value="onsite"><span>Visit the property</span></label>
+            <label class="chip"><input type="radio" name="format" value="online"><span>Online Zoom / Google Meet</span></label>
           </div>
         </div>
         <div class="field">
-          <span class="flabel">Choose a day</span>
-          <p class="fhint">Next ten business days.</p>
+          <span class="flabel">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5 1.5v2.5M11 1.5v2.5" stroke-linecap="round"/></svg>
+            Choose a day
+          </span>
+          <p class="fhint">Next 10 days, including weekends.</p>
           <div class="days" id="dayGrid"></div>
           <p class="errmsg" data-err="day">Choose a day for the consultation.</p>
         </div>
         <div class="field">
-          <span class="flabel">Choose a time</span>
-          <p class="fhint">All times are Melbourne time.</p>
+          <span class="flabel">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Choose a time
+          </span>
+          <p class="fhint">All times are AEST.</p>
           <div class="slots" id="slotGrid"></div>
           <p class="errmsg" data-err="slot">Choose a time slot.</p>
         </div>
@@ -768,19 +788,52 @@ details.acc .accb li{margin-bottom:.3rem}
         </div>
       </section>
 
+      <!-- ── CALLBACK (lighter-weight) ── -->
+      <section class="step" data-step="callback">
+        <h2>When's a good time to call?</h2>
+        <p class="step-sub">No need to commit to a full consultation slot — give us a two-hour window and someone will ring you then.</p>
+        <div class="field">
+          <span class="flabel">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5 1.5v2.5M11 1.5v2.5" stroke-linecap="round"/></svg>
+            Choose a day
+          </span>
+          <p class="fhint">Next 10 days, including weekends.</p>
+          <div class="days" id="cbDayGrid"></div>
+          <p class="errmsg" data-err="cbday">Choose a day for the call.</p>
+        </div>
+        <div class="field">
+          <span class="flabel">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Choose a window
+          </span>
+          <p class="fhint">Two-hour windows. All times are AEST.</p>
+          <div class="slots slots-wide" id="cbSlotGrid"></div>
+          <p class="errmsg" data-err="cbslot">Choose a two-hour window.</p>
+        </div>
+        <p class="disclosure">
+          Requesting a callback places you under no obligation. Our
+          <a href="privacy.html" target="_blank" rel="noopener">privacy policy</a> and
+          <a href="terms.html" target="_blank" rel="noopener">terms of use</a> continue to apply.
+        </p>
+        <div class="nav-btns">
+          <button type="button" class="btn btn-ghost" id="cbBack">Back to my result</button>
+          <button type="button" class="btn btn-volt spacer" id="cbConfirmBtn">Confirm callback request</button>
+        </div>
+      </section>
+
+      <!-- ── DONE ── -->
       <section class="step" data-step="done">
         <div class="done">
           <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
             <circle cx="32" cy="32" r="30" stroke="#12615E" stroke-width="3"/>
             <path d="M19 33.5 28 42l17-19" stroke="#FFCE1F" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <h2>Booked. See you <span id="doneWhen">then</span>.</h2>
-          <p>A confirmation and your full written assessment are on the way to <strong id="doneEmail">your inbox</strong>.</p>
+          <h2 id="doneHeadline">Booked.</h2>
+          <p id="doneBody">A confirmation is on the way.</p>
           <div class="ref">Reference <strong id="doneRef">VS-000000</strong></div>
           <div class="note note-grid" style="text-align:left;max-width:36rem;margin:1.6rem auto 0">
-            <strong>Worth doing before we speak.</strong> Dig out a recent electricity bill, and a gas bill
-            if you have one. Actual meter data sharpens the estimate considerably &mdash; the difference
-            between a typical figure and your figure.
+            <strong>Worth doing before we speak.</strong> Dig out a recent electricity bill — actual meter
+            data sharpens the estimate considerably, the difference between a typical figure and your figure.
           </div>
         </div>
       </section>
@@ -790,7 +843,7 @@ details.acc .accb li{margin-bottom:.3rem}
 
 <footer class="foot">
   <div class="foot-in">
-    <p><a href="index.html">Home</a> &middot; <a href="privacy.html">Privacy policy</a> &middot; <a href="terms.html">Terms of use</a></p>
+    <p><a href="index.html">Home</a> · <a href="privacy.html">Privacy policy</a> · <a href="terms.html">Terms of use</a></p>
     <div class="fine">
       <p>Voltside operates as a referral service for energy upgrades, partnering with accredited installers
       who carry out the work and lodge rebate applications. We do not install equipment and are not a
@@ -800,10 +853,10 @@ details.acc .accb li{margin-bottom:.3rem}
       <a href="privacy.html">privacy policy</a>.</p>
       <p>Estimates are modelled from the information you provide and published assumptions. They are not
       quotes and not offers. Eligibility for any government program is determined by the administering body
-      &mdash; Solar Victoria, the Essential Services Commission or the Clean Energy Regulator. Certificate
-      values (STCs and VEECs) are set by market trading and change frequently.</p>
+      — Solar Victoria, the Essential Services Commission or the Clean Energy Regulator. Certificate values
+      (STCs and battery certificates) are set by market trading and change frequently.</p>
       <p style="color:rgba(255,255,255,.3)">Demonstration site. ABN, NETCC signatory number and complaints
-      process to be added before launch. &copy; 2026 Voltside.</p>
+      process to be added before launch. © 2026 Voltside.</p>
     </div>
   </div>
 </footer>
@@ -814,23 +867,16 @@ details.acc .accb li{margin-bottom:.3rem}
 var $  = function(s,c){ return (c||document).querySelector(s); };
 var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
 var val = function(n){ var e=document.querySelector('input[name="'+n+'"]:checked'); return e?e.value:null; };
-var multi = function(n){ return $$('input[name="'+n+'"]:checked').map(function(c){return c.value;}); };
 var money = function(n){ return '$' + Math.round(n).toLocaleString('en-AU'); };
 
 var A = {
   tariff:0.282, supply:1.27, peak:0.42, fit:0.04,
-  genPerKw:1300,
-  orient:{n:1.00,ne:0.96,nw:0.96,e:0.85,w:0.85,s:0.68,flat:0.93,unsure:0.92},
-  shade:{none:1.00,minor:0.92,major:0.70,unsure:0.90},
-  selfUse:{day:0.45,mixed:0.38,evening:0.30}, selfUseBattery:0.72,
+  genPerKw:1300, derateDefault:0.92,
+  selfUse:{day:0.45, mixed:0.38, evening:0.30}, selfUseBattery:0.72,
   solarFixed:1000, solarPerKw:850,
   stcRating:1.185, stcDeeming:5, stcPrice:39.85,
   shRebate:1400, shLoan:1400,
   battPerKwh:750, battRebatePerKwh:260, battRebateFullTier:14,
-  hpPrice:4200, hpVeec:700, hpRebateCap:1000, hpSaveGas:400, hpSaveElec:550,
-  rcPrice:9000, rcVeec:3000, rcSaveDucted:650, rcSaveWall:380,
-  insPrice:2600, insVeec:900, insSave:280,
-  evPrice:1900, evSave:340,
   bizSolarRebate:3500
 };
 
@@ -850,51 +896,54 @@ var A = {
   var seg=new URLSearchParams(location.search).get('segment');
   if(!seg) return;
   var pick=function(n,v){ var e=document.querySelector('input[name="'+n+'"][value="'+v+'"]'); if(e) e.checked=true; };
-  if(seg==='commercial') pick('propertyType','business');
-  if(seg==='battery'){
-    pick('interest','battery');
-    var s=document.querySelector('input[name="interest"][value="solar"]'); if(s) s.checked=false;
-    pick('existingSolar','small');
-  }
+  if(seg==='commercial') pick('entityType','business');
+  if(seg==='battery'){ pick('interest','battery'); pick('existingSolar','small'); }
 })();
 
-function wantsRoofWork(){
-  var i=multi('interest');
-  if(i.indexOf('unsure')!==-1) return true;
-  return i.indexOf('solar')!==-1 || i.indexOf('battery')!==-1;
-}
+/* ── flow ── */
 var FLOW=[
-  {id:'loc',      show:function(){return true;}},
-  {id:'own',      show:function(){return val('propertyType')!=='business';}},
-  {id:'biz',      show:function(){return val('propertyType')==='business';}},
-  {id:'interest', show:function(){return true;}},
-  {id:'energy',   show:function(){return true;}},
-  {id:'roof',     show:function(){return wantsRoofWork();}},
-  {id:'elig',     show:function(){return val('propertyType')!=='business';}},
-  {id:'address',  show:function(){return true;}},
-  {id:'contact',  show:function(){return true;}},
-  {id:'otp',      show:function(){return true;}},
-  {id:'results',  show:function(){return true;}},
-  {id:'booking',  show:function(){return true;}},
-  {id:'done',     show:function(){return true;}}
+  {id:'entity',  show:function(){return true;}},
+  {id:'dwelling',show:function(){return val('entityType')==='residential';}},
+  {id:'biz',     show:function(){return val('entityType')==='business';}},
+  {id:'own',     show:function(){return val('entityType')==='residential' && val('dwellingType')!=='apartment';}},
+  {id:'interest',show:function(){return val('entityType')==='business' || val('dwellingType')!=='apartment';}},
+  {id:'energy',  show:function(){return val('entityType')==='business' || val('dwellingType')!=='apartment';}},
+  {id:'elig',    show:function(){return val('entityType')==='residential' && val('dwellingType')!=='apartment';}},
+  {id:'address', show:function(){return true;}},
+  {id:'contact', show:function(){return true;}},
+  {id:'otp',     show:function(){return true;}},
+  {id:'results', show:function(){return true;}},
+  {id:'booking', show:function(){return true;}},
+  {id:'done',    show:function(){return true;}}
 ];
 function visible(){ return FLOW.filter(function(s){return s.show();}); }
-var currentId='loc';
+var currentId='entity';
 
+function scrollTop(){
+  var card=$('.card');
+  window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-58,
+    behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+function paintStep(id){
+  $$('.step').forEach(function(el){ el.dataset.active=(el.dataset.step===id)?'true':'false'; });
+}
 function render(){
   var vis=visible();
   var idx=vis.findIndex(function(s){return s.id===currentId;});
   if(idx===-1){ currentId=vis[0].id; idx=0; }
-  $$('.step').forEach(function(el){ el.dataset.active=(el.dataset.step===currentId)?'true':'false'; });
+  paintStep(currentId);
   var isDone=currentId==='done';
   var total=vis.length-1;
   $('#progFill').style.width=(isDone?100:Math.round((idx/total)*100))+'%';
   $('#progLab').textContent=isDone?'Complete':'Step '+(idx+1)+' of '+total;
 }
-function scrollTop(){
-  var card=$('.card');
-  window.scrollTo({top:card.getBoundingClientRect().top+window.scrollY-58,
-    behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+/* side branches — not part of the counted linear sequence */
+function showSpecial(id, pct, label){
+  currentId=id;
+  paintStep(id);
+  $('#progFill').style.width=pct+'%';
+  $('#progLab').textContent=label;
+  scrollTop();
 }
 function go(dir){
   var vis=visible();
@@ -902,8 +951,7 @@ function go(dir){
   var n=idx+dir;
   if(n<0||n>=vis.length) return;
   currentId=vis[n].id;
-  if(currentId==='results') computeAndRender();
-  if(currentId==='booking') buildCalendar();
+  if(currentId==='booking') buildBookingCalendar();
   render(); scrollTop();
 }
 
@@ -912,17 +960,21 @@ function markErr(id,on){ var e=$('#'+id); if(e) e.classList.toggle('err',on); }
 
 function validate(id){
   var ok=true;
-  if(id==='loc'){
+  if(id==='dwelling'){
     var pc=$('#postcode').value.trim(); var bad=!/^3\d{3}$/.test(pc);
     showErr('postcode',bad); markErr('postcode',bad);
     if(bad) ok=false; else $('#postcode2').value=pc;
   }
   if(id==='biz'){
+    var pc2=$('#bizPostcode').value.trim(); var badpc=!/^3\d{3}$/.test(pc2);
+    showErr('bizPostcode',badpc); markErr('bizPostcode',badpc);
+    if(badpc) ok=false; else $('#postcode2').value=pc2;
     var bn=$('#businessName').value.trim().length<2;
-    showErr('businessName',bn); markErr('businessName',bn); if(bn) ok=false;
+    showErr('businessName',bn); markErr('businessName',bn);
+    if(bn) ok=false;
   }
   if(id==='interest'){
-    var none=multi('interest').length===0; showErr('interest',none); if(none) ok=false;
+    var none=!val('interest'); showErr('interest',none); if(none) ok=false;
   }
   if(id==='energy'){
     var v=parseFloat($('#elecBill').value); var bad2=!(v>=50&&v<=50000);
@@ -944,7 +996,7 @@ function validate(id){
     showErr('phone',ph);     markErr('phone',ph);
     showErr('consent',cs);
     if(fn||ln||em||ph||cs) ok=false;
-    if(ok) $('#otpPhone').textContent=$('#phone').value.trim();
+    if(ok) $('#otpPhone').textContent='+61 '+$('#phone').value.trim();
   }
   if(id==='otp'){
     var digits=$$('#otpBoxes input').map(function(i){return i.value.trim();});
@@ -959,12 +1011,25 @@ function validate(id){
 $$('[data-next]').forEach(function(b){ b.addEventListener('click',function(){ if(validate(currentId)) go(1); }); });
 $$('[data-back]').forEach(function(b){ b.addEventListener('click',function(){ go(-1); }); });
 
+/* dwelling continue: branch to ineligible if apartment */
+$('#dwellingNext').addEventListener('click', function(){
+  if(!validate('dwelling')) return;
+  if(val('dwellingType')==='apartment'){ showSpecial('ineligible', 46, 'Not eligible this way'); return; }
+  go(1);
+});
+$('#deadBack').addEventListener('click', function(){ currentId='dwelling'; render(); scrollTop(); });
+
+/* results → booking / callback branches */
+$('#bookNav').addEventListener('click', function(){ currentId='booking'; buildBookingCalendar(); render(); scrollTop(); });
+$('#callbackNav').addEventListener('click', function(){ buildCallbackCalendar(); showSpecial('callback', 92, 'Arranging a callback'); });
+$('#cbBack').addEventListener('click', function(){ currentId='results'; render(); scrollTop(); });
+
 function conds(){
-  $('#aptNote').dataset.show      = (val('propertyType')==='apartment')?'true':'false';
+  $('#aptNote').dataset.show      = (val('dwellingType')==='apartment')?'true':'false';
   $('#tenantNote').dataset.show   = (val('ownership')==='tenant')?'true':'false';
   $('#leaseBlock').dataset.show   = (val('premises')==='lease')?'true':'false';
-  $('#gasBlock').dataset.show     = (val('gas')==='yes')?'true':'false';
   $('#solarAgeBlock').dataset.show= (val('existingSolar')!=='none')?'true':'false';
+  $('#householdBlock').dataset.show = (val('entityType')==='residential')?'true':'false';
 }
 $$('input,select').forEach(function(el){ el.addEventListener('change',conds); });
 
@@ -992,141 +1057,98 @@ $$('input,select').forEach(function(el){ el.addEventListener('change',conds); })
 })();
 
 function computeModel(){
-  var pt=val('propertyType'), own=val('ownership'), gas=val('gas')==='yes';
-  var hw=gas?val('hotWater'):'electric', heat=gas?val('heating'):'rc';
-  var existing=val('existingSolar'), orient=val('orientation')||'n', shade=val('shading')||'none';
-  var pattern=val('pattern')||'evening', income=val('income'), pv=val('propertyValue'), prior=val('priorRebate');
-  var want=multi('interest'), wantsAll=want.indexOf('unsure')!==-1;
-  var w=function(k){ return wantsAll||want.indexOf(k)!==-1; };
-  var isBiz=pt==='business';
+  var isBiz = val('entityType')==='business';
+  var dwelling = isBiz ? null : val('dwellingType');
+  var own = isBiz ? null : val('ownership');
+  var choice = val('interest');
+  var wantsSolar = choice==='solar'||choice==='both';
+  var wantsBattery = choice==='battery'||choice==='both';
+  var existing=val('existingSolar');
+  var prior=val('priorRebate');
 
   var bill=parseFloat($('#elecBill').value)||450;
   var annualBill=bill*4, supplyYr=A.supply*365;
   var kWh=Math.min(Math.max(Math.max(annualBill-supplyYr,250)/A.tariff,1500),60000);
-  var gasQ=parseFloat($('#gasBill').value);
-  var gasSpend=gas?((isFinite(gasQ)&&gasQ>0?gasQ:280)*4):0;
 
-  var shOk=!isBiz&&own==='owner_occupier'&&pt!=='apartment'&&income!=='over150'&&pv!=='over'&&prior!=='yes';
-  var shWhy='Up to $1,400 off the invoice';
+  var shOk = !isBiz && own==='owner_occupier' && dwelling!=='apartment' && prior!=='yes';
+  var shWhy='Up to $1,400 off the invoice — income and property-value caps confirmed at consultation';
   if(isBiz) shWhy='Residential program only';
   else if(own==='tenant') shWhy='Claimed by the property owner, not the tenant';
   else if(own==='landlord') shWhy='Rentals stream applies instead';
-  else if(pt==='apartment') shWhy='Apartments stream applies instead';
-  else if(income==='over150') shWhy='Above the $150,000 income threshold';
-  else if(pv==='over') shWhy='Above the $3m property value cap';
   else if(prior==='yes') shWhy='Already claimed at this property';
 
-  var derate=A.orient[orient]*A.shade[shade];
   var canAuthorise = isBiz || own!=='tenant';
-  var kW=0, canSolar=canAuthorise&&pt!=='apartment'&&existing==='none'&&w('solar')&&shade!=='major';
+  var kW=0, canSolar = canAuthorise && wantsSolar && existing==='none' && dwelling!=='apartment';
   if(canSolar){
+    var derate = A.derateDefault;
     var ideal=(kWh*1.25)/(A.genPerKw*derate);
-    var tiers=isBiz?[6.6,10,13.2,20,30]:(pt==='townhouse'?[4.4,6.6,8.8]:[6.6,8.8,10,13.2]);
-    kW=tiers.reduce(function(b,t){ return Math.abs(t-ideal)<Math.abs(b-ideal)?t:b; },tiers[0]);
+    var tiers = isBiz ? [6.6,10,13.2,20,30] : ((dwelling==='townhouse'||dwelling==='unit') ? [4.4,6.6,8.8] : [6.6,8.8,10,13.2]);
+    kW = tiers.reduce(function(b,t){ return Math.abs(t-ideal)<Math.abs(b-ideal)?t:b; }, tiers[0]);
   }
 
-  var lines=[], gross=0, support=0, net=0, save=0, elecSave=0, gasSave=0;
-  function push(o){ lines.push(o); gross+=o.gross; support+=o.support; net+=o.net; save+=o.save;
-    if(o.fuel==='gas') gasSave+=o.save; else elecSave+=o.save; }
+  var lines=[], gross=0, support=0, net=0, save=0;
+  function push(o){ lines.push(o); gross+=o.gross; support+=o.support; net+=o.net; save+=o.save; }
 
   var gen=0, stc=0;
   if(kW>0){
-    gen=kW*A.genPerKw*derate;
-    var selfUsed=Math.min(gen*A.selfUse[pattern],kWh), exported=Math.max(gen-selfUsed,0);
+    gen=kW*A.genPerKw*A.derateDefault;
+    var selfUsed=Math.min(gen*A.selfUse.evening,kWh), exported=Math.max(gen-selfUsed,0);
     var g=A.solarFixed+A.solarPerKw*kW;
     stc=Math.floor(kW*A.stcRating*A.stcDeeming)*A.stcPrice;
     var rebate=isBiz?A.bizSolarRebate:(shOk?A.shRebate:0);
     push({name:kW+' kW solar system',
-      sub:Math.round(gen).toLocaleString('en-AU')+' kWh/yr, about '+Math.round(A.selfUse[pattern]*100)+'% used on site',
+      sub:Math.round(gen).toLocaleString('en-AU')+' kWh/yr generated, typical roof assumption',
       gross:g, support:stc+rebate,
       supportNote:money(stc)+' certificates'+(rebate?' + '+money(rebate)+' rebate':''),
-      net:g-stc-rebate, save:selfUsed*A.tariff+exported*A.fit, fuel:'elec'});
+      net:g-stc-rebate, save:selfUsed*A.tariff+exported*A.fit});
   }
 
-  if(w('battery')&&canAuthorise&&(kW>0||existing!=='none')&&pt!=='apartment'){
-    var base=kW>0?gen:(existing==='large'?8:4)*A.genPerKw*derate;
+  if(wantsBattery && canAuthorise && dwelling!=='apartment'){
+    var base = kW>0 ? gen : (existing!=='none' ? (existing==='large'?8:4)*A.genPerKw*A.derateDefault : 0);
     var bk=kWh>8000?13.5:10, bg=A.battPerKwh*bk;
     var br=A.battRebatePerKwh*Math.min(bk,A.battRebateFullTier);
-    var before=Math.min(base*A.selfUse[pattern],kWh), after=Math.min(base*A.selfUseBattery,kWh);
+    var before=Math.min(base*A.selfUse.evening,kWh), after=Math.min(base*A.selfUseBattery,kWh);
     var shifted=Math.max(after-before,0);
     push({name:bk+' kWh battery',
-      sub:'Shifts about '+Math.round(shifted).toLocaleString('en-AU')+' kWh/yr into the 4\u20139pm peak',
+      sub: base>0 ? 'Shifts about '+Math.round(shifted).toLocaleString('en-AU')+' kWh/yr into the 4–9pm peak'
+                  : 'No solar to charge it from yet, so this alone shows little saving',
       gross:bg, support:br, supportNote:money(br)+' federal discount',
-      net:bg-br, save:shifted*(A.peak-A.fit)*0.72, fuel:'elec'});
+      net:bg-br, save:shifted*(A.peak-A.fit)*0.72});
   }
 
-  if(w('hotwater')&&hw!=='heatpump'&&hw!=='solar'&&pt!=='apartment'){
-    var afterVeec=A.hpPrice-A.hpVeec;
-    var hpReb=(own==='owner_occupier'&&pv!=='over'&&!isBiz)?Math.min(afterVeec*0.5,A.hpRebateCap):0;
-    push({name:'Heat pump hot water',
-      sub:hw==='gas'?'Replaces gas storage \u2014 often the shortest payback in the house':'Uses about a quarter of the energy of an electric tank',
-      gross:A.hpPrice, support:A.hpVeec+hpReb,
-      supportNote:money(A.hpVeec)+' VEU'+(hpReb?' + '+money(hpReb)+' rebate':''),
-      net:A.hpPrice-A.hpVeec-hpReb, save:hw==='gas'?A.hpSaveGas:A.hpSaveElec,
-      fuel:hw==='gas'?'gas':'elec'});
-  }
-
-  if(w('heating')&&gas&&(heat==='ducted'||heat==='wall')){
-    var veec=heat==='ducted'?A.rcVeec:A.rcVeec*0.55;
-    push({name:'Reverse-cycle heating & cooling',
-      sub:heat==='ducted'?'Replacing gas ducted heating is the largest household VEU discount available':'Replacing gas space heating through the VEU program',
-      gross:A.rcPrice, support:veec, supportNote:money(veec)+' VEU discount at point of sale',
-      net:A.rcPrice-veec, save:heat==='ducted'?A.rcSaveDucted:A.rcSaveWall, fuel:'gas'});
-  }
-
-  if(w('insulation')&&pt!=='apartment'){
-    push({name:'Ceiling insulation top-up', sub:'Cuts the load on whatever heats and cools the property',
-      gross:A.insPrice, support:A.insVeec, supportNote:money(A.insVeec)+' VEU discount',
-      net:A.insPrice-A.insVeec, save:A.insSave, fuel:(gas&&(heat==='ducted'||heat==='wall'))?'gas':'elec'});
-  }
-
-  if(w('ev')){
-    push({name:'EV charger', sub:'No Victorian or federal rebate currently applies to home chargers',
-      gross:A.evPrice, support:0, supportNote:'No current rebate',
-      net:A.evPrice, save:kW>0?A.evSave:0, fuel:'elec'});
-  }
-
-  if(gasSave>gasSpend*0.9){
-    var gs=gasSpend>0?(gasSpend*0.9)/gasSave:0;
-    lines.forEach(function(l){ if(l.fuel==='gas') l.save*=gs; });
-    save=save-gasSave+gasSave*gs; gasSave*=gs;
-  }
   var elecCap=Math.max(annualBill-supplyYr,0);
-  if(elecSave>elecCap){
-    var es=elecSave>0?elecCap/elecSave:0;
-    lines.forEach(function(l){ if(l.fuel!=='gas') l.save*=es; });
-    save=save-elecSave+elecSave*es; elecSave*=es;
+  if(save>elecCap){
+    var sc=save>0?elecCap/save:0;
+    lines.forEach(function(l){ l.save*=sc; });
+    save=save*sc;
   }
+
+  var currentBill=annualBill;
+  var newBill=Math.max(currentBill-save, supplyYr*0.75);
+  var payback=save>0?net/save:null;
 
   var emp=val('employees'), bizOk=isBiz&&(emp==='1-5'||emp==='6-20');
-  var veuActive=w('hotwater')||w('heating')||w('insulation');
   var programs=[
-    {key:'stc', name:'Federal small-scale certificates', ok:kW>0, val:kW>0?money(stc):'\u2014',
+    {key:'stc', name:'Federal small-scale certificates', ok:kW>0, val:kW>0?money(stc):'—',
      why:kW>0?'Applied by your installer as an invoice discount. No income test.':
-        (!w('solar')?'Solar not selected':
+        (!wantsSolar?'Solar not selected':
          (own==='tenant'?'A solar install has to be authorised by the property owner':
-          (existing!=='none'?'You already have panels \u2014 certificates apply to new systems':
-           (shade==='major'?'Heavy shading makes a new system hard to justify':'Not applicable with the answers given'))))},
+          (existing!=='none'?'You already have panels — certificates apply to new systems':'Not applicable with the answers given')))},
     {key:'solarhomes', name:'Solar Homes rebate', ok:shOk&&kW>0,
-     val:(shOk&&kW>0)?money(A.shRebate):'\u2014', why:shWhy},
+     val:(shOk&&kW>0)?money(A.shRebate):'—', why:shWhy},
     {key:'loan', name:'Solar Homes interest-free loan', ok:shOk&&kW>0,
-     val:(shOk&&kW>0)?'up to '+money(A.shLoan):'\u2014',
+     val:(shOk&&kW>0)?'up to '+money(A.shLoan):'—',
      why:(shOk&&kW>0)?'Matches your rebate, repaid over four years. Must be elected at application.':'Follows the rebate above'},
-    {key:'battery', name:'Cheaper Home Batteries', ok:w('battery')&&canAuthorise&&pt!=='apartment',
-     val:w('battery')?'~'+money(A.battRebatePerKwh)+'/kWh':'\u2014',
-     why:!w('battery')?'Battery not selected':
-        (own==='tenant'?'Needs the property owner to authorise the install':
-         (pt==='apartment'?'Apartments route differently':'No income test. Tapers each January and July.'))},
-    {key:'veu', name:'Victorian Energy Upgrades', ok:veuActive, val:veuActive?'varies':'\u2014',
-     why:veuActive?'No income test. Discount applied at the point of sale by an accredited provider.':'Select hot water, heating or insulation to access this'},
+    {key:'battery', name:'Cheaper Home Batteries', ok:wantsBattery&&canAuthorise&&dwelling!=='apartment',
+     val:wantsBattery?'~'+money(A.battRebatePerKwh)+'/kWh':'—',
+     why:!wantsBattery?'Battery not selected':(own==='tenant'?'Needs the property owner to authorise the install':'No income test. Tapers each January and July.')},
     {key:'business', name:'Solar for Business', ok:bizOk&&kW>0,
-     val:(bizOk&&kW>0)?'up to '+money(A.bizSolarRebate):'\u2014',
-     why:!isBiz?'Business premises only':(bizOk?'Lesser of 50% or $3,500, for businesses with 1\u201320 staff':'Limited to businesses with 1\u201320 employees')}
+     val:(bizOk&&kW>0)?'up to '+money(A.bizSolarRebate):'—',
+     why:!isBiz?'Business premises only':(bizOk?'Lesser of 50% or $3,500, for businesses with 1–20 staff':'Limited to businesses with 1–20 employees')}
   ];
 
-  return {kWh:kWh, kW:kW, gen:gen, derate:derate, pattern:pattern, lines:lines, programs:programs,
-    gross:gross, support:support, net:net, save:save, elecSave:elecSave, gasSave:gasSave,
-    gasSpend:gasSpend, gas:gas, isBiz:isBiz, shOk:shOk,
+  return {kWh:kWh, kW:kW, lines:lines, programs:programs,
+    gross:gross, support:support, net:net, save:save, isBiz:isBiz, shOk:shOk,
     payback:save>0?net/save:null};
 }
 
@@ -1151,8 +1173,8 @@ function computeAndRender(){
   if(r.lines.length){
     $('#pkgWrap').style.display='';
     $('#pkgIntro').textContent = r.kW>0
-      ? 'Sized against roughly '+Math.round(r.kWh).toLocaleString('en-AU')+' kWh a year, which is what your bill implies \u2014 matched to what you use, not what the roof would hold.'
-      : 'Based on the upgrades you selected.';
+      ? 'Sized against roughly '+Math.round(r.kWh).toLocaleString('en-AU')+' kWh a year, which is what your bill implies — matched to what you use, not what the roof would hold.'
+      : 'Based on what you selected.';
     $('#pkgBody').innerHTML=r.lines.map(function(l){
       return '<tr><td><strong>'+l.name+'</strong><small>'+l.sub+'</small></td>'+
         '<td class="n">'+money(l.gross)+'</td>'+
@@ -1169,18 +1191,22 @@ function computeAndRender(){
   }
 
   var notes='';
+  var battLine=r.lines.filter(function(l){return l.name.indexOf('kWh battery')!==-1;})[0];
+  if(battLine && battLine.save===0){
+    notes+='<div class="note note-peak"><strong>Worth knowing about the battery on its own.</strong> Without solar to charge it from, '+
+      'a battery mostly just buys and sells grid power at whatever the tariff happens to be that hour \u2014 which rarely pencils out well in '+
+      'Victoria today. Most people who go battery-only already have solar installed. Adding a small solar system alongside it, or waiting '+
+      'until you do have solar, usually changes this picture completely \u2014 worth raising in the consultation either way.</div>';
+  }
   if(r.payback) notes+='<div class="note note-grid"><strong>Payback.</strong> On these figures your out-of-pocket cost of '+
     money(r.net)+' pays back in about <strong>'+r.payback.toFixed(1)+' years</strong>, holding tariffs flat \u2014 which historically they have not been.</div>';
-  if(r.gas&&r.gasSave>0) notes+='<div class="note"><strong>Where the saving lands.</strong> Roughly '+money(r.elecSave)+
-    ' a year comes from generating your own power and '+money(r.gasSave)+' from moving load off gas. Electrifying an appliance '+
-    'pushes the gas bill down further while nudging electricity up \u2014 the figure shown is the net effect.</div>';
   if(r.shOk&&r.kW>0) notes+='<div class="note"><strong>You can halve the upfront cost without a bank.</strong> The Solar Homes '+
     'interest-free loan matches your rebate, up to '+money(A.shLoan)+'. It has to be elected when you apply, not added later.</div>';
   var solarLine=r.lines.filter(function(l){return l.name.indexOf('kW solar')!==-1;})[0];
   if(solarLine&&solarLine.save>0&&(solarLine.net/solarLine.save)>12){
-    notes+='<div class="note note-peak"><strong>Be careful with the solar line specifically.</strong> On your orientation, '+
-      'shading and consumption the panels alone would take around '+(solarLine.net/solarLine.save).toFixed(0)+
-      ' years to pay back \u2014 outside what we\u2019d call a good outcome. The other upgrades stand on their own merits.</div>';
+    notes+='<div class="note note-peak"><strong>Be careful with the solar line specifically.</strong> On a typical unshaded roof '+
+      'the panels alone would take around '+(solarLine.net/solarLine.save).toFixed(0)+
+      ' years to pay back at your consumption \u2014 outside what we\u2019d call a good outcome. We\u2019ll check your actual roof before confirming anything.</div>';
   }
   $('#resNotes').innerHTML=notes;
 
@@ -1188,52 +1214,52 @@ function computeAndRender(){
     '<li><strong>'+(A.tariff*100).toFixed(1)+'c/kWh</strong> and <strong>'+money(A.supply)+'/day supply</strong> \u2014 average across Victoria\u2019s five distribution zones under the Victorian Default Offer for 2026\u201327.</li>'+
     '<li><strong>Feed-in tariff '+(A.fit*100).toFixed(0)+'c/kWh.</strong> Victoria removed the mandatory minimum on 1 July 2025, so this is an indicative retailer offer, not a regulated floor.</li>'+
     '<li><strong>Your consumption: '+Math.round(r.kWh).toLocaleString('en-AU')+' kWh/year</strong>, derived from your bill less the supply charge. A meter read would sharpen this.</li>'+
-    (r.kW>0?'<li><strong>Generation '+A.genPerKw+' kWh per kW per year</strong> for Melbourne, north-facing and unshaded, adjusted to <strong>'+Math.round(r.derate*100)+'%</strong> for your orientation and shading.</li>':'')+
-    '<li><strong>Self-consumption '+Math.round(A.selfUse[r.pattern]*100)+'%</strong> without a battery, rising to '+Math.round(A.selfUseBattery*100)+'% with one.</li>'+
+    (r.kW>0?'<li><strong>Generation '+A.genPerKw+' kWh per kW per year</strong> for Melbourne, adjusted to a typical <strong>'+Math.round(A.derateDefault*100)+'%</strong> roof factor. We haven\u2019t asked your actual orientation or shading here \u2014 that\u2019s verified with satellite imagery and confirmed at consultation.</li>':'')+
+    '<li><strong>Self-consumption '+Math.round(A.selfUse.evening*100)+'%</strong> without a battery, rising to '+Math.round(A.selfUseBattery*100)+'% with one, assuming an evening-weighted household.</li>'+
     '<li><strong>Certificates</strong> at '+money(A.stcPrice)+' each, Zone 4 rating '+A.stcRating+', '+A.stcDeeming+'-year deeming for 2026. Deeming drops one year every January until the scheme closes in 2030.</li>'+
     '<li><strong>Battery discount</strong> about '+money(A.battRebatePerKwh)+'/kWh on the first '+A.battRebateFullTier+' kWh, reflecting the tiered rate from 1 May 2026. Steps down each January and July.</li>'+
-    '<li><strong>VEU discounts are estimates.</strong> VEEC values are set by market trading and move week to week; the real figure is confirmed at point of sale.</li>'+
-    '<li><strong>Hot water</strong> can generate VEECs <em>or</em> certificates, never both. We\u2019ve modelled the VEU path, generally worth more for heat pumps in 2026.</li>'+
-    (r.gas?'<li><strong>Gas spend '+money(r.gasSpend)+'/year</strong>, from your answer or $280 a quarter if left blank. Gas savings are capped at 90% of it.</li>':'')+
+    '<li><strong>Solar Homes eligibility</strong> shown here checks ownership, dwelling type and prior claims only. The $150,000 household income cap and $3m property-value cap are confirmed properly at consultation.</li>'+
     '<li><strong>Installed pricing</strong> is indicative for a straightforward job. Switchboard upgrades, tile roofs, two-storey access and long cable runs all add cost.</li>'+
     '</ul>';
 }
 
-var SLOTS=['9:00 am','10:30 am','12:00 pm','1:30 pm','3:00 pm','4:30 pm','6:00 pm'];
-function buildCalendar(){
-  var grid=$('#dayGrid');
-  if(grid.dataset.built==='1') return;
+/* ── shared calendar builders ── */
+function buildDayGrid(gridEl, radioName){
+  if(gridEl.dataset.built==='1') return;
   var days=[], d=new Date(); d.setDate(d.getDate()+1);
   var DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  while(days.length<10){
-    if(d.getDay()!==0&&d.getDay()!==6) days.push(new Date(d));
-    d.setDate(d.getDate()+1);
-  }
-  grid.innerHTML=days.map(function(dt,i){
+  while(days.length<10){ days.push(new Date(d)); d.setDate(d.getDate()+1); }
+  gridEl.innerHTML=days.map(function(dt,i){
     var iso=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
-    return '<label class="day"><input type="radio" name="apptDay" value="'+iso+'"'+(i===0?' checked':'')+
+    return '<label class="day"><input type="radio" name="'+radioName+'" value="'+iso+'"'+(i===0?' checked':'')+
       ' data-label="'+DOW[dt.getDay()]+' '+dt.getDate()+' '+MON[dt.getMonth()]+'">'+
       '<span><em>'+DOW[dt.getDay()]+'</em><b>'+dt.getDate()+'</b><em>'+MON[dt.getMonth()]+'</em></span></label>';
   }).join('');
-  $('#slotGrid').innerHTML=SLOTS.map(function(s,i){
-    return '<label class="chip"><input type="radio" name="apptSlot" value="'+s+'"'+(i===1?' checked':'')+'><span>'+s+'</span></label>';
+  gridEl.dataset.built='1';
+}
+function buildSlotGrid(gridEl, radioName, slots, defaultIdx){
+  if(gridEl.dataset.built==='1') return;
+  gridEl.innerHTML=slots.map(function(s,i){
+    return '<label class="chip"><input type="radio" name="'+radioName+'" value="'+s+'"'+(i===defaultIdx?' checked':'')+'><span>'+s+'</span></label>';
   }).join('');
-  grid.dataset.built='1';
+  gridEl.dataset.built='1';
+}
+var SLOTS_BOOKING=['9:00 am','10:30 am','12:00 pm','1:30 pm','3:00 pm','4:30 pm','6:00 pm'];
+var SLOTS_CALLBACK=['9:00 am – 11:00 am','11:00 am – 1:00 pm','1:00 pm – 3:00 pm','3:00 pm – 5:00 pm','5:00 pm – 7:00 pm'];
+function buildBookingCalendar(){
+  computeAndRender();
+  buildDayGrid($('#dayGrid'),'apptDay');
+  buildSlotGrid($('#slotGrid'),'apptSlot',SLOTS_BOOKING,1);
+}
+function buildCallbackCalendar(){
+  buildDayGrid($('#cbDayGrid'),'cbDay');
+  buildSlotGrid($('#cbSlotGrid'),'cbSlot',SLOTS_CALLBACK,0);
 }
 
-$('#confirmBtn').addEventListener('click',function(){
-  var day=document.querySelector('input[name="apptDay"]:checked');
-  var slot=val('apptSlot');
-  showErr('day',!day); showErr('slot',!slot);
-  if(!day||!slot) return;
-
-  var r=computeModel();
-  $('#doneWhen').textContent=day.dataset.label+' at '+slot;
-  $('#doneEmail').textContent=$('#email').value.trim();
-  $('#doneRef').textContent='VS-'+String(Math.floor(100000+Math.random()*899999));
-
-  var payload={
+function buildPayloadBase(r){
+  var isBiz=val('entityType')==='business';
+  return {
     submittedAt:new Date().toISOString(),
     attribution:{
       utm_source:$('#utm_source').value, utm_medium:$('#utm_medium').value,
@@ -1243,34 +1269,67 @@ $('#confirmBtn').addEventListener('click',function(){
       click_id:$('#click_id').value, landing_url:$('#landing_url').value,
       referrer:$('#referrer').value, session_id:$('#session_id').value,
       started_at:$('#started_at').value},
-    property:{postcode:$('#postcode').value.trim(), street:$('#street').value.trim(),
-      suburb:$('#suburb').value.trim(), type:val('propertyType'), ownership:val('ownership'),
-      roofType:val('roofType'), orientation:val('orientation'), shading:val('shading'),
+    property:{entityType:val('entityType'),
+      postcode:(isBiz?$('#bizPostcode').value:$('#postcode').value).trim(),
+      street:$('#street').value.trim(), suburb:$('#suburb').value.trim(),
+      dwellingType:isBiz?null:val('dwellingType'), ownership:isBiz?null:val('ownership'),
       storeys:val('storeys'), buildingAge:val('buildingAge')},
-    business: val('propertyType')==='business'?{
+    business: isBiz?{
       name:$('#businessName').value.trim(), decisionMaker:val('decisionMaker'),
       employees:val('employees'), premises:val('premises'), leaseYears:val('leaseYears'),
       landlordOk:val('landlordOk'), livesOnSite:val('livesOnSite')}:null,
-    energy:{elecBill:parseFloat($('#elecBill').value)||null, gasBill:parseFloat($('#gasBill').value)||null,
-      household:val('household'), gas:val('gas'), hotWater:val('hotWater'), heating:val('heating'),
-      existingSolar:val('existingSolar'), solarAge:val('solarAge'), pattern:val('pattern')},
-    eligibility:{income:val('income'), propertyValue:val('propertyValue'),
-      priorRebate:val('priorRebate'), concession:val('concession')},
-    intent:{interests:multi('interest'), timeframe:val('timeframe')},
+    energy:{elecBill:parseFloat($('#elecBill').value)||null,
+      household:isBiz?null:val('household'),
+      existingSolar:val('existingSolar'), solarAge:val('solarAge')},
+    eligibility:{priorRebate:val('priorRebate'), concession:val('concession')},
+    intent:{interest:val('interest'), timeframe:val('timeframe')},
     contact:{firstName:$('#firstName').value.trim(), lastName:$('#lastName').value.trim(),
-      email:$('#email').value.trim(), phone:$('#phone').value.trim()},
+      email:$('#email').value.trim(), phone:'+61 '+$('#phone').value.trim()},
     phoneVerification:{method:'sms_otp', status:'PLACEHOLDER_NOT_VERIFIED',
       note:'Wire to an SMS provider before launch \u2014 this build accepts any six digits.'},
-    appointment:{date:day.value, dateLabel:day.dataset.label, time:slot,
-      format:val('format'), notes:$('#bookNotes').value.trim()},
     estimate:{qualifiedPrograms:r.programs.filter(function(p){return p.ok;}).map(function(p){return p.key;}),
       totalSupport:Math.round(r.support), netCost:Math.round(r.net),
       annualSaving:Math.round(r.save), paybackYears:r.payback?+r.payback.toFixed(1):null},
     consent:{contactMe:$('#consentContact').checked, shareWithOneInstaller:$('#consentShare').checked,
       marketingUpdates:$('#consentUpdates').checked, capturedAt:new Date().toISOString(),
-      wordingVersion:'2026-08-v1', policyVersion:'privacy-1.0/terms-1.0'}
+      wordingVersion:'2026-08-v2', policyVersion:'privacy-1.0/terms-1.0'}
   };
-  console.log('[Voltside] booked lead payload:',payload);
+}
+
+$('#confirmBtn').addEventListener('click',function(){
+  var day=document.querySelector('input[name="apptDay"]:checked');
+  var slot=val('apptSlot');
+  showErr('day',!day); showErr('slot',!slot);
+  if(!day||!slot) return;
+
+  var r=computeModel();
+  $('#doneHeadline').textContent='Booked. See you '+day.dataset.label+'.';
+  $('#doneBody').innerHTML='A confirmation and your full written assessment are on the way to <strong>'+$('#email').value.trim()+'</strong>, for your '+slot+' '+(val('format')==='online'?'online meeting':'call')+'.';
+  $('#doneRef').textContent='VS-'+String(Math.floor(100000+Math.random()*899999));
+
+  var payload=buildPayloadBase(r);
+  payload.contactMethod='consultation';
+  payload.appointment={date:day.value, dateLabel:day.dataset.label, time:slot, format:val('format'), notes:$('#bookNotes').value.trim()};
+  console.log('[Voltside] consultation booking payload:',payload);
+
+  currentId='done'; render(); scrollTop();
+});
+
+$('#cbConfirmBtn').addEventListener('click',function(){
+  var day=document.querySelector('input[name="cbDay"]:checked');
+  var slot=val('cbSlot');
+  showErr('cbday',!day); showErr('cbslot',!slot);
+  if(!day||!slot) return;
+
+  var r=computeModel();
+  $('#doneHeadline').textContent='Got it. We\u2019ll call you '+day.dataset.label+'.';
+  $('#doneBody').innerHTML='Somewhere in your <strong>'+slot+'</strong> window. A copy of your assessment is on its way to <strong>'+$('#email').value.trim()+'</strong> in the meantime.';
+  $('#doneRef').textContent='VS-'+String(Math.floor(100000+Math.random()*899999));
+
+  var payload=buildPayloadBase(r);
+  payload.contactMethod='callback';
+  payload.callback={date:day.value, dateLabel:day.dataset.label, window:slot};
+  console.log('[Voltside] callback request payload:',payload);
 
   currentId='done'; render(); scrollTop();
 });
