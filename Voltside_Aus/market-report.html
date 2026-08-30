@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voltside — Australian Solar Market &amp; Competitor Analysis</title>
+<meta name="description" content="Market size, competitor landscape, installer profitability, customer profiles and cost-stack margin analysis for the Australian and Victorian solar installation market.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#16202B; --ink-2:#33434F; --ink-3:#6A7B86;
+  --paper:#F2F5F4; --panel:#FFFFFF; --rule:#D3DBD9; --rule-2:#E6EBEA;
+  --volt:#FFCE1F; --volt-deep:#E0AC00;
+  --grid:#12615E; --grid-soft:#DCEAE8;
+  --peak:#D6452E; --peak-soft:#FBE4E0;
+  --steel:#3B5BA6; --steel-soft:#E4E9F5;
+  --sp:clamp(1rem,2.5vw,1.6rem); --maxw:1260px; --r:3px;
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;transition-duration:.001ms !important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:800;line-height:1.05;letter-spacing:-.022em;margin:0}
+p{margin:0}
+button{font:inherit;color:inherit}
+a{color:var(--grid)}
+:focus-visible{outline:3px solid var(--grid);outline-offset:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--sp)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--f-mono);font-size:.68rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:70;background:rgba(242,245,244,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:.65rem var(--sp);display:flex;align-items:center;gap:1.4rem}
+.brand{display:flex;align-items:center;gap:.55rem;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:800;font-size:1.1rem;letter-spacing:-.03em}
+.brand svg{width:24px;height:24px}
+.nav-links{display:flex;gap:1.2rem;margin-left:auto;font-size:.86rem}
+.nav-links a{text-decoration:none;color:var(--ink-2);border-bottom:1.5px solid transparent;padding:.2rem 0}
+.nav-links a:hover{color:var(--ink);border-bottom-color:var(--volt)}
+.nav-links a[aria-current]{color:var(--ink);font-weight:600;border-bottom-color:var(--volt)}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* header */
+.head{padding:clamp(2rem,5vw,3.4rem) 0 clamp(1.6rem,3vw,2.2rem);border-bottom:1px solid var(--rule)}
+.head h1{font-size:clamp(2rem,4.8vw,3.2rem);max-width:24ch;margin-top:.55rem}
+.head .lede{margin-top:1.05rem;font-size:clamp(1rem,1.6vw,1.1rem);color:var(--ink-2);max-width:60ch}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem}
+.tag{font-family:var(--f-mono);font-size:.72rem;padding:.3rem .68rem;border:1px solid var(--rule);border-radius:var(--r);background:#fff;color:var(--ink-2)}
+
+/* hero pivot chart */
+.pivot{margin-top:1.8rem;background:var(--ink);border-radius:var(--r);padding:1.3rem 1.4rem 1rem;color:#fff}
+.pivot-h{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:.4rem;margin-bottom:.7rem}
+.pivot-h .eyebrow{color:var(--volt)}
+.pivot-h span{font-family:var(--f-mono);font-size:.72rem;color:rgba(255,255,255,.55)}
+.pivot svg{width:100%;height:auto;display:block}
+
+/* toc */
+.toc{background:var(--ink);color:#fff;padding:.9rem 0}
+.toc-in{display:flex;flex-wrap:wrap;gap:.3rem 1.3rem;max-width:var(--maxw);margin:0 auto;padding:0 var(--sp);font-size:.8rem}
+.toc-in a{color:rgba(255,255,255,.72);text-decoration:none;font-family:var(--f-mono);font-size:.74rem}
+.toc-in a:hover{color:var(--volt)}
+.toc-in span{color:rgba(255,255,255,.3)}
+
+/* stat band */
+.band{background:var(--panel);border-bottom:1px solid var(--rule);padding:clamp(1.6rem,3.5vw,2.2rem) 0}
+.band-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden}
+@media(max-width:980px){.band-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.band-grid{grid-template-columns:1fr}}
+.stat{background:#fff;padding:1.1rem 1.2rem}
+.stat .n{font-family:var(--f-display);font-weight:800;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.03em;line-height:1;color:var(--grid)}
+.stat .n.peak{color:var(--peak)}
+.stat .n.volt{color:var(--volt-deep)}
+.stat .l{font-size:.78rem;color:var(--ink-3);margin-top:.4rem;line-height:1.4}
+
+/* sections */
+.sec{padding:clamp(2.4rem,5.5vw,4rem) 0;border-bottom:1px solid var(--rule)}
+.sec-num{font-family:var(--f-mono);font-size:.7rem;font-weight:600;letter-spacing:.16em;color:var(--volt-deep)}
+.sec h2{font-size:clamp(1.55rem,3.4vw,2.3rem);margin:.45rem 0 .9rem}
+.sec .intro{color:var(--ink-2);max-width:66ch;font-size:1rem;margin-bottom:1.8rem}
+h3.sub{font-size:1.15rem;margin:2rem 0 .7rem;padding-top:1.3rem;border-top:1px solid var(--rule)}
+h3.sub:first-of-type{margin-top:0;padding-top:0;border-top:0}
+h4.sub2{font-size:.98rem;margin:1.4rem 0 .5rem}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin:1rem 0 1.4rem}
+table{width:100%;border-collapse:collapse;font-size:.85rem;min-width:600px}
+th{text-align:left;font-family:var(--f-mono);font-size:.64rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);padding:.65rem .75rem;border-bottom:1.5px solid var(--ink);white-space:nowrap;background:#FAFCFB}
+td{padding:.68rem .75rem;border-bottom:1px solid var(--rule-2);vertical-align:top;color:var(--ink-2)}
+tbody tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.c,th.c{text-align:center}
+td strong{color:var(--ink);font-weight:600}
+td small{display:block;color:var(--ink-3);font-size:.77rem;margin-top:.15rem}
+tr.tot td{border-top:1.5px solid var(--ink);font-weight:700;background:#FAFCFB;color:var(--ink)}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.66rem;padding:.14rem .45rem;border-radius:2px;font-weight:600;white-space:nowrap}
+.p-hi{background:var(--volt);color:var(--ink)}
+.p-md{background:var(--grid-soft);color:var(--grid)}
+.p-lo{background:var(--rule-2);color:var(--ink-3)}
+.p-no{background:var(--peak-soft);color:var(--peak)}
+.p-st{background:var(--steel-soft);color:var(--steel)}
+
+/* callouts */
+.box{border:1px solid var(--rule);border-left:3px solid var(--volt);background:#FFFBEB;padding:1.05rem 1.2rem;border-radius:0 var(--r) var(--r) 0;margin:1.3rem 0;font-size:.9rem;color:var(--ink-2)}
+.box strong{color:var(--ink)}
+.box-grid{border-left-color:var(--grid);background:var(--grid-soft)}
+.box-peak{border-left-color:var(--peak);background:var(--peak-soft)}
+.box-steel{border-left-color:var(--steel);background:var(--steel-soft)}
+.box ul{margin:.55rem 0 0;padding-left:1.1rem}
+.box li{margin-bottom:.35rem}
+.box-title{display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem}
+.box-title svg{width:16px;height:16px;flex:none}
+
+/* cards */
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin:1.1rem 0 1.5rem}
+.gc{background:#fff;padding:1.15rem 1.2rem}
+.gc h4{font-size:1rem;margin-bottom:.4rem}
+.gc p{font-size:.86rem;color:var(--ink-2)}
+.gc .k{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-bottom:.5rem}
+
+/* chart card */
+.chart{background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:1.2rem 1.3rem;margin:1.1rem 0 1.5rem}
+.chart-t{font-family:var(--f-display);font-weight:700;font-size:.98rem;margin-bottom:.15rem}
+.chart-s{font-size:.8rem;color:var(--ink-3);margin-bottom:1rem}
+.chart svg{width:100%;height:auto;display:block}
+.chart-n{font-size:.78rem;color:var(--ink-3);margin-top:.9rem;padding-top:.8rem;border-top:1px dashed var(--rule)}
+
+/* pricing ladder */
+.ladder{display:flex;flex-direction:column;gap:.5rem;margin:1.1rem 0 1.5rem}
+.lrow{display:grid;grid-template-columns:9rem 1fr 6.5rem;gap:.9rem;align-items:center;background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:.7rem .9rem}
+@media(max-width:640px){.lrow{grid-template-columns:1fr;gap:.4rem}}
+.lrow .lab{font-size:.85rem;font-weight:600}
+.ltrack{position:relative;height:8px;background:var(--rule-2);border-radius:20px}
+.lfill{position:absolute;top:0;bottom:0;background:var(--grid);border-radius:20px}
+.lval{font-family:var(--f-mono);font-size:.8rem;text-align:right;color:var(--ink-2);white-space:nowrap}
+
+/* persona tabs */
+.ptabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.1rem 0 1.3rem}
+.ptab{padding:.6rem 1rem;border:1.5px solid var(--rule);border-radius:var(--r);background:#fff;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--ink-2);position:relative}
+.ptab:hover{border-color:var(--ink-3)}
+.ptab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.ptab .star{position:absolute;top:-8px;right:-6px;background:var(--volt);color:var(--ink);font-family:var(--f-mono);font-size:.55rem;font-weight:700;padding:.12rem .35rem;border-radius:20px;letter-spacing:.03em}
+.pcard{display:none;background:#fff;border:1px solid var(--rule);border-radius:var(--r);padding:1.4rem 1.5rem;animation:fade .3s ease both}
+.pcard[data-active="true"]{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pcard-h{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.6rem;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule)}
+.pcard-h h4{font-size:1.2rem}
+.pcard-h p{font-size:.87rem;color:var(--ink-2);margin-top:.3rem;max-width:44ch}
+.pfigs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;margin-bottom:1.1rem}
+.pfig{background:#FAFCFB;padding:.75rem .9rem}
+.pfig .n{font-family:var(--f-mono);font-weight:600;font-size:1.05rem;color:var(--grid)}
+.pfig .l{font-size:.72rem;color:var(--ink-3);margin-top:.2rem}
+.prows{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:700px){.prows{grid-template-columns:1fr}}
+.prows h5{font-family:var(--f-mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .5rem}
+.prows ul{margin:0;padding-left:1.05rem;font-size:.87rem;color:var(--ink-2)}
+.prows li{margin-bottom:.4rem}
+
+/* calculator */
+.calc-wrap{background:var(--ink);border-radius:var(--r);overflow:hidden;margin:1.3rem 0 1.6rem}
+.calc-head{padding:1.1rem 1.3rem;border-bottom:1px solid rgba(255,255,255,.14);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.calc-head .eyebrow{color:var(--volt)}
+.calc-head h3{color:#fff;font-size:1.15rem;margin-top:.3rem}
+.toggle{display:flex;background:rgba(255,255,255,.08);border-radius:var(--r);padding:3px;gap:2px}
+.toggle button{padding:.55rem 1rem;border:0;background:transparent;color:rgba(255,255,255,.6);border-radius:2px;font-size:.83rem;font-weight:600;cursor:pointer;white-space:nowrap}
+.toggle button[aria-selected="true"]{background:var(--volt);color:var(--ink)}
+.calc-body{padding:1.4rem}
+.calc-view{display:none}
+.calc-view[data-active="true"]{display:block;animation:fade .3s ease both}
+.calc-view svg{width:100%;height:auto;display:block;margin-bottom:.5rem}
+.calc-cap{font-size:.82rem;color:rgba(255,255,255,.6);margin-bottom:1.1rem;max-width:60ch}
+.calc-cap strong{color:#fff}
+
+.fee-brackets{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.12);border-radius:var(--r);overflow:hidden;margin-top:1rem}
+@media(max-width:640px){.fee-brackets{grid-template-columns:1fr}}
+.fee{background:rgba(255,255,255,.04);padding:1rem 1.2rem}
+.fee .fk{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.5rem}
+.fee .fv{font-family:var(--f-display);font-weight:800;font-size:1.5rem;color:var(--volt);letter-spacing:-.02em}
+.fee .fv small{font-family:var(--f-body);font-weight:400;font-size:.85rem;color:rgba(255,255,255,.55)}
+
+.comp-bar{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.2rem}
+.comp-row{display:grid;grid-template-columns:9rem 1fr;gap:.8rem;align-items:center}
+.comp-lab{font-size:.78rem;color:rgba(255,255,255,.7)}
+.comp-track{height:22px;background:rgba(255,255,255,.08);border-radius:3px;position:relative;overflow:hidden}
+.comp-fill{height:100%;display:flex;align-items:center;padding-left:.5rem;font-family:var(--f-mono);font-size:.68rem;color:var(--ink);font-weight:600;white-space:nowrap}
+
+/* certification callout */
+.cert{border:1.5px solid var(--peak);background:var(--peak-soft);border-radius:var(--r);padding:1.3rem 1.4rem;margin:1.5rem 0}
+.cert-h{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.cert-h svg{width:22px;height:22px;flex:none;color:var(--peak)}
+.cert-h h4{font-size:1.05rem;color:var(--ink)}
+.cert p{font-size:.9rem;color:var(--ink-2);margin-top:.6rem}
+.cert p:first-of-type{margin-top:0}
+
+/* accordion */
+details.acc{border:1px solid var(--rule);border-radius:var(--r);background:#fff;margin-bottom:.6rem}
+details.acc summary{padding:.85rem 1.05rem;cursor:pointer;font-weight:600;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;list-style:none}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::after{content:"+";font-family:var(--f-mono);color:var(--ink-3);font-size:1.1rem}
+details.acc[open] summary::after{content:"–"}
+details.acc .accb{padding:0 1.05rem 1.05rem;font-size:.86rem;color:var(--ink-2)}
+details.acc .accb ul{margin:.4rem 0 0;padding-left:1.1rem}
+details.acc .accb li{margin-bottom:.4rem}
+
+/* recommendations */
+.recs{display:flex;flex-direction:column;gap:2px;margin:1.1rem 0 1.5rem}
+.rec{display:flex;gap:1rem;background:#fff;border:1px solid var(--rule);padding:1rem 1.15rem;align-items:flex-start}
+.rec .rn{font-family:var(--f-mono);font-weight:700;font-size:1rem;color:var(--volt-deep);flex:none;width:1.6rem}
+.rec h5{font-size:.94rem;margin-bottom:.25rem}
+.rec p{font-size:.85rem;color:var(--ink-2)}
+
+/* footer */
+.foot{background:var(--ink);color:rgba(255,255,255,.6);padding:2.2rem 0 1.8rem;font-size:.83rem}
+.foot a{color:var(--volt)}
+.fine{font-size:.75rem;color:rgba(255,255,255,.42);line-height:1.65;margin-top:1rem;max-width:76ch}
+.fine p{margin-bottom:.55rem}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="3" fill="#16202B"/><path d="M17.6 6 9 17.4h5.4L13.2 26 22 14.4h-5.6L17.6 6Z" fill="#FFCE1F"/></svg>
+      Voltside
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Landing page</a>
+      <a href="business-plan.html">Business plan</a>
+      <a href="campaign.html">Campaign plan</a>
+      <a href="market-report.html" aria-current="page">Market report</a>
+    </div>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="wrap">
+    <p class="eyebrow">Internal analysis &middot; Australia &amp; Victoria &middot; August 2026</p>
+    <h1>The solar market, and where a lead-gen business actually fits in it.</h1>
+    <p class="lede">
+      Solar-only installs are shrinking. Battery installs tripled in a year. Roughly 270 solar
+      companies have gone under. And the installer's margin on a typical job is thinner than most
+      people assume. This is what that means for what we build, who we partner with, and what we can
+      charge.
+    </p>
+    <div class="meta">
+      <span class="tag">28.3 GW installed</span>
+      <span class="tag">254,664 installs 2025</span>
+      <span class="tag">221,000 batteries 2025</span>
+      <span class="tag">270+ insolvencies</span>
+      <span class="tag">$2.3bn market</span>
+    </div>
+
+    <div class="pivot">
+      <div class="pivot-h">
+        <p class="eyebrow">The pivot, in one chart</p>
+        <span>Residential installs, 2024 vs 2025 &middot; CEC / SunWiz</span>
+      </div>
+      <svg viewBox="0 0 900 220" role="img" aria-label="Bar chart showing solar-only installs falling 15% while battery installs triple, 2024 to 2025" id="pivotChart">
+        <line x1="60" y1="180" x2="860" y2="180" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(255,255,255,.4)">
+          <text x="52" y="184" text-anchor="end">0</text>
+          <text x="52" y="104" text-anchor="end">150k</text>
+          <text x="52" y="28" text-anchor="end">300k</text>
+        </g>
+        <line x1="60" y1="104" x2="860" y2="104" stroke="rgba(255,255,255,.08)"/>
+        <line x1="60" y1="28" x2="860" y2="28" stroke="rgba(255,255,255,.08)"/>
+
+        <!-- Solar installs: 2024=300375 (h=152), 2025=254664 (h=129) scale 300k=152px -->
+        <g>
+          <rect x="130" y="28" width="70" height="0" fill="rgba(255,255,255,.5)" class="pv-bar" data-h="152"/>
+          <text x="165" y="20" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="600">300,375</text>
+          <text x="165" y="198" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="rgba(255,255,255,.6)">Solar &middot; 2024</text>
+        </g>
+        <g>
+          <rect x="230" y="51" width="70" height="0" fill="#fff" class="pv-bar" data-h="129"/>
+          <text x="265" y="43" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff" font-weight="600">254,664</text>
+          <text x="265" y="198" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="rgba(255,255,255,.6)">Solar &middot; 2025</text>
+          <text x="265" y="212" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#D6452E">−15.2%</text>
+        </g>
+
+        <!-- Battery: 2024=72500 (h=37), 2025=221000 (h=112) -->
+        <g>
+          <rect x="480" y="143" width="70" height="0" fill="rgba(255,206,31,.45)" class="pv-bar" data-h="37"/>
+          <text x="515" y="135" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="rgba(255,255,255,.8)" font-weight="600">72,500</text>
+          <text x="515" y="198" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="rgba(255,255,255,.6)">Battery &middot; 2024</text>
+        </g>
+        <g>
+          <rect x="580" y="68" width="70" height="0" fill="#FFCE1F" class="pv-bar" data-h="112"/>
+          <text x="615" y="60" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#FFCE1F" font-weight="600">221,000</text>
+          <text x="615" y="198" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10.5" fill="rgba(255,255,255,.6)">Battery &middot; 2025</text>
+          <text x="615" y="212" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="#FFCE1F">+205%</text>
+        </g>
+
+        <line x1="390" y1="20" x2="390" y2="190" stroke="rgba(255,255,255,.15)" stroke-dasharray="3 4"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-in">
+    <a href="#market">01 Market</a><span>/</span>
+    <a href="#competitors">02 Competitors</a><span>/</span>
+    <a href="#risk">03 Profitability &amp; risk</a><span>/</span>
+    <a href="#personas">04 Customer profiles</a><span>/</span>
+    <a href="#margin">05 Cost stack &amp; margin</a><span>/</span>
+    <a href="#strategy">06 Strategic implications</a><span>/</span>
+    <a href="#notes">07 Methodology</a>
+  </div>
+</div>
+
+<!-- ═══════════ STAT BAND ═══════════ -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-grid">
+      <div class="stat"><div class="n">28.3 GW</div><p class="l">Rooftop solar installed nationally, end 2025 — exceeds Australia's entire coal fleet</p></div>
+      <div class="stat"><div class="n peak">−15.2%</div><p class="l">Fall in solar-only installs, 2024 to 2025 (300,375 → 254,664 systems)</p></div>
+      <div class="stat"><div class="n volt">3×</div><p class="l">Growth in residential battery installs in one year (72,500 → 221,000)</p></div>
+      <div class="stat"><div class="n peak">270+</div><p class="l">Australian solar companies collapsed — an estimated 600,000–700,000 warranties orphaned</p></div>
+      <div class="stat"><div class="n">18–24%</div><p class="l">Typical installer gross margin on a straightforward 6.6 kW job</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 01 MARKET ═══════════ -->
+<section class="sec" id="market">
+  <div class="wrap">
+    <p class="sec-num">01</p>
+    <h2>A market that's contracting and booming at the same time</h2>
+    <p class="intro">
+      Two things are true simultaneously: rooftop solar has never been bigger, and 2025 was still a
+      down year for new installs. The reason is the same in both cases — the easy, high-payback
+      rooftops are mostly already covered, and the growth has moved to the next product along:
+      batteries.
+    </p>
+
+    <h3 class="sub">National scale</h3>
+    <p style="color:var(--ink-2);font-size:.95rem;margin-bottom:1rem">
+      By the end of 2025, Australia had <strong>28.3 GW</strong> of rooftop solar across roughly
+      <strong>4.3 million systems</strong> (Clean Energy Council, H2 2025 report, published 4 Feb 2026),
+      supplying <strong>14.2%</strong> of national electricity in the second half of the year alone.
+      254,664 systems were installed across 2025 — down 15.2% on 2024's 300,375, and the first
+      sub-300,000 year since 2020. IBISWorld puts the solar-panel-installation industry at roughly
+      <strong>$2.3bn</strong> in 2026 revenue, down 14.7% year on year. SunWiz expects a rebound to
+      around 350,000 installs across 2026, driven almost entirely by battery attach.
+    </p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Metric</th><th class="n">2024</th><th class="n">2025</th><th class="n">Change</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Solar-only installs</td><td class="n">300,375</td><td class="n">254,664</td><td class="n" style="color:var(--peak)">−15.2%</td><td>Clean Energy Council</td></tr>
+          <tr><td>Residential battery installs</td><td class="n">72,500</td><td class="n">221,000</td><td class="n" style="color:var(--grid)">+205%</td><td>SunWiz</td></tr>
+          <tr><td>Average battery size</td><td class="n">11.8 kWh</td><td class="n">21.6 kWh</td><td class="n" style="color:var(--grid)">+83%</td><td>SunWiz, across 2025</td></tr>
+          <tr><td>Average new system size</td><td class="n">&mdash;</td><td class="n">~10.4 kW</td><td class="n">&mdash;</td><td>Sept 2025, rising</td></tr>
+          <tr><td>Cumulative battery installs</td><td class="n">&mdash;</td><td class="n">454,753</td><td class="n">&mdash;</td><td>CEC, year-end 2025</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box">
+      <strong>Why batteries, why now.</strong> The federal Cheaper Home Batteries Program launched
+      1 July 2025 — roughly a 30% upfront discount, delivered the same way as solar STCs. The program's
+      cost blew out from an original estimate of ~$2.3bn to roughly <strong>$7.2bn</strong>. About half
+      of 2025's battery installs paired with new or upgraded solar; about half were retrofits onto
+      existing systems (CER, Q3 2025) — meaning the retrofit market is now roughly as large as the
+      new-build attach market, and worth a dedicated funnel of its own.
+    </div>
+
+    <h3 class="sub">Victoria specifically</h3>
+    <p style="color:var(--ink-2);font-size:.95rem;margin-bottom:1rem">
+      Victoria has ~5.4 GW installed (third nationally behind NSW and Queensland), adding roughly
+      230 MW in H1 2025 alone. Roy Morgan put Victorian solar households at ~728,000 back in 2022.
+      Victoria has the <strong>lowest average household electricity consumption</strong> of any state
+      at ~4,615 kWh/year (AER) — a real ceiling on system size and savings relative to NSW or
+      Queensland, and a reason Victorian jobs tend to sit at the smaller end of the national range.
+    </p>
+
+    <div class="g3">
+      <div class="gc"><p class="k">Structure</p><h4>Highly fragmented</h4><p>No installer holds meaningful national share — even the most aggressive consolidator (1KOMMA5°) is small in absolute revenue terms. Favourable for an intermediary: no single gatekeeper to negotiate around.</p></div>
+      <div class="gc"><p class="k">Accreditation</p><h4>2,000+ NETCC sellers</h4><p>The New Energy Tech Consumer Code passed 2,000 approved sellers nationally in October 2025; 1,000+ are Victorian. Solar Accreditation Australia took over individual installer accreditation from the CEC on 29 May 2024.</p></div>
+      <div class="gc"><p class="k">The calendar</p><h4>Rebates set the rhythm</h4><p>The STC deeming period drops one year every 1 January (6→5 years on 1 Jan 2026), cutting roughly $300–$600 off a 6.6 kW system's discount each year until the scheme closes in 2030. The battery rebate begins tapering on 6-month intervals from 1 January 2027. Both reliably pull demand forward into December, then produce a lull.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 COMPETITORS ═══════════ -->
+<section class="sec" id="competitors">
+  <div class="wrap">
+    <p class="sec-num">02</p>
+    <h2>Three different kinds of competitor</h2>
+    <p class="intro">
+      They don't compete the same way. Lead-gen platforms fight for the same traffic we would. National
+      retailers fight for the same installer capacity. Local Victorian installers aren't competitors at
+      all — they're the intended partner base.
+    </p>
+
+    <h3 class="sub">(a) Lead generation &amp; comparison platforms — the direct competitors</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Platform</th><th>Model</th><th class="n">Fee</th><th>Scale / notes</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>SolarQuotes</strong><small>Category leader</small></td>
+            <td>Shared — each enquiry to 2–3 installers</td>
+            <td class="n">~$45+GST/lead</td>
+            <td>Founded 2009; <strong>acquired by Origin Energy, Dec 2024</strong>. Over 800,000 Australians have used it — roughly 1 in 20 homes. Passed 1 million quote requests in 2026. Best-regarded lead quality of any platform; deep SEO/content moat (100,000+ reviews). Also earns ancillary referral fees (~$50 finance, ~$16 Bill Hero).</td>
+          </tr>
+          <tr>
+            <td><strong>Solar Choice</strong></td>
+            <td>Shared — 2–3 installers per enquiry</td>
+            <td class="n">Undisclosed</td>
+            <td>Long-running comparison/brokerage; network of 200+ pre-vetted installers. Publishes the widely-cited Solar Choice Price Index — the closest thing the industry has to a public price benchmark.</td>
+          </tr>
+          <tr>
+            <td><strong>Solar Market / Energy Matters / Solar Calculator</strong></td>
+            <td>Shared</td>
+            <td class="n">~$40+GST/lead</td>
+            <td>Comparison sites on the same shared model. Solar Calculator publicly advertises $40+GST per lead, upfront, no commission — the most useful public price floor in the market.</td>
+          </tr>
+          <tr>
+            <td><strong>Exclusive-lead brokers</strong><small>SolarScorecard, LeadsHQ, QuoteLeads, Capital Leads, Why Solar</small></td>
+            <td>Exclusive or capped-share (max 2 claims)</td>
+            <td class="n">$40 res / $100 comm+</td>
+            <td>A newer wave of performance-marketing firms. SolarScorecard: from $40 residential / $100 commercial, capped at 2 paid claims per lead, SMS dispatch to SAA-accredited installers. Closest analogue to the model this report is built for.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 class="sub2">The Australian lead-pricing ladder, 2026</h4>
+    <div class="ladder">
+      <div class="lrow"><span class="lab">Shared comparison lead</span><div class="ltrack"><div class="lfill" style="left:0;width:14%;background:var(--rule-2)"></div></div><span class="lval">$20 – $50</span></div>
+      <div class="lrow"><span class="lab">Exclusive residential</span><div class="ltrack"><div class="lfill" style="left:8%;width:34%;background:var(--grid)"></div></div><span class="lval">$35 – $120</span></div>
+      <div class="lrow"><span class="lab">Commercial lead</span><div class="ltrack"><div class="lfill" style="left:38%;width:33%;background:var(--steel)"></div></div><span class="lval">$150 – $250</span></div>
+      <div class="lrow"><span class="lab">Booked appointment</span><div class="ltrack"><div class="lfill" style="left:55%;width:35%;background:var(--volt-deep)"></div></div><span class="lval">Higher again</span></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-3);margin-bottom:1.6rem">
+      Conversion is the number that actually matters: shared leads convert at roughly 3–8% lead-to-sale;
+      exclusive, pre-qualified leads convert materially better. A $60 exclusive lead at 30% close costs
+      an installer ~$200 per acquisition; a $60 shared lead at 10% close costs ~$600. Installers judge on
+      the second number, not the first.
+    </p>
+
+    <h3 class="sub">(b) Vertically integrated national retailers</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Retailer</th><th>Position</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1KOMMA5°</strong></td><td><span class="pill p-hi">Premium</span></td><td>German-backed (Porsche Ventures among investors); ~$100m Australian acquisition spree since 2022 (Natural Solar, Solaray, Kozco, Arkana ~$40m revenue). One-stop bundle: solar + battery + heat pump + EV + its "Heartbeat" energy management platform. Self-described top-5 national installer.</td></tr>
+          <tr><td><strong>Solargain</strong></td><td><span class="pill p-md">Mid-market</span></td><td>One of the longest-established (founded 2005), ~190+ staff across WA/VIC/NSW/QLD/ACT. Claims 100,000+ cumulative systems; third-party estimates put revenue at ~$35–$39m (unaudited). CEC Solar Retailer of the Year 2021; strong Canstar Blue satisfaction record.</td></tr>
+          <tr><td><strong>Origin Energy</strong></td><td><span class="pill p-st">Exited</span></td><td><strong>Exited residential install entirely at end-2024</strong>, completed pre-sold jobs by March 2025, and pivoted to pure referral — via its own SolarQuotes acquisition — plus VPP aggregation across its 4.7 million customers. The strongest available validation that referral beats installing, from the country's largest energy retailer.</td></tr>
+          <tr><td><strong>AGL</strong></td><td><span class="pill p-st">Bundler</span></td><td>Moving the opposite direction to Origin: actively selling solar+battery bundles with finance (via Plenti), running Battery Rewards/VPP programs, and acquired the SA Virtual Power Plant in 2025. Positioning as an energy-services aggregator rather than a pure installer.</td></tr>
+          <tr><td><strong>Smart Energy Group</strong></td><td><span class="pill p-md">Mid-market</span></td><td>Founded 2016; "Smart Savings Plan" pay-from-savings financing model; rapid multi-state expansion on heavy paid-advertising acquisition. Current revenue/volume not publicly verified.</td></tr>
+          <tr><td><strong>Arise Solar</strong></td><td><span class="pill p-no">Budget</span></td><td>Queensland-headquartered, offices including Victoria; subcontracted installer network; heavy marketing spend including sports-star endorsements. Reputation mixed-to-poor — numerous complaints across ProductReview, Trustpilot and Solar Choice citing delays, poor after-sales service and warranty issues.</td></tr>
+          <tr><td><strong>Sunboost</strong></td><td><span class="pill p-no">Budget</span></td><td>Bell Solar Pty Ltd / National Solar Energy Group; claims 200 MW+ installed; mixed reputation.</td></tr>
+          <tr><td><strong>Penrith Solar Centre / SolarHub</strong></td><td><span class="pill p-hi">Premium</span></td><td>NSW/ACT-based; frequently cited as the quality benchmark installers by SolarQuotes and industry commentary.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box box-grid">
+      <strong>The Origin/AGL split is the most useful data point in this section.</strong> Australia's
+      two largest energy retailers looked at the same market and made opposite calls — one exited
+      installing for referral, the other doubled down on bundling. Both can be right: Origin's
+      4.7 million-customer base makes referral volume trivial to generate; AGL's VPP strategy needs
+      installed hardware it controls. A standalone lead-gen business is structurally closer to Origin's
+      bet than AGL's.
+    </div>
+
+    <h3 class="sub">(c) Local Victorian installers — the intended partners, not competitors</h3>
+    <p style="color:var(--ink-2);font-size:.95rem">
+      Typical profile: a small owner-operator or SME electrical/solar business, a handful of crews,
+      a few hundred installs a year, revenue in the low single-digit millions. Many operate as, or
+      under, a NETCC-approved retailer. Customer acquisition today is mostly word-of-mouth, local
+      Google Business Profile/SEO, some purchased comparison-site leads, and a growing amount of paid
+      social. <strong>Appetite for paid leads is real but quality-sensitive</strong> — they'll pay a real
+      premium for exclusive, pre-qualified, rebate-verified, locally-relevant leads over shared
+      marketplace leads, precisely because the shared model burns their sales time on enquiries they
+      have a one-in-three chance of winning.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ 03 PROFITABILITY & RISK ═══════════ -->
+<section class="sec" id="risk">
+  <div class="wrap">
+    <p class="sec-num">03</p>
+    <h2>Profitability is thin, and the industry has a real failure problem</h2>
+    <p class="intro">
+      This is the section that should most shape who we partner with. Margins are real but not large,
+      and the base rate of installer insolvency in Australia is high enough that partner selection is
+      closer to a risk-management function than a sales one.
+    </p>
+
+    <div class="chart">
+      <p class="chart-t">Typical gross margin, 6.6 kW residential job</p>
+      <p class="chart-s">Indicative Victorian cost stack against typical retail pricing</p>
+      <svg viewBox="0 0 780 160" role="img" aria-label="Bar showing a $6,000 job splitting into roughly $4,750 of cost and $1,250 of gross margin">
+        <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--ink-3)">
+          <text x="0" y="18">Retail price</text>
+          <text x="770" y="18" text-anchor="end">$6,000</text>
+        </g>
+        <rect x="0" y="26" width="780" height="34" rx="2" fill="var(--rule-2)"/>
+        <rect x="0" y="26" width="618" height="34" rx="2" fill="var(--ink-2)"/>
+        <text x="14" y="48" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#fff">Direct cost — $4,750 (79%)</text>
+        <rect x="618" y="26" width="162" height="34" fill="var(--grid)"/>
+        <text x="699" y="48" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#fff" font-weight="600">$1,250</text>
+        <text x="0" y="82" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="var(--ink-2)">Gross margin: <tspan font-weight="600" fill="var(--grid)">21%</tspan> — within the report's 18–24% range</text>
+        <text x="0" y="106" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ink-3)">Overhead, insurance/warranty provisioning and sales &amp; marketing (typically 15–25% of revenue)</text>
+        <text x="0" y="124" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ink-3)">come out of this margin before it reaches net profit — which is why net margins compress to</text>
+        <text x="0" y="142" font-family="IBM Plex Sans, sans-serif" font-size="11" fill="var(--ink-3)">low single digits at the budget end of the market.</text>
+      </svg>
+    </div>
+
+    <h3 class="sub">The insolvency problem</h3>
+    <div class="g3">
+      <div class="gc"><p class="k">Scale</p><h4>270+ collapses</h4><p>Industry trackers document 270+ collapsed Australian solar companies (one aggregates 800+ ASIC actions since 2011). The Clean Energy Regulator estimates 600,000–700,000 "orphaned" systems whose workmanship warranties are effectively void.</p></div>
+      <div class="gc"><p class="k">Consumer impact</p><h4>1 in 10 support requests</h4><p>CHOICE: at least 10% of solar-owner help requests involve a liquidated company. In a survey of 1,000+ owners, 30% reported a problem with their solar company, and 4% couldn't get a warranty honoured at all.</p></div>
+      <div class="gc"><p class="k">Cause</p><h4>Boom-bust margins</h4><p>Thin margins, rebate-driven demand cycles, aggressive discounting ("$3,999 fully installed") and cashflow stress. Product warranties (panels, inverters) survive via the manufacturer; workmanship warranties die with the installer.</p></div>
+    </div>
+
+    <div class="box box-peak">
+      <div class="box-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--peak)" stroke-width="2"><path d="M12 9v4M12 17h.01M10.3 3.3 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.3a2 2 0 0 0-3.4 0Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <strong>Implication for a referral model.</strong>
+      </div>
+      Referring a customer to a partner who later collapses doesn't just cost that customer a warranty —
+      it costs the referring business its reputation, since the customer's memory of "who sent me there"
+      outlasts their memory of "who I actually contracted with." Partner financial due diligence (ASIC
+      checks, trading history, review trend, NETCC standing) is not optional overhead here; it is close
+      to the core product.
+    </div>
+
+    <h3 class="sub">What installers currently pay to acquire a customer, and what that implies for us</h3>
+    <p style="color:var(--ink-2);font-size:.95rem;margin-bottom:1rem">
+      Shared comparison leads run $20–$50; exclusive $35–$120; commercial $150–$250. Overhead typically
+      eats 15–25% of revenue. Given a $1,100–$1,400 gross margin on a standard solar-only job — and
+      materially more on a battery job — a defensible referral fee sits at:
+    </p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Structure</th><th class="n">Sustainable range</th><th>Basis</th></tr></thead>
+        <tbody>
+          <tr><td>Per qualified lead — shared market rate</td><td class="n">$40 – $50</td><td>The public price floor (Solar Calculator, comparison sites)</td></tr>
+          <tr><td>Per qualified lead — exclusive, rebate-verified</td><td class="n">$60 – $150</td><td>Achievable given materially higher close rates on pre-qualified leads</td></tr>
+          <tr><td>Success fee — closed solar-only job</td><td class="n">$150 – $500</td><td>A fraction of the $1,100–$1,400 gross margin, leaving the installer's own margin intact</td></tr>
+          <tr><td>Success fee — closed battery / solar+battery job</td><td class="n">$300 – $1,000+</td><td>Bigger ticket, materially higher absolute margin dollars</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cert">
+      <div class="cert-h">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M7.8 4.2 12 2l4.2 2.2 4.2.5.5 4.2L23 12l-2.2 3.1-.5 4.2-4.2.5L12 22l-3.1-2.2-4.2-.5-.5-4.2L2 12l2.2-3.1.5-4.2z" stroke-linejoin="round"/></svg>
+        <h4>A note on how the fee is actually paid</h4>
+      </div>
+      <p>
+        Every figure above assumes the standard referral structure: the installer bills and collects
+        from the customer, and pays us a fee per qualified lead or closed job. That structure requires
+        nothing more than an ordinary commercial referral agreement.
+      </p>
+      <p>
+        <strong>If instead we collect payment from the customer directly and then pay the installer,
+        we are legally operating as the solar retailer, not a referrer</strong> — energy.gov.au draws
+        exactly this distinction. That changes the compliance floor materially: Solar Victoria requires
+        <strong>authorised retailer status</strong> to submit Solar Homes rebate applications and receive
+        rebate payments, and authorisation requires <strong>NETCC (New Energy Tech Consumer Code)
+        signatory status</strong> — a process that is slow and shouldn't be assumed as a starting
+        position. It also shifts the 5-year whole-of-system warranty and Australian Consumer Law
+        liability onto us rather than the installer, and requires working capital to cover hardware and
+        installer costs ahead of customer payment. The margin economics under that structure are
+        different again — and generally better per job, but with substantially more risk — and sit
+        outside the scope of this report.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 04 CUSTOMER PROFILES ═══════════ -->
+<section class="sec" id="personas">
+  <div class="wrap">
+    <p class="sec-num">04</p>
+    <h2>Five Victorian buyers, and which one to build around</h2>
+    <p class="intro">
+      Grounded in ABS, AER, ESC and APVI data. Victorian household electricity use averages ~4,615
+      kWh/year (lowest of the states); average quarterly bill ~$391 (Canstar Blue); usage rate ~26.8
+      c/kWh. Counter-intuitively, solar penetration is highest in outer-metro and regional postcodes —
+      and often in middle-to-lower income areas — because home ownership and roof suitability drive
+      uptake more than income does.
+    </p>
+
+    <div class="ptabs" role="tablist" aria-label="Customer personas">
+      <button class="ptab" role="tab" data-p="1" aria-selected="true">Outer-suburban family<span class="star">TOP TARGET</span></button>
+      <button class="ptab" role="tab" data-p="2" aria-selected="false">Pre-retiree upgrader</button>
+      <button class="ptab" role="tab" data-p="3" aria-selected="false">Regional homeowner</button>
+      <button class="ptab" role="tab" data-p="4" aria-selected="false">Higher-income professional</button>
+      <button class="ptab" role="tab" data-p="5" aria-selected="false">Renter / SME commercial</button>
+    </div>
+
+    <div class="pcard" data-p="1" data-active="true">
+      <div class="pcard-h">
+        <div><h4>The outer-suburban mortgage family</h4><p>Freestanding house in a growth corridor — Wyndham, Casey, Melton, Hume. Still on gas, increasingly electrifying.</p></div>
+        <span class="pill p-hi">Highest job value</span>
+      </div>
+      <div class="pfigs">
+        <div class="pfig"><div class="n">$90k–$150k</div><div class="l">Household income</div></div>
+        <div class="pfig"><div class="n">$450–$700</div><div class="l">Quarterly bill</div></div>
+        <div class="pfig"><div class="n">10kW + 10–13kWh</div><div class="l">Typical purchase</div></div>
+        <div class="pfig"><div class="n">$1,500–$2,500/yr</div><div class="l">Typical saving</div></div>
+        <div class="pfig"><div class="n">6–9 yrs</div><div class="l">Payback with battery</div></div>
+      </div>
+      <div class="prows">
+        <div><h5>Why this is the priority segment</h5><ul>
+          <li>Full rebate-stack eligibility: federal STC + Solar Victoria PV rebate + Cheaper Home Batteries Program</li>
+          <li>Above-average consumption (kids, aircon, sometimes a pool) drives bigger systems</li>
+          <li>Strong daytime-adjacent usage pattern makes battery attach an easy conversation</li>
+          <li>Highest volume of any segment — this is where growth-corridor housing stock actually is</li>
+        </ul></div>
+        <div><h5>Motivations &amp; objections</h5><ul>
+          <li>Motivated by bill relief and payback period, not environmental messaging</li>
+          <li>Main objection is upfront cost, even after rebates</li>
+          <li>Second objection is installer trust — this cohort has seen the insolvency headlines</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="pcard" data-p="2">
+      <div class="pcard-h">
+        <div><h4>The pre-retiree upgrader</h4><p>Established owner-occupier, older freestanding home, existing small/old solar or none. Strong battery-retrofit candidate.</p></div>
+        <span class="pill p-md">Low CAC, high attach</span>
+      </div>
+      <div class="pfigs">
+        <div class="pfig"><div class="n">Moderate</div><div class="l">Household income</div></div>
+        <div class="pfig"><div class="n">$350–$550</div><div class="l">Quarterly bill</div></div>
+        <div class="pfig"><div class="n">Battery retrofit</div><div class="l">Typical purchase</div></div>
+        <div class="pfig"><div class="n">Low price sensitivity</div><div class="l">Buying behaviour</div></div>
+      </div>
+      <div class="prows">
+        <div><h5>Why this segment is attractive</h5><ul>
+          <li>Already solar-aware — lower education burden, lower acquisition cost</li>
+          <li>Motivated by energy independence and outage backup, not just bill size</li>
+          <li>Wants to lock in savings before rebates taper further — genuine urgency, not manufactured</li>
+        </ul></div>
+        <div><h5>What they buy</h5><ul>
+          <li>Battery-retrofit onto existing solar is the dominant path — a market roughly as large as new-attach (per CER Q3 2025)</li>
+          <li>System upgrades where the original install is undersized for current use</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="pcard" data-p="3">
+      <div class="pcard-h">
+        <div><h4>The regional Victorian homeowner</h4><p>Freestanding rural or regional property. High roof suitability, strong existing uptake in the region.</p></div>
+        <span class="pill p-lo">High volume, longer travel</span>
+      </div>
+      <div class="pfigs">
+        <div class="pfig"><div class="n">At/below median</div><div class="l">Household income</div></div>
+        <div class="pfig"><div class="n">Bill-sensitive</div><div class="l">Motivation</div></div>
+        <div class="pfig"><div class="n">Larger systems feasible</div><div class="l">Roof capacity</div></div>
+      </div>
+      <div class="prows">
+        <div><h5>Why this segment matters</h5><ul>
+          <li>Regional Victoria already has the state's highest solar penetration — proof of demand, not a cold market</li>
+          <li>Battery adds genuine outage-resilience value beyond bill savings</li>
+        </ul></div>
+        <div><h5>Constraint</h5><ul>
+          <li>Installer travel time reduces the pool of willing partners and can compress their margin, which flows back into what they can afford to pay for a lead</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="pcard" data-p="4">
+      <div class="pcard-h">
+        <div><h4>The higher-income professional</h4><p>Inner or middle-ring townhouse or period home. Often exceeds the new Solar Victoria income cap.</p></div>
+        <span class="pill p-st">Lower volume, higher spend</span>
+      </div>
+      <div class="pfigs">
+        <div class="pfig"><div class="n">$150k+</div><div class="l">Household income</div></div>
+        <div class="pfig"><div class="n">Federal only</div><div class="l">Rebate eligibility</div></div>
+        <div class="pfig"><div class="n">Sometimes roof-constrained</div><div class="l">Property type</div></div>
+      </div>
+      <div class="prows">
+        <div><h5>Eligibility note</h5><ul>
+          <li>Above the $150,000 Solar Homes threshold (from 1 July 2026) — only federal STC and battery incentives apply, no state rebate</li>
+        </ul></div>
+        <div><h5>What converts them</h5><ul>
+          <li>Environmentally motivated in a way that reinforces rather than drives the decision</li>
+          <li>Less price-sensitive — a good fit for premium solar+battery+EV+heat pump bundles</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="pcard" data-p="5">
+      <div class="pcard-h">
+        <div><h4>Renters and SME commercial</h4><p>Two different groups bundled here because both are secondary, not because they're similar.</p></div>
+        <span class="pill p-lo">Secondary funnel</span>
+      </div>
+      <div class="prows">
+        <div><h5>Renters</h5><ul>
+          <li>Mostly excluded by the split-incentive problem — the landlord pays for the asset, the tenant gets the bill saving</li>
+          <li>Solar Victoria runs a rental-provider rebate stream; worth a landlord-facing referral path rather than a tenant-facing funnel</li>
+        </ul></div>
+        <div><h5>SME commercial (30–100 kW)</h5><ul>
+          <li>Higher-value, higher-qualification-burden, higher-fee lead territory</li>
+          <li>Worth a dedicated funnel once the residential engine is proven — different sales cycle, different objections</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="box box-grid" style="margin-top:1.5rem">
+      <strong>What actually drives the decision, across every segment.</strong> Price and payback period
+      dominate; trust and installer reputation are decisive at the point of choice, precisely because of
+      the insolvency backdrop above; environmental motivation reinforces a decision already being made
+      on financial grounds rather than driving it. The most common abandonment reason isn't price — it's
+      <strong>quote fatigue</strong> from being contacted by three or four installers off one shared-lead
+      enquiry, which is the exact failure mode an exclusive-lead model is built to remove.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 05 MARGIN CALCULATOR ═══════════ -->
+<section class="sec" id="margin">
+  <div class="wrap">
+    <p class="sec-num">05</p>
+    <h2>The cost stack, and what it implies for a fee</h2>
+    <p class="intro">
+      This is the installer's own economics — what they actually spend to complete a job, set against
+      typical Victorian retail pricing. It's the ceiling that any referral fee has to fit under without
+      breaking the installer's own margin.
+    </p>
+
+    <div class="calc-wrap">
+      <div class="calc-head">
+        <div><p class="eyebrow">Interactive &middot; installer cost stack</p><h3>Where does the margin actually come from?</h3></div>
+        <div class="toggle" role="tablist" aria-label="System type">
+          <button data-view="solar" aria-selected="true">6.6 kW solar only</button>
+          <button data-view="battery" aria-selected="false">10 kW + 10 kWh battery</button>
+        </div>
+      </div>
+
+      <div class="calc-body">
+        <!-- SOLAR ONLY VIEW: full reconciled waterfall -->
+        <div class="calc-view" data-view="solar" data-active="true">
+          <svg viewBox="0 0 900 300" role="img" aria-label="Waterfall chart from $6,000 retail price down through six cost components to a $1,250 gross margin" id="waterfallSolar">
+            <line x1="40" y1="250" x2="880" y2="250" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+            <g font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(255,255,255,.4)">
+              <text x="32" y="254" text-anchor="end">$0</text>
+              <text x="32" y="150" text-anchor="end">$3,000</text>
+              <text x="32" y="45" text-anchor="end">$6,000</text>
+            </g>
+            <line x1="40" y1="150" x2="880" y2="150" stroke="rgba(255,255,255,.07)"/>
+
+            <!-- Retail 6000, scale 6000=205px -> 1=0.0342px -->
+            <g class="wf-bar" data-y="45" data-h="205">
+              <rect x="45" y="250" width="95" height="0" fill="#fff"/>
+              <text x="92" y="38" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" fill="#fff" font-weight="700">$6,000</text>
+              <text x="92" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="rgba(255,255,255,.55)">Retail price</text>
+            </g>
+            <!-- Panels -1350 at top=45+... running from 45 down -->
+            <g class="wf-bar" data-y="45" data-h="46">
+              <rect x="160" y="91" width="85" height="0" fill="#D6452E"/>
+              <text x="202" y="38" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$1,350</text>
+              <text x="202" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Panels</text>
+            </g>
+            <g class="wf-bar" data-y="91" data-h="39">
+              <rect x="270" y="130" width="85" height="0" fill="#D6452E" opacity=".92"/>
+              <text x="312" y="84" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$1,150</text>
+              <text x="312" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Inverter</text>
+            </g>
+            <g class="wf-bar" data-y="130" data-h="15">
+              <rect x="380" y="145" width="85" height="0" fill="#D6452E" opacity=".84"/>
+              <text x="422" y="123" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$450</text>
+              <text x="422" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Racking</text>
+            </g>
+            <g class="wf-bar" data-y="145" data-h="10">
+              <rect x="490" y="155" width="85" height="0" fill="#D6452E" opacity=".76"/>
+              <text x="532" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$300</text>
+              <text x="532" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Cabling &amp; switchgear</text>
+            </g>
+            <g class="wf-bar" data-y="155" data-h="41">
+              <rect x="600" y="196" width="85" height="0" fill="#D6452E" opacity=".68"/>
+              <text x="642" y="148" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$1,200</text>
+              <text x="642" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Labour</text>
+            </g>
+            <g class="wf-bar" data-y="196" data-h="10">
+              <rect x="710" y="206" width="85" height="0" fill="#D6452E" opacity=".6"/>
+              <text x="752" y="189" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#fff">−$300</text>
+              <text x="752" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="9.5" fill="rgba(255,255,255,.55)">Compliance</text>
+            </g>
+            <!-- Margin bar: from 206 down to 250 = 44px = 1250 -->
+            <g class="wf-bar" data-y="206" data-h="44">
+              <rect x="820" y="250" width="55" height="0" fill="#FFCE1F"/>
+            </g>
+            <text x="847" y="199" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#FFCE1F" font-weight="700">$1,250</text>
+            <text x="847" y="270" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="#FFCE1F" font-weight="600">Gross margin</text>
+          </svg>
+          <p class="calc-cap">
+            A straightforward single-storey Victorian install, budget-tier components, no switchboard
+            upgrade. <strong>Gross margin ~21%</strong> — squarely within the report's 18–24% range. Add a
+            switchboard upgrade ($800–$3,000) or two-storey access (+$400–$900) and this margin compresses
+            fast, which is exactly why installers price those extras separately rather than absorbing them.
+          </p>
+          <div class="fee-brackets">
+            <div class="fee"><div class="fk">Sustainable fee per qualified lead</div><div class="fv">$40<small> – $150</small></div></div>
+            <div class="fee"><div class="fk">Sustainable success fee, closed job</div><div class="fv">$150<small> – $500</small></div></div>
+          </div>
+        </div>
+
+        <!-- BATTERY VIEW: composition, not forced reconciliation -->
+        <div class="calc-view" data-view="battery">
+          <div class="comp-bar" id="compBattery">
+            <div class="comp-row"><span class="comp-lab">Panels (10 kW)</span><div class="comp-track"><div class="comp-fill" data-w="15" style="background:#8B9CA8">$2,900</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Hybrid inverter</span><div class="comp-track"><div class="comp-fill" data-w="20" style="background:#A6B5BE">$3,960</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Racking + BOS</span><div class="comp-track"><div class="comp-fill" data-w="6" style="background:#C1CCD2">$1,100</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Battery (10 kWh)</span><div class="comp-track"><div class="comp-fill" data-w="31" style="background:#FFCE1F;color:#16202B">$6,000</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Battery labour</span><div class="comp-track"><div class="comp-fill" data-w="10" style="background:#DCEAE8;color:#16202B">$2,000</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Solar labour</span><div class="comp-track"><div class="comp-fill" data-w="7" style="background:#DCEAE8;color:#16202B">$1,300</div></div></div>
+            <div class="comp-row"><span class="comp-lab">Compliance</span><div class="comp-track"><div class="comp-fill" data-w="2" style="background:#DCEAE8;color:#16202B">$300</div></div></div>
+          </div>
+          <p class="calc-cap">
+            Direct cost sums to roughly <strong>$17,500</strong> against a typical pre-rebate retail range
+            of <strong>$13,000–$18,000</strong>. This is the one place the underlying research doesn't
+            fully reconcile to a single margin figure — component costs vary widely by battery brand
+            (trade prices from ~$550/kWh to ~$940/kWh) and by how much of the STC/battery-rebate discount
+            the installer nets against their own price versus passes straight through. What's clear
+            directionally: <strong>absolute margin dollars run well above the solar-only job</strong>,
+            which is why installer appetite for battery-attached leads is currently the strongest signal
+            in the market — and why the fee brackets below sit meaningfully higher despite the underlying
+            percentage margin being less certain.
+          </p>
+          <div class="fee-brackets">
+            <div class="fee"><div class="fk">Sustainable fee per qualified lead</div><div class="fv">$60<small> – $150</small></div></div>
+            <div class="fee"><div class="fk">Sustainable success fee, closed job</div><div class="fv">$300<small> – $1,000+</small></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <strong>Reading this calculator correctly.</strong> The number to optimise is never cost-per-lead —
+      it's cost-per-installed-job. A $40 shared lead converting at 10% costs an installer $400 to win;
+      a $120 exclusive lead converting at 30% costs $400 too, but arrives with a customer who isn't also
+      fielding calls from two other companies. Fee structure should track that logic, not the sticker
+      price of the lead.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 06 STRATEGY ═══════════ -->
+<section class="sec" id="strategy">
+  <div class="wrap">
+    <p class="sec-num">06</p>
+    <h2>Where the defensible position actually is</h2>
+    <p class="intro">
+      Given a fragmented installer base, a confusing four-program rebate stack, and an industry with a
+      genuine trust problem, the opening isn't in out-bidding SolarQuotes for search traffic — it's in
+      being the party that makes the rebate stack legible and stands behind who it refers.
+    </p>
+
+    <div class="g3">
+      <div class="gc"><p class="k">Wedge</p><h4>Rebate-qualification depth</h4><p>The stacked rebate landscape confuses consumers and is largely unaddressed by generic "3 free quotes" comparison sites. Pre-qualifying against the exact stack — income cap, property value, existing solar, battery suitability — is the differentiator.</p></div>
+      <div class="gc"><p class="k">Wedge</p><h4>Exclusive over shared</h4><p>Incumbents are structurally locked into the shared model because it's how they scale cheaply. An exclusive or two-installer-max lead removes the quote-fatigue problem that is this industry's single most common objection.</p></div>
+      <div class="gc"><p class="k">Wedge</p><h4>Battery-first positioning</h4><p>Solar-only volume is shrinking; battery volume tripled. A funnel built around battery-attach and battery-retrofit leads targets the highest-value jobs and the most motivated, least price-sensitive buyers.</p></div>
+      <div class="gc"><p class="k">Wedge</p><h4>Partner curation as brand</h4><p>Given 270+ collapses, actively vetting for financial health and NETCC status — and dropping partners who slip — is itself a trust-based moat competitors relying on volume can't easily copy.</p></div>
+    </div>
+
+    <h3 class="sub">Realistic addressable market</h3>
+    <p style="color:var(--ink-2);font-size:.95rem;margin-bottom:1rem">
+      Victoria's ~18% share of the national ~221,000 battery installs in 2025 implies roughly
+      <strong>40,000 Victorian battery installs</strong>, plus a further tranche of solar-only systems.
+      Capturing even 1–3% of Victorian purchase intent implies a few hundred to low-thousands of
+      qualified leads per year. At $60–$150 per qualified lead plus success fees, that's plausibly a
+      seven-figure revenue line within a few years — an order-of-magnitude estimate, not a bottom-up
+      forecast, and highly sensitive to actual conversion and fee realisation.
+    </p>
+
+    <h3 class="sub">Recommendations</h3>
+    <div class="recs">
+      <div class="rec"><span class="rn">1</span><div><h5>Launch battery-and-rebate-led, exclusive-lead funnels first</h5><p>Prioritise solar+battery and battery-retrofit leads. Sell exclusive or two-installer-max, rebate-verified, appointment-booked leads at $60–$150, with a success fee on close. If partner close rates stay above ~25–30%, hold premium pricing; below ~15%, tighten qualification or cut price.</p></div></div>
+      <div class="rec"><span class="rn">2</span><div><h5>Curate a small panel of financially sound, NETCC-approved installers</h5><p>Active due diligence — ASIC checks, trading history, review trend. Cap leads per installer to protect close rates and diversify collapse risk. Drop any partner with rising complaint volume.</p></div></div>
+      <div class="rec"><span class="rn">3</span><div><h5>Build the rebate-eligibility engine as core IP</h5><p>Screen postcode/STC zone, ownership, the $150,000 income cap (from 1 July 2026), property value, existing solar and battery suitability, then book a consultation. This is the differentiator versus a generic comparison form.</p></div></div>
+      <div class="rec"><span class="rn">4</span><div><h5>Exploit the rebate calendar deliberately</h5><p>Run demand-capture campaigns ahead of each 1 January STC step-down and each battery-rebate taper from 2027. Manage installer capacity ahead of time to avoid the post-deadline lull damaging close rates.</p></div></div>
+      <div class="rec"><span class="rn">5</span><div><h5>Diversify ahead of the 2030 STC wind-down</h5><p>Batteries/VPP, heat-pump hot water, EV chargers, and energy-plan or finance referral (SolarQuotes-style ancillary fees of $16–$50) all extend the model past the point solar rebates stop being a hook.</p></div></div>
+      <div class="rec"><span class="rn">6</span><div><h5>Track leading indicators monthly</h5><p>Victorian install and battery volumes (CEC/SunWiz), step-down dates, partner close and complaint rates, and CPL/CPA trend. Shift budget away from any channel whose CPA exceeds roughly a third of the fee it earns.</p></div></div>
+    </div>
+
+    <h3 class="sub">Threats</h3>
+    <div class="g3">
+      <div class="gc"><p class="k">Threat</p><h4>Installer disintermediation</h4><p>As installers build owned/organic channels targeting $0–$50 leads, they buy fewer paid ones. Lead quality has to stay high enough to remain worth paying for.</p></div>
+      <div class="gc"><p class="k">Threat</p><h4>Platform competition</h4><p>SolarQuotes (Origin-backed), Solar Choice and a wave of exclusive-lead brokers compete for the same installers and the same search/social traffic. SEO and paid-search costs are rising.</p></div>
+      <div class="gc"><p class="k">Threat</p><h4>Regulatory wind-down</h4><p>STC scheme ends 2030; battery rebate tapers from 2027; Solar Victoria's income cap already tightened once. Each step-down is a spike then a trough, and the long-run trend erodes the rebate-qualification hook.</p></div>
+      <div class="gc"><p class="k">Threat</p><h4>Rising compliance scrutiny</h4><p>The Clean Energy Regulator inspected 1,278 Cheaper Home Battery installs between July 2025 and April 2026 and found 60.8% "substandard" and 1.2% "unsafe." Referring to a poor installer now carries real reputational and potential legal exposure.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 07 METHODOLOGY ═══════════ -->
+<section class="sec" id="notes">
+  <div class="wrap">
+    <p class="sec-num">07</p>
+    <h2>Methodology, sourcing and caveats</h2>
+    <p class="intro">Read this before quoting a figure from this report externally.</p>
+
+    <details class="acc">
+      <summary>Sources prioritised</summary>
+      <div class="accb">Clean Energy Council, Clean Energy Regulator, APVI, SunWiz, ABS, AER, IBISWorld, ACCC, Solar Victoria, the Essential Services Commission, plus reputable industry sources (SolarQuotes, PV Magazine Australia, RenewEconomy, One Step Off The Grid, Solar Insiders) for pricing and market data where official figures don't exist.</div>
+    </details>
+    <details class="acc">
+      <summary>Figures that need verification before external use</summary>
+      <div class="accb"><ul>
+        <li>IBISWorld's business-count figures (5,046 in 2026 vs 8,505 in 2025) come from search-snippet summaries; the scale of that one-year drop should be checked against the full report.</li>
+        <li>Solargain and Smart Energy Group financials are third-party estimates or dated (2017–19), not audited.</li>
+      </ul></div>
+    </details>
+    <details class="acc">
+      <summary>Where numbers are indicative rather than exact</summary>
+      <div class="accb"><ul>
+        <li>Cost-stack component prices are indicative trade/market ranges; actual costs vary by volume, brand and site. The 6.6 kW gross-margin figure is a synthesised estimate, not a single published number.</li>
+        <li>The battery-job cost composition in the calculator above does not reconcile to one figure in the underlying research — treat the gap between cost and retail as directional, not exact.</li>
+        <li>Battery attach-rate and average-size figures rely on SunWiz reporting, which uses several different definitions (as-proposed vs as-sold) across sources.</li>
+        <li>Cumulative Cheaper Home Batteries Program install counts vary by reporting date across sources (100,000 by Oct 2025; 250,000+ / 6.3 GWh later; 284,000 by May 2026; 500,000+ in a later announcement) — always cite with the date attached.</li>
+        <li>The total-addressable-market estimate in Section 06 is order-of-magnitude, not a bottom-up market study.</li>
+      </ul></div>
+    </details>
+    <details class="acc">
+      <summary>Currency</summary>
+      <div class="accb">Figures are current to approximately August 2026. The rebate landscape changes frequently — STC step-downs each January, the battery-rebate taper from 2027, and the Solar Victoria income cap change of 1 July 2026 are all scheduled or recent changes. Re-verify before acting on any specific number.</div>
+    </details>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><a href="index.html">Landing page</a> &middot; <a href="business-plan.html">Business plan</a> &middot; <a href="campaign.html">Campaign plan</a></p>
+    <div class="fine">
+      <p>Internal market analysis, not for external distribution without the verification steps in
+      Section 07. Figures are drawn from third-party research current to approximately August 2026 and
+      should be re-checked against primary sources (Clean Energy Council, Clean Energy Regulator, Solar
+      Victoria) before being used in any customer-facing or investor-facing material.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var $  = function(s,c){ return (c||document).querySelector(s); };
+var $$ = function(s,c){ return Array.prototype.slice.call((c||document).querySelectorAll(s)); };
+var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ── generic reveal-on-scroll bar animator ── */
+function animateBars(container, selector, attrIsHeight){
+  var bars = $$(selector, container);
+  var run = function(){
+    bars.forEach(function(el, i){
+      var target = el.dataset.h;
+      var rect = el.querySelector("rect");
+      var delay = reduce ? 0 : i * 90;
+      setTimeout(function(){
+        if(attrIsHeight){
+          var y = parseFloat(el.dataset.y), h = parseFloat(target);
+          rect.setAttribute("y", y);
+          rect.setAttribute("height", h);
+        } else {
+          rect.style.height = target + "%";
+        }
+      }, delay);
+    });
+  };
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ run(); io.unobserve(en.target); } });
+  }, {threshold:.35});
+  io.observe(container);
+}
+
+/* hero pivot chart — bars grow from 0 to data-h (as height, anchored bottom at y=180) */
+(function(){
+  var svg = $("#pivotChart");
+  if(!svg) return;
+  var bars = $$(".pv-bar", svg);
+  var baseline = 180;
+  var run = function(){
+    bars.forEach(function(rect, i){
+      var h = parseFloat(rect.dataset.h);
+      var delay = reduce ? 0 : i * 130;
+      setTimeout(function(){
+        rect.setAttribute("height", h);
+        rect.setAttribute("y", baseline - h);
+      }, delay);
+    });
+  };
+  if(reduce){ run(); }
+  else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ run(); io.unobserve(en.target); } });
+    }, {threshold:.4});
+    io.observe(svg);
+  }
+})();
+
+/* waterfall (solar view) — grows each bar from its baseline */
+(function(){
+  var svg = $("#waterfallSolar");
+  if(!svg) return;
+  var groups = $$(".wf-bar", svg);
+  var run = function(){
+    groups.forEach(function(g, i){
+      var y = parseFloat(g.dataset.y), h = parseFloat(g.dataset.h);
+      var rect = g.querySelector("rect");
+      var delay = reduce ? 0 : i * 110;
+      setTimeout(function(){
+        rect.setAttribute("y", y);
+        rect.setAttribute("height", h);
+      }, delay);
+    });
+  };
+  if(reduce){ run(); }
+  else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ run(); io.unobserve(en.target); } });
+    }, {threshold:.3});
+    io.observe(svg);
+  }
+})();
+
+/* battery composition bars — width grows on view */
+function runBatteryBars(){
+  $$(".comp-fill", $("#compBattery")).forEach(function(el, i){
+    var w = el.dataset.w;
+    var delay = reduce ? 0 : i * 90;
+    setTimeout(function(){ el.style.width = w + "%"; }, delay);
+  });
+}
+(function(){
+  var el = $("#compBattery");
+  if(!el) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting && $$('.calc-view[data-view="battery"]')[0].dataset.active === "true"){
+        runBatteryBars(); io.unobserve(el);
+      }
+    });
+  }, {threshold:.3});
+  io.observe(el);
+})();
+
+/* ── calculator toggle ── */
+$$(".toggle button").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    $$(".toggle button").forEach(function(b){ b.setAttribute("aria-selected", "false"); });
+    btn.setAttribute("aria-selected", "true");
+    var view = btn.dataset.view;
+    $$(".calc-view").forEach(function(v){
+      v.dataset.active = (v.dataset.view === view) ? "true" : "false";
+    });
+    if(view === "battery"){
+      var fills = $$(".comp-fill", $("#compBattery"));
+      if(fills[0] && !fills[0].style.width) runBatteryBars();
+    }
+  });
+});
+
+/* ── persona tabs ── */
+$$(".ptab").forEach(function(tab){
+  tab.addEventListener("click", function(){
+    var p = tab.dataset.p;
+    $$(".ptab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.p === p ? "true" : "false"); });
+    $$(".pcard").forEach(function(c){ c.dataset.active = (c.dataset.p === p) ? "true" : "false"; });
+  });
+});
+
+})();
+</script>
+</body>
+</html>
