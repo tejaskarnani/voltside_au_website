@@ -212,9 +212,10 @@ body.sent .mock{padding-top:0}
   </header>
 
   <div class="intro">
-    <h1>Five things, then you're done</h1>
-    <p>Priya needs these before she can size your system and confirm what you qualify for.
-      Photos straight from your phone are fine.</p>
+    <h1>Send whatever you can</h1>
+    <p>These five help Priya size your system and confirm what you qualify for. None of them are
+      compulsory — send what you have to hand and she'll go through the rest on the phone. Photos
+      straight from your phone are fine.</p>
   </div>
 
   <main class="blocks" id="blocks">
@@ -311,9 +312,9 @@ body.sent .mock{padding-top:0}
 
   <div class="done-screen">
     <div class="tick">&#10003;</div>
-    <h2>That's everything. Thank you.</h2>
-    <p>Priya has been notified and will be in touch with your sizing and rebate figures. You can
-      close this page.</p>
+    <h2 id="done-ttl">Thank you.</h2>
+    <p id="done-msg">Priya has been notified and will be in touch with your sizing and rebate
+      figures. You can close this page.</p>
     <div class="done-ref">
       <span>Your reference</span>
       <b>OT-2026-00184</b>
@@ -325,11 +326,11 @@ body.sent .mock{padding-top:0}
 <div class="bar">
   <div class="bar-in">
     <div class="prog-top">
-      <span class="prog-lab">Uploaded</span>
+      <span class="prog-lab">Ready to send</span>
       <span class="prog-n" id="count">0 of 5</span>
     </div>
     <div class="track"><i id="fill"></i></div>
-    <button class="send" id="send" type="button" disabled>Add all 5 to finish</button>
+    <button class="send" id="send" type="button" disabled>Add at least one to send</button>
     <div class="expiry">Link expires Thursday 18 September</div>
   </div>
 </div>
@@ -444,21 +445,22 @@ body.sent .mock{padding-top:0}
     }
   }
 
+  // Nothing here is compulsory. The only gate is that sending an empty page
+  // would notify a setter about nothing at all.
   function refresh() {
     var done = document.querySelectorAll('.blk.done').length;
-    var left = TOTAL - done;
 
     countEl.textContent = done + ' of ' + TOTAL;
     fillEl.style.width = Math.round((done / TOTAL) * 100) + '%';
 
-    if (left === 0) {
-      sendEl.disabled = false;
-      sendEl.textContent = 'Send to Optimal Transnational';
-    } else {
+    if (done === 0) {
       sendEl.disabled = true;
-      sendEl.textContent = left === TOTAL
-        ? 'Add all ' + TOTAL + ' to finish'
-        : 'Add the last ' + left + ' to finish';
+      sendEl.textContent = 'Add at least one to send';
+    } else {
+      sendEl.disabled = false;
+      sendEl.textContent = done === TOTAL
+        ? 'Send all ' + TOTAL + ' to Optimal Transnational'
+        : 'Send ' + (done === 1 ? 'this one' : 'these ' + done) + ' to Optimal Transnational';
     }
   }
 
@@ -470,6 +472,17 @@ body.sent .mock{padding-top:0}
   });
 
   sendEl.addEventListener('click', function () {
+    var done = document.querySelectorAll('.blk.done').length;
+    var left = TOTAL - done;
+
+    document.getElementById('done-ttl').textContent =
+      left === 0 ? "That's everything. Thank you." : 'Got it. Thank you.';
+
+    document.getElementById('done-msg').textContent = left === 0
+      ? 'Priya has been notified and will be in touch with your sizing and rebate figures. You can close this page.'
+      : 'Priya has been notified. She will go through the remaining ' + left +
+        (left === 1 ? ' item' : ' items') + ' with you on the phone, so there is nothing more you need to do here.';
+
     document.body.classList.add('sent');
     window.scrollTo(0, 0);
   });
