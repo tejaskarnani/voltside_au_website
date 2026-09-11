@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Upload your documents — Optimal Transnational</title>
+<meta name="theme-color" content="#16202b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* ============================================================================
+   /u/[token] — the page a customer's upload link opens.
+   ============================================================================
+   MOCK-UP. No network calls, no uploads. Chosen files are read locally only,
+   to produce a real thumbnail and a real file size.
+
+   Tokens copied verbatim from app/globals.css. Light only, like the CRM.
+   Phone first: this is opened on a handset, standing in a garage, one-handed.
+   ============================================================================ */
+:root{
+  color-scheme:light;
+  --ink:#16202b; --ink-2:#33434f; --ink-3:#6a7b86;
+  --paper:#f2f5f4; --panel:#ffffff;
+  --rule:#d3dbd9; --rule-2:#e6ebea;
+  --volt:#ffce1f; --volt-deep:#e0ac00;
+  --grid:#12615e; --grid-soft:#dceae8;
+  --peak:#d6452e; --peak-soft:#fbe4e0;
+  --r:3px;
+  --display:'Bricolage Grotesque','Trebuchet MS',system-ui,sans-serif;
+  --body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 16px/1.55 var(--body); -webkit-font-smoothing:antialiased;
+  padding-bottom:calc(112px + env(safe-area-inset-bottom));
+}
+.shell{max-width:560px;margin:0 auto}
+
+/* --- masthead ------------------------------------------------------------ */
+.top{background:var(--ink);color:#fff;padding:18px 20px 20px}
+.brand{
+  display:flex;align-items:center;gap:9px;
+  font:800 17px/1 var(--display);letter-spacing:-.02em;
+}
+.brand .sq{width:14px;height:14px;background:var(--volt);flex:none}
+.for{
+  margin-top:14px;padding-top:13px;border-top:1px solid #2b3742;
+  font:400 13.5px/1.5 var(--body);color:#a8b8c2;
+}
+.for b{display:block;color:#fff;font:600 16px/1.35 var(--body)}
+.ref{font:500 12px/1 var(--mono);color:var(--volt);letter-spacing:.04em;margin-top:7px}
+
+/* --- intro --------------------------------------------------------------- */
+.intro{padding:22px 20px 4px}
+h1{font:700 23px/1.25 var(--display);letter-spacing:-.02em;margin:0 0 9px;text-wrap:balance}
+.intro p{margin:0;color:var(--ink-2);font-size:15px;max-width:44ch}
+
+/* --- blocks -------------------------------------------------------------- */
+.blocks{padding:20px 20px 8px;display:flex;flex-direction:column;gap:12px}
+
+.blk{
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);
+  overflow:hidden;
+}
+.blk.done{border-color:var(--grid-soft)}
+.blk.bad{border-color:var(--peak-soft)}
+
+.pick{
+  display:flex;gap:13px;align-items:flex-start;width:100%;
+  padding:15px 16px;cursor:pointer;
+}
+.pick:focus-within{outline:2px solid var(--grid);outline-offset:-2px}
+.pick input[type=file]{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+.idx{
+  flex:none;width:27px;height:27px;border:1px solid var(--rule);border-radius:50%;
+  display:grid;place-items:center;font:600 12px/1 var(--mono);color:var(--ink-3);
+  background:var(--panel);
+}
+.blk.done .idx{background:var(--grid);border-color:var(--grid);color:#fff}
+.txt{flex:1;min-width:0}
+.ttl{display:block;font:600 15.5px/1.35 var(--body)}
+.why{display:block;font-size:13.5px;line-height:1.45;color:var(--ink-3);margin-top:3px}
+.act{
+  flex:none;align-self:center;
+  font:600 12.5px/1 var(--mono);letter-spacing:.04em;text-transform:uppercase;
+  color:var(--grid);background:var(--grid-soft);border:1px solid var(--grid-soft);
+  padding:9px 12px;border-radius:var(--r);white-space:nowrap;
+}
+.blk.done .act{background:transparent;border-color:var(--rule);color:var(--ink-3)}
+
+/* chosen files */
+.files{border-top:1px solid var(--rule-2);padding:4px 16px 6px;display:none}
+.blk.done .files,.blk.bad .files{display:block}
+.file{display:flex;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule-2)}
+.file:last-child{border-bottom:0}
+.thumb{
+  flex:none;width:42px;height:42px;border-radius:2px;background:var(--paper);
+  border:1px solid var(--rule-2);object-fit:cover;display:block;
+}
+.thumb.doc{
+  display:grid;place-items:center;
+  font:600 9.5px/1 var(--mono);color:var(--ink-3);letter-spacing:.04em;
+}
+.fmeta{flex:1;min-width:0}
+.fname{
+  display:block;font:500 13.5px/1.4 var(--body);color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.fsize{display:block;font:400 12px/1.4 var(--mono);color:var(--ink-3);margin-top:1px}
+.rm{
+  flex:none;border:0;background:transparent;cursor:pointer;padding:7px 8px;
+  font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);
+}
+.rm:hover,.rm:focus-visible{color:var(--peak)}
+.err{
+  display:none;margin:0;padding:10px 16px 13px;background:var(--peak-soft);
+  font:400 13px/1.45 var(--body);color:#8e2a1a;border-top:1px solid #f3cfc7;
+}
+.blk.bad .err{display:block}
+
+/* --- help ---------------------------------------------------------------- */
+.help{padding:6px 20px 0}
+.help details{
+  background:var(--panel);border:1px solid var(--rule);border-radius:var(--r);
+}
+.help summary{
+  cursor:pointer;padding:13px 16px;font:600 14px/1.3 var(--body);
+  list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.help summary::-webkit-details-marker{display:none}
+.help summary::after{content:"+";font:400 18px/1 var(--mono);color:var(--ink-3)}
+.help details[open] summary::after{content:"–"}
+.help .inner{padding:0 16px 15px;font-size:14px;color:var(--ink-2);line-height:1.6}
+.help .inner p{margin:0 0 10px}
+.help .inner p:last-child{margin:0}
+
+.legal{
+  padding:20px;font:400 12.5px/1.6 var(--body);color:var(--ink-3);
+}
+.legal b{color:var(--ink-2)}
+
+/* --- sticky footer ------------------------------------------------------- */
+.bar{
+  position:fixed;left:0;right:0;bottom:0;background:var(--panel);
+  border-top:1px solid var(--rule);
+  padding:12px 20px calc(14px + env(safe-area-inset-bottom));
+  box-shadow:0 -6px 18px rgba(22,32,43,.06);
+}
+.bar-in{max-width:560px;margin:0 auto}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.prog-lab{font:600 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.prog-n{font:600 14px/1 var(--mono);font-variant-numeric:tabular-nums}
+.track{height:4px;background:var(--rule-2);overflow:hidden;margin-bottom:11px}
+.track i{display:block;height:100%;width:0;background:var(--grid);transition:width .3s ease}
+.send{
+  width:100%;border:0;border-radius:var(--r);cursor:pointer;
+  background:var(--volt);color:var(--ink);
+  font:600 16px/1 var(--body);padding:16px;
+}
+.send:disabled{background:var(--rule-2);color:var(--ink-3);cursor:not-allowed}
+.expiry{text-align:center;font:400 11.5px/1 var(--mono);color:var(--ink-3);margin-top:10px}
+
+/* --- done screen --------------------------------------------------------- */
+.done-screen{display:none;padding:56px 24px 40px;text-align:center}
+body.sent .done-screen{display:block}
+body.sent .intro,body.sent .blocks,body.sent .help,body.sent .legal,body.sent .bar{display:none}
+body.sent{padding-bottom:0}
+.tick{
+  width:56px;height:56px;border-radius:50%;background:var(--grid);color:#fff;
+  display:grid;place-items:center;margin:0 auto 20px;font-size:26px;line-height:1;
+}
+.done-screen h2{font:700 24px/1.25 var(--display);letter-spacing:-.02em;margin:0 0 10px}
+.done-screen p{margin:0 auto;max-width:38ch;color:var(--ink-2);font-size:15px}
+.done-ref{
+  display:inline-block;margin-top:22px;background:var(--paper);border-left:3px solid var(--volt);
+  padding:10px 15px;text-align:left;
+}
+.done-ref span{display:block;font:400 10.5px/1.4 var(--body);color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+.done-ref b{display:block;font:600 16px/1.35 var(--mono);color:var(--ink);padding-top:2px}
+
+/* --- mock-up notice ------------------------------------------------------ */
+.mock{
+  max-width:560px;margin:0 auto;padding:14px 20px 26px;
+  font:400 11.5px/1.6 var(--mono);color:var(--ink-3);
+}
+.mock b{color:var(--ink-2);font-weight:600}
+body.sent .mock{padding-top:0}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header class="top">
+    <div class="brand"><span class="sq"></span> Optimal Transnational</div>
+    <div class="for">
+      Documents for
+      <b>Sarah Whitfield</b>
+      14 Bellwood Rise, Croydon VIC 3136
+      <div class="ref">OT-2026-00184</div>
+    </div>
+  </header>
+
+  <div class="intro">
+    <h1>Five things, then you're done</h1>
+    <p>Priya needs these before she can size your system and confirm what you qualify for.
+      Photos straight from your phone are fine.</p>
+  </div>
+
+  <main class="blocks" id="blocks">
+
+    <section class="blk" data-key="bill">
+      <label class="pick">
+        <input type="file" accept="image/*,.heic,.heif,application/pdf" multiple>
+        <span class="idx">1</span>
+        <span class="txt">
+          <span class="ttl">Your most recent electricity bill</span>
+          <span class="why">Every page. A photo of the paper bill works, so does a PDF from your retailer.</span>
+        </span>
+        <span class="act">Add</span>
+      </label>
+      <div class="files"></div>
+      <p class="err"></p>
+    </section>
+
+    <section class="blk" data-key="meter">
+      <label class="pick">
+        <input type="file" accept="image/*,.heic,.heif">
+        <span class="idx">2</span>
+        <span class="txt">
+          <span class="ttl">The meter box</span>
+          <span class="why">Close enough that the numbers on the meter are readable.</span>
+        </span>
+        <span class="act">Add</span>
+      </label>
+      <div class="files"></div>
+      <p class="err"></p>
+    </section>
+
+    <section class="blk" data-key="switchboard">
+      <label class="pick">
+        <input type="file" accept="image/*,.heic,.heif">
+        <span class="idx">3</span>
+        <span class="txt">
+          <span class="ttl">The switchboard, with the door open</span>
+          <span class="why">We are looking for the spare space and the main switch rating.</span>
+        </span>
+        <span class="act">Add</span>
+      </label>
+      <div class="files"></div>
+      <p class="err"></p>
+    </section>
+
+    <section class="blk" data-key="roof">
+      <label class="pick">
+        <input type="file" accept="image/*,.heic,.heif">
+        <span class="idx">4</span>
+        <span class="txt">
+          <span class="ttl">The roof, from the street</span>
+          <span class="why">Stand back far enough to get the whole roof in one frame.</span>
+        </span>
+        <span class="act">Add</span>
+      </label>
+      <div class="files"></div>
+      <p class="err"></p>
+    </section>
+
+    <section class="blk" data-key="inverter">
+      <label class="pick">
+        <input type="file" accept="image/*,.heic,.heif">
+        <span class="idx">5</span>
+        <span class="txt">
+          <span class="ttl">Where an inverter could go</span>
+          <span class="why">Usually a garage wall or an outside wall near the meter box.</span>
+        </span>
+        <span class="act">Add</span>
+      </label>
+      <div class="files"></div>
+      <p class="err"></p>
+    </section>
+
+  </main>
+
+  <div class="help">
+    <details>
+      <summary>Not sure what a switchboard looks like?</summary>
+      <div class="inner">
+        <p>It is the grey or cream panel with rows of small black or white switches, usually in a
+          hallway, a laundry, a garage or on an outside wall. Some people call it the fuse box.</p>
+        <p>Open the door and take one photo of the whole panel. If there is a label listing the
+          circuits, include it.</p>
+      </div>
+    </details>
+  </div>
+
+  <p class="legal">
+    <b>This link is yours alone.</b> It expires on Thursday 18 September and can be switched off at
+    any time. We use these documents to size your system and to confirm your rebate eligibility,
+    nothing else. If you did not speak to us, close this page and nothing happens.
+  </p>
+
+  <div class="done-screen">
+    <div class="tick">&#10003;</div>
+    <h2>That's everything. Thank you.</h2>
+    <p>Priya has been notified and will be in touch with your sizing and rebate figures. You can
+      close this page.</p>
+    <div class="done-ref">
+      <span>Your reference</span>
+      <b>OT-2026-00184</b>
+    </div>
+  </div>
+
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="prog-top">
+      <span class="prog-lab">Uploaded</span>
+      <span class="prog-n" id="count">0 of 5</span>
+    </div>
+    <div class="track"><i id="fill"></i></div>
+    <button class="send" id="send" type="button" disabled>Add all 5 to finish</button>
+    <div class="expiry">Link expires Thursday 18 September</div>
+  </div>
+</div>
+
+<p class="mock">
+  <b>Mock-up.</b> Nothing is uploaded and nothing leaves this device. Files you pick are read in the
+  browser only, to show a real thumbnail and a real size. Reload to start again.
+</p>
+
+<script>
+(function () {
+  'use strict';
+
+  var MAX_BYTES = 25 * 1024 * 1024;      // per file
+  var TOTAL = document.querySelectorAll('.blk').length;
+
+  var countEl = document.getElementById('count');
+  var fillEl  = document.getElementById('fill');
+  var sendEl  = document.getElementById('send');
+
+  function human(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+  }
+
+  function extension(name) {
+    var i = name.lastIndexOf('.');
+    return i > -1 ? name.slice(i + 1).toUpperCase().slice(0, 4) : 'FILE';
+  }
+
+  // Browsers cannot paint HEIC, which is what an iPhone hands over by default.
+  // Showing a broken image is worse than showing the file type, so ask first.
+  function previewable(file) {
+    return /^image\/(jpeg|png|gif|webp|bmp|avif)$/.test(file.type);
+  }
+
+  function thumbFor(file) {
+    if (previewable(file)) {
+      var img = document.createElement('img');
+      img.className = 'thumb';
+      img.alt = '';
+      img.src = URL.createObjectURL(file);
+      img.addEventListener('load', function () { URL.revokeObjectURL(img.src); });
+      return img;
+    }
+    var box = document.createElement('span');
+    box.className = 'thumb doc';
+    box.textContent = extension(file.name);
+    return box;
+  }
+
+  function render(blk) {
+    var input = blk.querySelector('input[type=file]');
+    var list  = blk.querySelector('.files');
+    var errEl = blk.querySelector('.err');
+    var act   = blk.querySelector('.act');
+    var files = Array.prototype.slice.call(input.files || []);
+
+    list.textContent = '';
+    errEl.textContent = '';
+    blk.classList.remove('done', 'bad');
+
+    var tooBig = files.filter(function (f) { return f.size > MAX_BYTES; });
+    if (tooBig.length) {
+      blk.classList.add('bad');
+      errEl.textContent = tooBig.length === 1
+        ? tooBig[0].name + ' is ' + human(tooBig[0].size) + '. The limit is 25 MB — try taking the photo again at a smaller size.'
+        : tooBig.length + ' files are over the 25 MB limit. Please pick smaller ones.';
+    }
+
+    files.forEach(function (file, i) {
+      var row = document.createElement('div');
+      row.className = 'file';
+
+      row.appendChild(thumbFor(file));
+
+      var meta = document.createElement('span');
+      meta.className = 'fmeta';
+      var n = document.createElement('span');
+      n.className = 'fname';
+      n.textContent = file.name;
+      var s = document.createElement('span');
+      s.className = 'fsize';
+      s.textContent = human(file.size);
+      meta.appendChild(n);
+      meta.appendChild(s);
+      row.appendChild(meta);
+
+      var rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'rm';
+      rm.textContent = 'Remove';
+      rm.setAttribute('aria-label', 'Remove ' + file.name);
+      rm.addEventListener('click', function () {
+        // A FileList is read-only, so removing one means clearing the input.
+        // Honest for a mock-up, and the real page will hold its own array.
+        input.value = '';
+        render(blk);
+        refresh();
+      });
+      row.appendChild(rm);
+
+      list.appendChild(row);
+    });
+
+    if (files.length && !tooBig.length) {
+      blk.classList.add('done');
+      act.textContent = 'Change';
+    } else if (!files.length) {
+      act.textContent = 'Add';
+    }
+  }
+
+  function refresh() {
+    var done = document.querySelectorAll('.blk.done').length;
+    var left = TOTAL - done;
+
+    countEl.textContent = done + ' of ' + TOTAL;
+    fillEl.style.width = Math.round((done / TOTAL) * 100) + '%';
+
+    if (left === 0) {
+      sendEl.disabled = false;
+      sendEl.textContent = 'Send to Optimal Transnational';
+    } else {
+      sendEl.disabled = true;
+      sendEl.textContent = left === TOTAL
+        ? 'Add all ' + TOTAL + ' to finish'
+        : 'Add the last ' + left + ' to finish';
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.blk'), function (blk) {
+    blk.querySelector('input[type=file]').addEventListener('change', function () {
+      render(blk);
+      refresh();
+    });
+  });
+
+  sendEl.addEventListener('click', function () {
+    document.body.classList.add('sent');
+    window.scrollTo(0, 0);
+  });
+
+  refresh();
+})();
+</script>
+
+</body>
+</html>
